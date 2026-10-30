@@ -36,7 +36,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <p className="mt-12 pt-5 border-t border-seam-line text-xs text-galv-silver">© {new Date().getFullYear()} SURE Mechanical. All rights reserved.</p>
+        <p className="mt-12 pt-5 border-t border-seam-line text-xs text-galv-silver">© {new Date().getFullYear()} SURE Mechanical. All rights reserved. <a href="https://starrtree.org" className="inline-block ml-3 underline underline-offset-4 hover:text-cool-teal">Website by StarrTree</a></p>
       </div>
     </footer>
   );

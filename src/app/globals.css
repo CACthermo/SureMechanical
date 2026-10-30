@@ -560,3 +560,8 @@ html:not([data-theme="dark"]) .tech-label { background: #edf7f8; color: #086778;
 
 /* Keep the page-wide thermal progress clear of the footer. */
 body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
+
+.project-matrix .project-photo-card h3 { font-size: .9rem; }
+.project-matrix .project-photo-card p { font-size: .7rem; }
+.project-matrix .project-photo-card > div:last-child { padding: .8rem; gap: .5rem; }
+.project-matrix .project-photo-card .absolute.bottom-3 { font-size: .65rem; padding: .25rem .5rem; right: .5rem; bottom: .5rem; }

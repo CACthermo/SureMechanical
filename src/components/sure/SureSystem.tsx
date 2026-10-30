@@ -18,10 +18,10 @@ const TRUNK_PATH = 'M600,0 V65';
 
 /* Three rectangular-duct branches — 90° elbows, no crossings, compact vertical spread */
 const BRANCH_PATHS = [
-  /* Branch A → SURE Mechanical (left) */
+  /* Branch A → CAC (left) */
   'M600,65 H360 V150 H260 V240 H200 V310',
-  /* Branch B → CAC (center, jogs right then returns) */
-  'M600,65 H740 V180 H660 V260 H600 V310',
+  /* Branch B → SURE Mechanical (center, jogs left then returns) */
+  'M600,65 V165 H530 V245 H600 V310',
   /* Branch C → Thermolinear (right) */
   'M600,65 H840 V150 H940 V240 H1000 V310',
 ];
@@ -31,27 +31,27 @@ const ELBOWS = [
   /* Branch A */
   { x: 600, y: 65 }, { x: 360, y: 65 }, { x: 360, y: 150 }, { x: 260, y: 150 }, { x: 260, y: 240 }, { x: 200, y: 240 },
   /* Branch B */
-  { x: 600, y: 65 }, { x: 740, y: 65 }, { x: 740, y: 180 }, { x: 660, y: 180 }, { x: 660, y: 260 }, { x: 600, y: 260 },
+  { x: 600, y: 165 }, { x: 530, y: 165 }, { x: 530, y: 245 }, { x: 600, y: 245 },
   /* Branch C */
   { x: 600, y: 65 }, { x: 840, y: 65 }, { x: 840, y: 150 }, { x: 940, y: 150 }, { x: 940, y: 240 }, { x: 1000, y: 240 },
 ];
 
 const SUB_COMPANIES = [
   {
-    name: 'SURE Mechanical',
-    role: 'PRIMARY SYSTEM CONTRACTOR',
-    description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
-    logo: assetPath('/brand/SURE_Mechanical_trimmed.png'),
-    website: null,
-    svgX: 200, svgY: 310,
-    pctLeft: 16.67, pctTop: 73.81,
-  },
-  {
     name: 'Cincinnati Air Conditioning Co.',
     role: 'DESIGN-BUILD, SERVICE & CONTROLS',
     description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
     logo: assetPath('/brand/CAC_Logo_2026.png'),
     website: 'https://cincinnatiair.com',
+    svgX: 200, svgY: 310,
+    pctLeft: 16.67, pctTop: 73.81,
+  },
+  {
+    name: 'SURE Mechanical',
+    role: 'PRIMARY SYSTEM CONTRACTOR',
+    description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
+    logo: assetPath('/brand/SURE_Mechanical_trimmed.png'),
+    website: null,
     svgX: 600, svgY: 310,
     pctLeft: 50, pctTop: 73.81,
   },

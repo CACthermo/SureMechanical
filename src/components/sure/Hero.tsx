@@ -275,7 +275,7 @@ export default function Hero() {
               </div>
 
               {/* Duct Supply Visualizer — positioned below/overlapping the image card */}
-              <div className="hero-air-panel relative -mt-8 sm:-mt-16 ml-4 sm:ml-8 z-10">
+              <div className="hero-air-panel relative mt-4 sm:mt-6 ml-0 sm:ml-8 z-10">
                 <div className="relative bg-mech-navy/90 backdrop-blur-sm border border-seam-line rounded-sm p-4" style={{ maxWidth: '320px' }}>
 
                   <svg

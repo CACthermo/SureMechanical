@@ -52,11 +52,18 @@ try {
       await page.keyboard.press('Escape');
       assert.equal(await page.getByRole('button', { name: 'Open menu' }).getAttribute('aria-expanded'), 'false');
     }
+    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 6);
+    await page.getByRole('button', { name: 'View More', exact: true }).click();
+    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 23);
+    await page.getByRole('button', { name: 'View Less', exact: true }).click();
+    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 6);
+    await page.getByRole('button', { name: 'Grid View', exact: true }).click();
     assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 23);
     assert.equal(await page.getByRole('link', {name: /Visit Cincinnati/}).count(), 2);
     assert.equal(await page.locator('a[href*="lhammer"]').count(), 0);
-    await page.getByRole('button', {name: /^Project photos/}).click();
-    const galleryButtons = () => page.getByRole('button', { name: /^View photos:/ });
+    await page.getByRole('button', {name: 'Regular View 9', exact: true}).click();
+    await page.getByRole('button', {name: 'View More', exact: true}).click();
+    const galleryButtons = () => page.getByRole('button', { name: /^View project:/ }).filter({ has: page.locator('img') });
     const directoryButtons = () => page.getByRole('button', { name: /^View project:/ });
     assert.equal(await galleryButtons().count(), 9);
     assert.equal(await page.getByText('University Medical Center HVAC Renovation', { exact: true }).count(), 0);
@@ -88,7 +95,7 @@ try {
     }
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'detached' });
-    assert.match(await page.locator(':focus').getAttribute('aria-label'), /View photos:/);
+    assert.match(await page.locator(':focus').getAttribute('aria-label'), /View project:/);
     await search.fill('no-such-project-zz');
     assert.equal(await galleryButtons().count(), 0);
     await page.getByRole('button', { name: 'Clear project search', exact: true }).click();
@@ -105,7 +112,7 @@ try {
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'detached' });
     await search.fill('');
-    await page.getByRole('button', { name: /^Project photos/ }).click();
+    await page.getByRole('button', { name: /^Regular View/ }).click();
     const usedPhotos = new Set();
     for (const button of await galleryButtons().all()) {
       await button.click();
