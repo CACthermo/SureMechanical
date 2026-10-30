@@ -1,6 +1,8 @@
 import Header from '@/components/sure/Header';
 import Hero from '@/components/sure/Hero';
-import Capabilities from '@/components/sure/Capabilities';
+import Engineering from '@/components/sure/Engineering';
+import HeatingCooling from '@/components/sure/HeatingCooling';
+import FieldInstallation from '@/components/sure/FieldInstallation';
 import Projects from '@/components/sure/Projects';
 import SureSystem from '@/components/sure/SureSystem';
 import SafetyWorkforce from '@/components/sure/SafetyWorkforce';
@@ -13,7 +15,9 @@ export default function Home() {
       <Header />
       <main id="main-content" className="relative min-h-screen bg-mech-navy" role="main">
         <Hero />
-        <Capabilities />
+        <Engineering />
+        <HeatingCooling />
+        <FieldInstallation />
         <Projects />
         <SureSystem />
         <SafetyWorkforce />

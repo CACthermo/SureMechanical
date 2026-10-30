@@ -1,7 +1,11 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 import { ArrowUpRight, Images, Search, X } from 'lucide-react';
 import { PHOTO_COLLECTIONS, PROJECTS, type Project } from '@/lib/projects';
 import ProjectGallery from './ProjectGallery';
@@ -15,10 +19,15 @@ export default function Projects() {
   const matches = (project: Project) => `${project.title} ${project.customer ?? ''}`.toLocaleLowerCase().includes(search);
   const photos = PHOTO_COLLECTIONS.filter(matches);
   const jobs = PROJECTS.filter(matches);
+  const sectionRef = useRef<HTMLElement>(null);
+  useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    gsap.fromTo('.project-photo-card', { y: 32, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.07, duration: 0.65, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
+  }, { scope: sectionRef, dependencies: [view, query], revertOnUpdate: true });
   const resultCount = view === 'photos' ? photos.length : jobs.length;
 
   return (
-    <section id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
+    <section ref={sectionRef} id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <p className="eyebrow">Our work</p>
         <h2 id="projects-title" className="section-title mt-3 text-blueprint-white">Projects, in pictures.</h2>
@@ -39,7 +48,7 @@ export default function Projects() {
         {resultCount === 0 && <div className="rounded-lg border border-seam-line p-8 text-galv-silver">No matches. Try another project name or customer, or <button type="button" onClick={() => setQuery('')} className="text-cool-teal underline">clear your search</button>.</div>}
         {view === 'photos' ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Project photo collections">
-            {photos.map(project => <button key={project.id} type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View photos: ${project.title}`} className="group flex flex-col overflow-hidden rounded-xl border border-seam-line bg-steel-blue text-left transition-colors hover:border-cool-teal">
+            {photos.map(project => <button key={project.id} type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View photos: ${project.title}`} className="project-photo-card group flex flex-col overflow-hidden rounded-xl border border-seam-line bg-steel-blue text-left transition-colors hover:border-cool-teal">
               <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-duct-mid">
                 <Image src={project.photos[0].src} alt={project.photos[0].alt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 400px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" />
                 <span className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full bg-[#071724]/90 px-3 py-1.5 text-xs text-white"><Images size={14} aria-hidden="true" />{project.photos.length} {project.photos.length === 1 ? 'photo' : 'photos'}</span>

@@ -3,6 +3,8 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* ===== SURE MECHANICAL — THE LIVING MECHANICAL SYSTEM ===== */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -61,8 +63,434 @@
 }
 
 :root {
-  color-scheme: light;
   --radius: 0.625rem;
+  --background: #020B13;
+  --foreground: #F4F8FA;
+  --card: #061A2B;
+  --card-foreground: #F4F8FA;
+  --popover: #061A2B;
+  --popover-foreground: #F4F8FA;
+  --primary: #11C5D6;
+  --primary-foreground: #020B13;
+  --secondary: #132740;
+  --secondary-foreground: #F4F8FA;
+  --muted: #0A1628;
+  --muted-foreground: #B9C5CC;
+  --accent: #5BEAF3;
+  --accent-foreground: #020B13;
+  --destructive: #FF6B35;
+  --border: rgba(185, 197, 204, 0.15);
+  --input: rgba(185, 197, 204, 0.1);
+  --ring: #11C5D6;
+  --chart-1: #11C5D6;
+  --chart-2: #F59E0B;
+  --chart-3: #5BEAF3;
+  --chart-4: #FF6B35;
+  --chart-5: #B9C5CC;
+  --sidebar: #020B13;
+  --sidebar-foreground: #F4F8FA;
+  --sidebar-primary: #11C5D6;
+  --sidebar-primary-foreground: #020B13;
+  --sidebar-accent: #132740;
+  --sidebar-accent-foreground: #F4F8FA;
+  --sidebar-border: rgba(185, 197, 204, 0.15);
+  --sidebar-ring: #11C5D6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  /* Remove default scrollbar for a cleaner industrial look */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #020B13;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(17, 197, 214, 0.3);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(17, 197, 214, 0.5);
+  }
+}
+
+/* ===== BLUEPRINT GRID PATTERN ===== */
+.blueprint-grid {
+  background-image:
+    linear-gradient(rgba(17, 197, 214, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 197, 214, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(17, 197, 214, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 197, 214, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+}
+
+/* ===== METALLIC DUCT TEXTURES ===== */
+.metallic-surface {
+  background: linear-gradient(
+    135deg,
+    rgba(185, 197, 204, 0.08) 0%,
+    rgba(185, 197, 204, 0.02) 25%,
+    rgba(185, 197, 204, 0.06) 50%,
+    rgba(185, 197, 204, 0.01) 75%,
+    rgba(185, 197, 204, 0.05) 100%
+  );
+}
+
+.brushed-metal {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(185, 197, 204, 0.03) 0px,
+    rgba(185, 197, 204, 0.08) 1px,
+    rgba(185, 197, 204, 0.02) 2px,
+    transparent 3px
+  );
+}
+
+/* ===== AIRFLOW PARTICLE ANIMATION ===== */
+@keyframes airflow-move {
+  0% { transform: translateX(-100%) translateY(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateX(200%) translateY(-10px); opacity: 0; }
+}
+
+@keyframes airflow-cool {
+  0% { transform: translateX(-100%); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.7; }
+  100% { transform: translateX(300%); opacity: 0; }
+}
+
+@keyframes airflow-warm {
+  0% { transform: translateX(100%); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.7; }
+  100% { transform: translateX(-300%); opacity: 0; }
+}
+
+@keyframes spark-burst {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+}
+
+@keyframes pulse-glow-teal {
+  0%, 100% { box-shadow: 0 0 20px rgba(17, 197, 214, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(17, 197, 214, 0.4); }
+}
+
+@keyframes pulse-glow-amber {
+  0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.4); }
+}
+
+@keyframes duct-line-draw {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-15px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-3px); }
+  75% { transform: translateY(-20px) translateX(8px); }
+}
+
+@keyframes thermal-shimmer {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 0.6; transform: scaleY(1.1); }
+}
+
+@keyframes weld-spark {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-30px) scale(0); opacity: 0; }
+}
+
+/* ===== SECTION TRANSITIONS ===== */
+.section-duct-connector {
+  position: relative;
+}
+.section-duct-connector::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(17, 197, 214, 0.3) 20%,
+    rgba(17, 197, 214, 0.1) 80%,
+    transparent
+  );
+  transform: translateX(-50%);
+}
+
+/* ===== TECHNICAL LABEL STYLES ===== */
+.tech-label {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(91, 234, 243, 0.7);
+  padding: 2px 8px;
+  border: 1px solid rgba(91, 234, 243, 0.2);
+  background: rgba(2, 11, 19, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.tech-label-warm {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245, 158, 11, 0.7);
+  padding: 2px 8px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: rgba(2, 11, 19, 0.8);
+}
+
+/* ===== DUCT COMPONENT STYLES ===== */
+.duct-flange {
+  border-top: 3px solid rgba(185, 197, 204, 0.4);
+  border-bottom: 3px solid rgba(185, 197, 204, 0.15);
+}
+
+.duct-seam {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 8px,
+    rgba(185, 197, 204, 0.2) 8px,
+    rgba(185, 197, 204, 0.2) 10px
+  );
+  height: 1px;
+}
+
+.rivet-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(185, 197, 204, 0.6), rgba(185, 197, 204, 0.2));
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
+}
+
+/* ===== THERMAL STATE TRANSITIONS ===== */
+.cool-state {
+  background: linear-gradient(135deg, rgba(17, 197, 214, 0.05) 0%, transparent 50%);
+}
+
+.warm-state {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+}
+
+/* ===== CONTROL PANEL BUTTON ===== */
+.control-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.control-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+.control-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+.hero-headline {
+  font-size: clamp(2.5rem, 4vw, 4.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.section-subtitle {
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #11C5D6;
+  outline-offset: 2px;
+}
+
+/* ===== CONVEYOR ANIMATION ===== */
+@keyframes conveyor-belt {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.conveyor-track {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(185, 197, 204, 0.05) 0px,
+    rgba(185, 197, 204, 0.05) 38px,
+    rgba(185, 197, 204, 0.1) 38px,
+    rgba(185, 197, 204, 0.1) 40px
+  );
+  background-size: 40px 100%;
+}
+
+/* ===== SHINE SWEEP (buttons & logo) ===== */
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.shine-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.shine-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 55%,
+    transparent 60%
+  );
+  pointer-events: none;
+  transition: none;
+}
+.shine-sweep:hover::after {
+  animation: shine-sweep 0.6s ease-in-out;
+}
+
+/* ===== LOGO SHINE (stronger, wider) ===== */
+@keyframes logo-shine {
+  0% { left: -150%; }
+  100% { left: 250%; }
+}
+.logo-shine {
+  position: relative;
+  overflow: hidden;
+}
+.logo-shine::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -150%;
+  width: 60%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.05) 40%,
+    rgba(255, 255, 255, 0.4) 48%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.4) 52%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 70%
+  );
+  pointer-events: none;
+  border-radius: 50%;
+}
+.logo-shine:hover::after {
+  animation: logo-shine 0.8s ease-in-out;
+}
+
+/* ===== RED HOVER TEXT ===== */
+.hover-red {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  cursor: default;
+}
+.hover-red:hover {
+  color: #E31937 !important;
+  text-shadow: 0 0 20px rgba(227, 25, 55, 0.3);
+}
+
+/* ===== HOLOGRAPHIC TECH LABEL ===== */
+@keyframes holo-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.holo-label {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+.holo-label::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(91, 234, 243, 0.08) 25%,
+    rgba(227, 25, 55, 0.06) 50%,
+    rgba(91, 234, 243, 0.08) 75%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.holo-label:hover::before {
+  opacity: 1;
+  animation: holo-shift 1.5s ease infinite;
+}
+.holo-label:hover {
+  border-color: rgba(91, 234, 243, 0.5) !important;
+  box-shadow: 0 0 15px rgba(91, 234, 243, 0.15), inset 0 0 15px rgba(91, 234, 243, 0.05);
+  transform: scale(1.05);
+  color: rgba(91, 234, 243, 0.9) !important;
+}
+
+/* SURE 2026 CLIENT THEMES — a deliberately light default, with classic dark mode. */
+:root, html[data-theme="light"] {
+  color-scheme: light;
   --sure-mech-navy: #F4F8FA;
   --sure-steel-blue: #FFFFFF;
   --sure-cool-teal: #087C8F;
@@ -73,24 +501,11 @@
   --sure-duct-mid: #DBE9EF;
   --sure-duct-light: #BFD2DB;
   --sure-seam-line: rgba(19, 42, 57, 0.19);
-  --background: var(--sure-mech-navy);
-  --foreground: var(--sure-blueprint-white);
-  --card: var(--sure-steel-blue);
-  --card-foreground: var(--foreground);
-  --popover: var(--card);
-  --popover-foreground: var(--foreground);
-  --primary: var(--sure-cool-teal);
-  --primary-foreground: var(--sure-mech-navy);
-  --secondary: var(--sure-duct-mid);
-  --secondary-foreground: var(--foreground);
-  --muted: var(--sure-duct-dark);
-  --muted-foreground: var(--sure-galv-silver);
-  --accent: var(--sure-bright-cyan);
-  --accent-foreground: var(--foreground);
-  --destructive: #B42318;
-  --border: var(--sure-seam-line);
-  --input: var(--border);
-  --ring: var(--sure-cool-teal);
+  --background: #F4F8FA;
+  --foreground: #132A39;
+  --card: #FFFFFF;
+  --card-foreground: #132A39;
+  --border: rgba(19, 42, 57, 0.19);
 }
 html[data-theme="dark"] {
   color-scheme: dark;
@@ -103,22 +518,42 @@ html[data-theme="dark"] {
   --sure-duct-dark: #0A1628;
   --sure-duct-mid: #132740;
   --sure-duct-light: #1E3A5F;
-  --sure-seam-line: rgba(185, 197, 204, 0.24);
-  --destructive: #F97066;
-}
-@layer base {
-  * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground; }
+  --sure-seam-line: rgba(185, 197, 204, 0.3);
+  --background: #020B13;
+  --foreground: #F4F8FA;
+  --card: #061A2B;
+  --card-foreground: #F4F8FA;
+  --border: rgba(185, 197, 204, 0.15);
 }
 html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
-button:not(:disabled), summary { cursor: pointer; }
-:focus-visible { outline: 2px solid var(--sure-cool-teal); outline-offset: 4px; }
-::selection { background: var(--sure-cool-teal); color: var(--sure-mech-navy); }
-.section-title { font-size: clamp(1.8rem, 3.2vw, 3rem); line-height: 1.12; font-weight: 600; letter-spacing: -0.025em; }
-.eyebrow { color: var(--sure-cool-teal); font-size: .75rem; line-height: 1.6; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
-.skip-link { position: fixed; top: .5rem; left: 1rem; z-index: 100; transform: translateY(-200%); padding: .75rem 1rem; background: var(--sure-steel-blue); color: var(--sure-blueprint-white); border: 1px solid var(--sure-seam-line); border-radius: .25rem; }
-.skip-link:focus { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* Keep technical diagrams intentionally dark for legible fixed-color overlays in light mode. */
+
+/* SURE 2026 CLIENT THEMES */
+
+/* Fixed-color logo art sits on an opaque navy plate; decoration never dims it. */
+.brand-plate { background: #061A2B; }
+.skip-link { position: fixed; top: -5rem; left: 1rem; z-index: 100; padding: .75rem 1rem; background: var(--sure-steel-blue); color: var(--sure-blueprint-white); }
+.skip-link:focus { top: 1rem; }
+html:not([data-theme="dark"]) [class*="text-galv-silver/"] { color: #425B69; }
+html:not([data-theme="dark"]) .tech-label { background: #E7F2F4; color: #086778; border-color: #9CBEC5; }
+html:not([data-theme="dark"]) .tech-label-warm { background: #FFF4E5; color: #804400; border-color: #B58A52; }
+html:not([data-theme="dark"]) .holo-label:hover { color: #086778 !important; }
+html:not([data-theme="dark"]) ::-webkit-scrollbar-track { background: #EAF1F5; }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  [class*="opacity-0"] { opacity: 1 !important; transform: none !important; }
+  svg animate, svg animateMotion { display: none; }
+  canvas { display: none; }
 }
+
+html:not([data-theme="dark"]) .hero-air-panel svg rect,
+html:not([data-theme="dark"]) .hero-air-panel svg line { stroke: #6B8E9F; }
+html:not([data-theme="dark"]) .hero-air-panel svg text { fill: #087C8F; }
+
+/* Light-mode technical material system; midnight palette remains the original. */
+.eyebrow { color: var(--sure-cool-teal); font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+main { background-image: linear-gradient(color-mix(in srgb, var(--sure-cool-teal) 6%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--sure-cool-teal) 6%, transparent) 1px, transparent 1px); background-size: 40px 40px; }
+html:not([data-theme="dark"]) .blueprint-grid { opacity: .65; }
+html:not([data-theme="dark"]) .tech-label { background: #edf7f8; color: #086778; border-color: #9cbec5; }
+.project-photo-card { box-shadow: 0 8px 30px rgba(10, 55, 70, .05); transition: border-color .3s, box-shadow .3s; }
+.project-photo-card:hover { box-shadow: 0 12px 35px rgba(8, 124, 143, .16); }
