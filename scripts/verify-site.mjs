@@ -126,7 +126,7 @@ try {
       assert.equal(await image.evaluate(image => image.naturalWidth > 0), true);
     }
     const cac = page.locator('img[alt="Cincinnati Air Conditioning Co."]').first();
-    assert.equal(await cac.evaluate(img => getComputedStyle(img.parentElement).backgroundColor), 'rgb(255, 255, 255)');
+    assert.equal(await cac.evaluate(img => getComputedStyle(img.parentElement).backgroundColor), 'rgba(0, 0, 0, 0)');
     for (const [kind, endpoint] of [['general', 'mkjjzrrw'], ['hr', 'mpppldpv']]) {
       const form = page.getByRole('form', { name: kind === 'hr' ? 'Human resources inquiry' : 'Contact SURE Mechanical', exact: true });
       let requests = 0;

@@ -41,7 +41,7 @@ const SUB_COMPANIES = [
     name: 'Sure Mechanical',
     role: 'PRIMARY SYSTEM CONTRACTOR',
     description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
-    logo: assetPath('/brand/SURE_MECHACNIAL_Experienced-Innovative-Diverse.png'),
+    logo: assetPath('/brand/SURE_Mechanical_trimmed.png'),
     svgX: 200, svgY: 310,
     pctLeft: 16.67, pctTop: 73.81,
   },
@@ -199,7 +199,7 @@ export default function SureSystem() {
       {/* ═══════ PINNED ANIMATION CONTAINER (SureGroup + ducts + logos — ALL fixed) ═══════ */}
       <div
         ref={animContainerRef}
-        className="relative bg-mech-navy w-full max-w-[1200px] mx-auto"
+        className="relative bg-mech-navy w-full max-w-[1200px] mx-auto pb-28 sm:pb-36 lg:pb-44"
       >
         {/* ── SureGroup Logo — stays pinned at the top ── */}
         <div
@@ -375,7 +375,7 @@ export default function SureSystem() {
               style={{
                 left: `${co.pctLeft}%`,
                 top: `${co.pctTop + 4}%`,
-                transform: 'translate(-50%, 0)',
+                translate: '-50% 0',
               }}
             >
               {/* SURE Mechanical — naturally smaller PNG, scale way up */}
@@ -385,26 +385,24 @@ export default function SureSystem() {
                   alt={co.name}
                   width={300}
                   height={80}
-                  className="h-20 sm:h-28 lg:h-36 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
+                  className="w-[90px] sm:w-[180px] lg:w-[230px] h-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
               )}
               {/* CAC — circular mark balanced with the adjacent wordmarks */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
-                <div className="rounded-md bg-white p-2 sm:p-3 shadow-sm">
-                  <img src={co.logo} alt={co.name} className="h-20 sm:h-28 lg:h-36 w-auto object-contain" />
-                </div>
+                <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-28 w-auto object-contain" />
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
               {co.name === 'Thermolinear' && (
                 <img
                   src={co.logo}
                   alt={co.name}
-                  className="h-14 sm:h-20 lg:h-26 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
+                  className="w-[90px] sm:w-[180px] lg:w-[230px] h-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
               )}
 
               <div className="sub-name-reveal opacity-0 mt-2">
-                <div className="font-bold text-blueprint-white text-[11px] sm:text-xs lg:text-sm leading-tight whitespace-nowrap">{co.name}</div>
+                <div className="font-bold text-blueprint-white text-[9px] sm:text-xs lg:text-sm leading-tight max-w-[110px] sm:max-w-[230px]">{co.name}</div>
                 <div className="font-mono text-[6px] sm:text-[7px] lg:text-[8px] tracking-[0.1em] text-cool-teal/50 uppercase mt-0.5">{co.role}</div>
               </div>
             </div>
@@ -444,7 +442,7 @@ export default function SureSystem() {
                   ) : co.logo.endsWith('.svg') ? (
                     <img src={co.logo} alt={co.name} className="h-10 lg:h-12 w-auto object-contain" />
                   ) : (
-                    <Image src={co.logo} alt={co.name} width={160} height={40} className="h-10 lg:h-12 w-auto object-contain" />
+                    <Image src={co.logo} alt={co.name} width={160} height={40} className="w-[180px] lg:w-[200px] max-w-full h-auto object-contain" />
                   )}
                 </div>
                 <h3 className="font-bold text-[#020B13] text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
