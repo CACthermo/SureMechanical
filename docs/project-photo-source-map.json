@@ -1,0 +1,118 @@
+[
+  {
+    "id": "findlay-01",
+    "originalFilename": "IMG_2554.jpeg",
+    "clientLabel": "Findlay Community Center",
+    "alt": "Rooftop equipment at Findlay Community Center.",
+    "output": "/projects/2026/findlay-01.webp",
+    "sha256": "6ed8c8a1325b5dc6bf5f3b774bb087e4fc3678e83a5b435b0443fa6571dc2d38"
+  },
+  {
+    "id": "findlay-02",
+    "originalFilename": "IMG_2560.jpeg",
+    "clientLabel": "Findlay Community Center",
+    "alt": "Ductwork installation at Findlay Community Center.",
+    "output": "/projects/2026/findlay-02.webp",
+    "sha256": "149e7150b4899550d3de2a4e4e4969b66bbac30f8b55b91789fc13ec86ce8ce5"
+  },
+  {
+    "id": "federal-reserve-01",
+    "originalFilename": "IMG_2555(1).jpeg",
+    "clientLabel": "Federal Reserve AHU",
+    "alt": "Federal Reserve air handling equipment.",
+    "output": "/projects/2026/federal-reserve-01.webp",
+    "sha256": "6173a59d126b3d41368923aa9d7f1d52a4fbeb94eb385ade22cd55ef13225be3",
+    "matchingNote": "Photo collection identity supplied; exact match to abbreviated job 16 remains unconfirmed."
+  },
+  {
+    "id": "federal-reserve-02",
+    "originalFilename": "IMG_2558(1).jpeg",
+    "clientLabel": "Federal Reserve AHU",
+    "alt": "A second view of Federal Reserve air handling equipment.",
+    "output": "/projects/2026/federal-reserve-02.webp",
+    "sha256": "5b48156ba4d89bfc1f538d43062f7f21e632c9a6483e490dc18a7d667342b7df",
+    "matchingNote": "Photo collection identity supplied; exact match to abbreviated job 16 remains unconfirmed."
+  },
+  {
+    "id": "winslow-01",
+    "originalFilename": "IMG_2561.jpeg",
+    "clientLabel": "CH Winslow",
+    "alt": "SURE Mechanical crew during an equipment lift at the Winslow project.",
+    "output": "/projects/2026/winslow-01.webp",
+    "sha256": "2e9820d6d88ef17a7e5399e684eec998584c4effedbd965ec7dfa656fdcf6c22"
+  },
+  {
+    "id": "digital-futures-01",
+    "originalFilename": "IMG_2564.jpeg",
+    "clientLabel": "UC Digital",
+    "alt": "Exterior view of UC Digital Futures.",
+    "output": "/projects/2026/digital-futures-01.webp",
+    "sha256": "a32ce4cbafc4a57c9c6150ce2e6edd85aace2207a28fa9544bf96c33c0ce7db8",
+    "matchingNote": "Grouped with subsequent exact UC Digital Futures labels; not the distinct Uptown Gateway contract."
+  },
+  {
+    "id": "uc-mab-01",
+    "originalFilename": "IMG_2563.jpeg",
+    "clientLabel": "UC MAB AHU Fan Motor",
+    "alt": "SURE Mechanical crew working at the UC MAB project.",
+    "output": "/projects/2026/uc-mab-01.webp",
+    "sha256": "3615c41415c34f682858853d8635b45b1a9bcf9f4f7c3cde2c1215b569195b23"
+  },
+  {
+    "id": "bethesda-01",
+    "originalFilename": "IMG_2565.jpeg",
+    "clientLabel": "Bethesda Arrow Springs MRI",
+    "alt": "Mechanical equipment at Bethesda Arrow Springs MRI.",
+    "output": "/projects/2026/bethesda-01.webp",
+    "sha256": "3c91cd175346ac30c48187f2c3967c4f5a2c95a681fa647751151bba9d7322b4"
+  },
+  {
+    "id": "kenton-01",
+    "originalFilename": "IMG_2566.jpeg",
+    "clientLabel": "Kenton Elementary School",
+    "alt": "Ductwork at Kenton Elementary School.",
+    "output": "/projects/2026/kenton-01.webp",
+    "sha256": "b9a8f31a434ee2246980f09f2dbb420dc5a37751e386956be560ae5c1d5ac637"
+  },
+  {
+    "id": "duke-energy-01",
+    "originalFilename": "IMG_2569.jpeg",
+    "clientLabel": "Duke Energy AHUs Assembly",
+    "alt": "Air handling unit assembly at Duke Energy.",
+    "output": "/projects/2026/duke-energy-01.webp",
+    "sha256": "b749550f514f73a79608605bc7300ad44532e7689174276e580a4696876f68f0"
+  },
+  {
+    "id": "winslow-02",
+    "originalFilename": "IMG_2568.jpeg",
+    "clientLabel": "CH Windslow (Correct spelling i believe)",
+    "alt": "Exterior of the Winslow Research Pavilion; the building sign confirms the Winslow spelling.",
+    "output": "/projects/2026/winslow-02.webp",
+    "sha256": "42d49817a3613b3a24eec5921d7f7d727bd6c524e2a39b681df2e61a4552e42d",
+    "matchingNote": "Building sign in this supplied photograph reads Winslow Research Pavilion. Retain Winslow."
+  },
+  {
+    "id": "digital-futures-02",
+    "originalFilename": "IMG_2571(1).jpeg",
+    "clientLabel": "UC Digital Futures",
+    "alt": "Interior ceiling and mechanical systems at UC Digital Futures.",
+    "output": "/projects/2026/digital-futures-02.webp",
+    "sha256": "cca380fd45033f8abbf98e7271f096d6e56bdf2e0f54af9ad004f32b6fbee639"
+  },
+  {
+    "id": "digital-futures-03",
+    "originalFilename": "IMG_2574(1).jpeg",
+    "clientLabel": "UC Digital Futures - Bldg 1 & 2",
+    "alt": "View of UC Digital Futures buildings 1 and 2.",
+    "output": "/projects/2026/digital-futures-03.webp",
+    "sha256": "311238018e55bb492b7729f566f2b4a3b8f3d3e9838fcec2c712713b88a853a1"
+  },
+  {
+    "id": "dayton-police-01",
+    "originalFilename": "IMG_2573(1).jpeg",
+    "clientLabel": "Dayton Police Station",
+    "alt": "Ceiling-mounted mechanical equipment at Dayton Police Station.",
+    "output": "/projects/2026/dayton-police-01.webp",
+    "sha256": "a0c26335e3f358bce3b21994fe4a2e93bb0080faecb1dd81c452b8447db39887"
+  }
+]

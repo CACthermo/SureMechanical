@@ -7,7 +7,7 @@ import { assetPath } from '@/lib/asset-path';
 
 const NAV_ITEMS = [
   { label: 'Home', href: '#hero' },
-  { label: 'Capabilities', href: '#engineering' },
+  { label: 'Services', href: '#engineering' },
   { label: 'Projects', href: '#projects' },
   { label: 'Companies', href: '#sure-system' },
   { label: 'Careers / HR', href: '#hr-form' },
@@ -49,11 +49,7 @@ export default function Header() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 lg:h-20 items-center justify-between gap-3">
           <a href="#hero" onClick={closeMenu} className="relative z-10 flex items-center gap-2 sm:gap-3 min-w-0" aria-label="SURE Mechanical home">
-            <Image src={assetPath('/brand/SURE_symbol.png')} alt="" width={48} height={48} priority className="w-10 h-10 lg:w-12 lg:h-12 object-contain" />
-            <span className="flex flex-col leading-none min-w-0">
-              <span className="font-bold tracking-[0.12em] text-blueprint-white text-sm sm:text-base">SURE</span>
-              <span className="font-mono tracking-[0.12em] text-cool-teal text-[9px] sm:text-[10px] mt-1">MECHANICAL</span>
-            </span>
+            <span className="relative block h-10 w-48 overflow-hidden sm:w-56"><Image src={assetPath('/brand/SURE_MECHANICAL_alpha.png')} alt="SURE Mechanical" width={2048} height={704} priority className="absolute left-0 top-1/2 h-auto w-full -translate-y-1/2" /></span>
           </a>
 
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
@@ -61,11 +57,11 @@ export default function Header() {
           </nav>
 
           <div className="relative z-10 flex items-center gap-2 sm:gap-3">
-            <button type="button" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel} className="h-10 w-10 flex items-center justify-center border border-seam-line rounded-md text-blueprint-white hover:text-cool-teal focus-visible:outline-2">
+            <button type="button" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel} className="h-11 w-11 flex items-center justify-center border border-seam-line rounded-md text-blueprint-white hover:text-cool-teal focus-visible:outline-2">
               {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
             </button>
             <a href="mailto:bidinvites@suremechanical.com?subject=Project%20Bid%20Invitation" className="hidden lg:inline-flex items-center justify-center rounded-sm bg-cool-teal px-4 py-2.5 font-semibold text-xs uppercase tracking-wide text-mech-navy hover:brightness-110">Start a Project</a>
-            <button id="menu-toggle" type="button" onClick={() => setMobileOpen(v => !v)} className="lg:hidden h-10 w-10 flex items-center justify-center text-blueprint-white border border-seam-line rounded-md" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen} aria-controls="sure-mobile-menu">
+            <button id="menu-toggle" type="button" onClick={() => setMobileOpen(v => !v)} className="lg:hidden h-11 w-11 flex items-center justify-center text-blueprint-white border border-seam-line rounded-md" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen} aria-controls="sure-mobile-menu">
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>

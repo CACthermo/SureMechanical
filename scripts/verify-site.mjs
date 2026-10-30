@@ -5,7 +5,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 
 const root = resolve(process.env.TEST_STATIC_DIR || 'out');
-const mimeTypes = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' };
+const mimeTypes = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.woff2': 'font/woff2' };
 const server = process.env.TEST_BASE_URL ? null : createServer(async (request, response) => {
   try {
     let path = resolve(root, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname));
@@ -52,25 +52,86 @@ try {
       await page.keyboard.press('Escape');
       assert.equal(await page.getByRole('button', { name: 'Open menu' }).getAttribute('aria-expanded'), 'false');
     }
-    await page.getByRole('button', { name: 'Research', exact: true }).click();
-    assert.equal(await page.getByRole('button', { name: /^View preliminary project:/ }).count(), 1);
-    await page.getByRole('button', { name: /^View preliminary project:/ }).click();
+    const galleryButtons = () => page.getByRole('button', { name: /^View photos:/ });
+    const directoryButtons = () => page.getByRole('button', { name: /^View project:/ });
+    assert.equal(await galleryButtons().count(), 9);
+    assert.equal(await page.getByText('University Medical Center HVAC Renovation', { exact: true }).count(), 0);
+    const search = page.getByRole('searchbox', { name: 'Search projects or customers' });
+    await search.fill('Research');
+    assert.equal(await galleryButtons().count(), 1);
+    await galleryButtons().click();
     const dialog = page.getByRole('dialog');
     await dialog.waitFor({ state: 'visible' });
-    assert.match(await dialog.innerText(), /Advanced Research Laboratory/);
-    assert.match(await dialog.innerText(), /require SURE leadership confirmation/);
-    for (let index = 0; index < 5; index++) {
+    assert.match(await dialog.innerText(), /CH Winslow Research Facility/);
+    assert.match(await dialog.innerText(), /MESSER CONSTRUCTION COMPANY/);
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
+    await dialog.getByRole('button', { name: 'Next photo', exact: true }).click();
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
+    await dialog.getByRole('button', { name: 'Show photo 1 of 2' }).click();
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
+    // Pointer events exercise the touch swipe path without making the page horizontally scroll.
+    const swipeArea = dialog.locator('.touch-pan-y');
+    await swipeArea.dispatchEvent('pointerdown', { pointerType: 'touch', clientX: 250, clientY: 200 });
+    await swipeArea.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 100, clientY: 210 });
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
+    for (let index = 0; index < 8; index++) {
       await page.keyboard.press('Tab');
       assert.equal(await dialog.evaluate(el => el.contains(document.activeElement)), true, 'Dialog must retain focus');
     }
     await page.keyboard.press('Escape');
     await dialog.waitFor({ state: 'detached' });
-    assert.match(await page.locator(':focus').getAttribute('aria-label'), /View preliminary project/);
-    await page.getByRole('button', { name: 'All', exact: true }).click();
-    assert.equal(await page.getByRole('button', { name: /^View preliminary project:/ }).count(), 6);
+    assert.match(await page.locator(':focus').getAttribute('aria-label'), /View photos:/);
+    await search.fill('no-such-project-zz');
+    assert.equal(await galleryButtons().count(), 0);
+    await page.getByRole('button', { name: 'Clear project search', exact: true }).click();
+    await page.getByRole('button', { name: /^Project list/ }).click();
+    assert.equal(await directoryButtons().count(), 20);
+    await search.fill('Digital');
+    assert.equal(await directoryButtons().count(), 2);
+    await page.getByRole('button', { name: 'View project: UC Digital Futures', exact: true }).click();
+    await dialog.waitFor({ state: 'visible' });
+    assert.match(await dialog.innerText(), /HGC Construction/);
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 3');
+    await dialog.getByRole('button', { name: 'Next photo', exact: true }).click();
+    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 3');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'View project: Uptown Gateway - Digital Future', exact: true }).click();
+    await dialog.waitFor({ state: 'visible' });
+    assert.match(await dialog.innerText(), /MESSER CONSTRUCTION COMPANY/);
+    assert.match(await dialog.innerText(), /photos will be added/);
+    assert.equal(await dialog.locator('img').count(), 0, 'Do not reuse UC Digital photos for the distinct Uptown contract');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'detached' });
+    await search.fill('FRB');
+    await directoryButtons().click();
+    await dialog.waitFor({ state: 'visible' });
+    assert.equal(await dialog.locator('img').count(), 0, 'Federal Reserve photo-to-job alias is unconfirmed');
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'detached' });
+    await search.fill('');
+    await page.getByRole('button', { name: /^Project photos/ }).click();
+    const usedPhotos = new Set();
+    for (const button of await galleryButtons().all()) {
+      await button.click();
+      await dialog.waitFor({ state: 'visible' });
+      const thumbs = await dialog.getByRole('button', { name: /^Show photo/ }).all();
+      if (thumbs.length) for (const thumb of thumbs) await thumb.click();
+      for (const image of await dialog.locator('img').all()) {
+        await image.evaluate(img => img.decode());
+        usedPhotos.add(await image.getAttribute('src'));
+      }
+      await page.keyboard.press('Escape');
+      await dialog.waitFor({ state: 'detached' });
+    }
+    assert.equal(usedPhotos.size, 14, 'All 14 client images are reachable and decode');
     const photos = await page.locator('#projects img').evaluateAll(images => images.map(image => image.getAttribute('src')));
     assert.equal(new Set(photos).size, photos.length);
-    assert.equal(await page.locator('img[src*="/projects/photos/"]:not(#projects img)').count(), 0);
+    assert.equal(await page.locator('img[src*="/projects/2026/"]:not(#projects img)').count(), 0);
     // Bring lazy images into view before requiring successful decoding.
     for (const image of await page.locator('img').all()) {
       await image.scrollIntoViewIfNeeded();
@@ -147,12 +208,12 @@ try {
     const page = await context.newPage();
     page.on('pageerror', error => failures.push(error.message));
     await page.goto(baseURL, { waitUntil: 'networkidle' });
-    await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.hero-content')).opacity) === 1);
+    await page.waitForFunction(() => document.querySelector('#hero-title').getBoundingClientRect().height > 0);
     await page.locator('#safety').scrollIntoViewIfNeeded();
-    await page.waitForFunction(() => Number(getComputedStyle(document.querySelector('.sw-title')).opacity) === 1);
+    await page.waitForFunction(() => document.querySelector('#people-title').getBoundingClientRect().height > 0);
     if (process.env.SCREENSHOT_DIR) await page.screenshot({ path: `${process.env.SCREENSHOT_DIR}/safety-motion-${width}.png` });
     await context.close();
-    console.log(`PASS ${width}px: normal-motion hero and scroll sections`);
+    console.log(`PASS ${width}px: hero and people sections`);
   }
   // Verify theme controls remain functional when browser storage is unavailable.
   const context = await browser.newContext();

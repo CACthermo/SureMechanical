@@ -1,97 +1,71 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
-import { PROJECTS } from '@/lib/projects';
-
-type Project = (typeof PROJECTS)[number];
-const CATEGORIES = ['All', ...new Set(PROJECTS.map(project => project.industry))];
-
-function ProjectImage({ project }: { project: Project }) {
-  return project.image ? (
-    <Image src={project.image} alt="Temporary portfolio photograph; project matching pending confirmation" fill sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 40vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-  ) : (
-    <div className="absolute inset-0 flex items-center justify-center bg-duct-mid p-8 text-center">
-      <span className="font-mono text-sm uppercase tracking-wider text-blueprint-white">Project photograph coming soon</span>
-    </div>
-  );
-}
+import { ArrowUpRight, Images, Search, X } from 'lucide-react';
+import { PHOTO_COLLECTIONS, PROJECTS, type Project } from '@/lib/projects';
+import ProjectGallery from './ProjectGallery';
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [view, setView] = useState<'photos' | 'list'>('photos');
+  const [query, setQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const filtered = activeCategory === 'All' ? PROJECTS : PROJECTS.filter(project => project.industry === activeCategory);
-
-  useEffect(() => {
-    if (!selectedProject) return;
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    dialog.showModal();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      dialog.close();
-      document.body.style.overflow = previousOverflow;
-      triggerRef.current?.focus({ preventScroll: true });
-    };
-  }, [selectedProject]);
+  const closeProject = useCallback(() => setSelectedProject(null), []);
+  const search = query.trim().toLocaleLowerCase();
+  const matches = (project: Project) => `${project.title} ${project.customer ?? ''}`.toLocaleLowerCase().includes(search);
+  const photos = PHOTO_COLLECTIONS.filter(matches);
+  const jobs = PROJECTS.filter(matches);
+  const resultCount = view === 'photos' ? photos.length : jobs.length;
 
   return (
-    <section id="projects" className="relative py-20 lg:py-28" aria-labelledby="projects-title">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <span className="tech-label">PROJECT EXPERIENCE</span>
-        <h2 id="projects-title" className="section-title text-blueprint-white mt-5 mb-5">MECHANICAL SYSTEMS.<br /><span className="text-cool-teal">REAL-WORLD IMPACT.</span></h2>
-        <p className="text-galv-silver max-w-2xl mb-8 leading-relaxed">Explore the portfolio layout by sector. Project names, scopes, and photograph assignments shown here are preliminary and await confirmation by SURE leadership.</p>
-        <div role="group" aria-label="Filter projects by sector" className="flex flex-wrap gap-2 mb-6">
-          {CATEGORIES.map(category => (
-            <button key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)} className={`min-h-11 px-4 py-2 rounded-sm border text-xs font-mono uppercase tracking-wide ${activeCategory === category ? 'bg-cool-teal text-mech-navy border-cool-teal' : 'text-galv-silver border-seam-line hover:border-cool-teal'}`}>
-              {category === 'Research & Laboratory' ? 'Research' : category}
-            </button>
-          ))}
+    <section id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
+        <p className="eyebrow">Our work</p>
+        <h2 id="projects-title" className="section-title mt-3 text-blueprint-white">Projects, in pictures.</h2>
+        <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Browse project photos or find a job by name or customer. Select a project to take a closer look.</p>
+        <div className="mt-9 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div role="group" aria-label="Project view" className="flex w-fit max-w-full gap-1 rounded-lg border border-seam-line bg-mech-navy p-1">
+            <button type="button" aria-pressed={view === 'photos'} onClick={() => setView('photos')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'photos' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Project photos <span className="ml-1 text-xs">{PHOTO_COLLECTIONS.length}</span></button>
+            <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'list' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Project list <span className="ml-1 text-xs">{PROJECTS.length}</span></button>
+          </div>
+          <div role="search" className="relative w-full md:max-w-sm">
+            <label htmlFor="project-search" className="sr-only">Search projects or customers</label>
+            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-galv-silver" aria-hidden="true" />
+            <input id="project-search" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search projects or customers" className="min-h-12 w-full rounded-lg border border-seam-line bg-steel-blue pl-10 pr-12 text-sm text-blueprint-white placeholder:text-galv-silver" />
+            {query && <button type="button" aria-label="Clear project search" onClick={() => setQuery('')} className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-galv-silver"><X size={17} /></button>}
+          </div>
         </div>
-        <p role="status" className="text-sm text-galv-silver mb-5">{filtered.length} {filtered.length === 1 ? 'project' : 'projects'} shown</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map(project => (
-            <button key={project.title} type="button" onClick={event => { triggerRef.current = event.currentTarget; setSelectedProject(project); }} aria-haspopup="dialog" aria-label={`View preliminary project: ${project.title}`} className={`group flex flex-col text-left overflow-hidden rounded-md border border-seam-line bg-steel-blue hover:border-cool-teal transition-colors ${project.featured ? 'md:col-span-2' : ''}`}>
-              <div className={`relative w-full shrink-0 ${project.featured ? 'aspect-[16/9]' : 'aspect-[4/3]'}`}>
-                <ProjectImage project={project} />
-                <span className="absolute left-3 top-3 rounded-sm bg-[#020B13]/90 text-white text-[10px] font-mono tracking-wider uppercase px-3 py-2">Preliminary · Photo {project.image ? 'matching pending' : 'pending'}</span>
+        <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {view === 'photos' ? resultCount === 1 ? 'photo collection' : 'photo collections' : resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
+        {resultCount === 0 && <div className="rounded-lg border border-seam-line p-8 text-galv-silver">No matches. Try another project name or customer, or <button type="button" onClick={() => setQuery('')} className="text-cool-teal underline">clear your search</button>.</div>}
+        {view === 'photos' ? (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Project photo collections">
+            {photos.map(project => <button key={project.id} type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View photos: ${project.title}`} className="group flex flex-col overflow-hidden rounded-xl border border-seam-line bg-steel-blue text-left transition-colors hover:border-cool-teal">
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-duct-mid">
+                <Image src={project.photos[0].src} alt={project.photos[0].alt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 400px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" />
+                <span className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full bg-[#071724]/90 px-3 py-1.5 text-xs text-white"><Images size={14} aria-hidden="true" />{project.photos.length} {project.photos.length === 1 ? 'photo' : 'photos'}</span>
               </div>
-              <div className="p-5 lg:p-6">
-                <p className="text-xs text-cool-teal uppercase tracking-wide mb-2">{project.industry}</p>
-                <h3 className="text-lg font-semibold text-blueprint-white mb-2">{project.title}</h3>
-                <p className="text-sm text-galv-silver line-clamp-2">{project.scope}</p>
-                <span className="mt-4 inline-block text-xs font-semibold text-cool-teal">View preliminary details →</span>
+              <div className="flex w-full flex-1 items-start justify-between gap-4 p-5">
+                <div><h3 className="text-lg font-semibold leading-snug text-blueprint-white">{project.title}</h3>{project.customer && <p className="mt-2 text-sm text-galv-silver">{project.customer}</p>}</div>
+                <ArrowUpRight size={20} className="mt-1 shrink-0 text-cool-teal" aria-hidden="true" />
               </div>
-            </button>
-          ))}
-        </div>
+            </button>)}
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-xl border border-seam-line bg-steel-blue" aria-label="Project directory">
+            <div className="hidden grid-cols-[1.2fr_1fr_44px] gap-5 border-b border-seam-line bg-mech-navy px-5 py-3 text-xs font-semibold uppercase tracking-wide text-galv-silver md:grid"><span>Project</span><span>Customer</span><span className="sr-only">View</span></div>
+            <ul className="divide-y divide-seam-line">{jobs.map(project => <li key={project.id}><button type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View project: ${project.title}`} className="grid w-full grid-cols-[1fr_32px] items-center gap-x-4 gap-y-2 px-5 py-5 text-left hover:bg-cool-teal/5 md:grid-cols-[1.2fr_1fr_44px]">
+              <span className="text-base font-semibold leading-snug text-blueprint-white">{project.title}</span>
+              <span className="col-start-1 text-sm text-galv-silver md:col-auto">{project.customer}</span>
+              <ArrowUpRight size={19} className="col-start-2 row-start-1 row-span-2 justify-self-end text-cool-teal md:col-start-3 md:row-span-1" aria-hidden="true" />
+            </button></li>)}</ul>
+          </div>
+        )}
+        <details className="mt-7 max-w-2xl text-sm text-galv-silver">
+          <summary className="w-fit cursor-pointer py-2">A quick guide to the terms</summary>
+          <p className="mt-2 leading-relaxed">HVAC means heating, ventilation and air conditioning. An AHU is an air handling unit. An RTU is a rooftop unit.</p>
+        </details>
       </div>
-      {selectedProject && (
-        <dialog ref={dialogRef} onKeyDown={event => {
-          if (event.key !== 'Tab') return;
-          const controls = event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex="0"]');
-          const first = controls[0];
-          const last = controls[controls.length - 1];
-          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
-        }} aria-labelledby="project-detail-title" aria-describedby="project-review-note" onClose={() => setSelectedProject(null)} onClick={event => { if (event.target === event.currentTarget) setSelectedProject(null); }} className="m-auto w-[calc(100%-2rem)] max-w-3xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-md border border-seam-line bg-steel-blue p-0 text-blueprint-white backdrop:bg-black/70 backdrop:backdrop-blur-sm">
-          <div className="sticky top-0 z-10 flex justify-between items-center gap-4 p-4 border-b border-seam-line bg-steel-blue">
-            <p className="text-xs font-mono uppercase text-cool-teal">Preliminary project details</p>
-            <button type="button" autoFocus onClick={() => setSelectedProject(null)} aria-label="Close project detail" className="w-11 h-11 border border-seam-line rounded-md text-xl">×</button>
-          </div>
-          <div className="relative aspect-video"><ProjectImage project={selectedProject} /></div>
-          <div className="p-5 sm:p-8">
-            <p id="project-review-note" className="text-sm text-galv-silver border-l-2 border-cool-teal pl-4 mb-6">Placeholder content. Name, scope, company assignment, and photograph require SURE leadership confirmation.</p>
-            <p className="text-xs text-cool-teal uppercase tracking-wide mb-3">{selectedProject.industry} · {selectedProject.company}</p>
-            <h3 id="project-detail-title" className="text-2xl font-semibold mb-4">{selectedProject.title}</h3>
-            <p className="text-galv-silver leading-relaxed">{selectedProject.scope}</p>
-            <a href="mailto:bidinvites@suremechanical.com" className="inline-flex mt-6 min-h-11 items-center text-cool-teal underline">Discuss your project</a>
-          </div>
-        </dialog>
-      )}
+      {selectedProject && <ProjectGallery key={selectedProject.id} project={selectedProject} onClose={closeProject} />}
     </section>
   );
 }

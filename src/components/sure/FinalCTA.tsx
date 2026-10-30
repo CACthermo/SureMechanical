@@ -71,7 +71,7 @@ export default function FinalCTA() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-cool-teal mb-3">GET IN TOUCH</p>
-          <h2 className="section-title text-blueprint-white mb-4">LET'S BUILD WHAT'S NEXT.</h2>
+          <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical.</h2>
           <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">Reach our team about mechanical services, upcoming projects, or career opportunities.</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
