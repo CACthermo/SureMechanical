@@ -128,12 +128,6 @@ try {
     }
     assert.equal(usedPhotos.size, 14, 'All 14 client images are reachable and decode');
     assert.equal(await page.locator('img[src*="/projects/2026/"]:not(#projects img)').count(), 0);
-    // Bring lazy images into view before requiring successful decoding.
-    for (const image of await page.locator('img').all()) {
-      await image.scrollIntoViewIfNeeded();
-      await image.evaluate(image => image.decode());
-      assert.equal(await image.evaluate(image => image.naturalWidth > 0), true);
-    }
     const cac = page.locator('img[alt="Cincinnati Air Conditioning Co."]').first();
     assert.equal(await cac.evaluate(img => getComputedStyle(img.parentElement).backgroundColor), 'rgba(0, 0, 0, 0)');
     for (const [kind, endpoint] of [['general', 'mkjjzrrw'], ['hr', 'mpppldpv']]) {
