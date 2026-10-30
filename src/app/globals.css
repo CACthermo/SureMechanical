@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ===== SURE MECHANICAL — THE LIVING MECHANICAL SYSTEM ===== */
 
@@ -45,18 +45,18 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* SURE Mechanical Brand Colors */
-  --color-mech-navy: #020B13;
-  --color-steel-blue: #061A2B;
-  --color-cool-teal: #11C5D6;
-  --color-bright-cyan: #5BEAF3;
+  --color-mech-navy: var(--sure-mech-navy);
+  --color-steel-blue: var(--sure-steel-blue);
+  --color-cool-teal: var(--sure-cool-teal);
+  --color-bright-cyan: var(--sure-bright-cyan);
   --color-heat-amber: #F59E0B;
   --color-warm-orange: #FF6B35;
-  --color-galv-silver: #B9C5CC;
-  --color-blueprint-white: #F4F8FA;
-  --color-duct-dark: #0A1628;
-  --color-duct-mid: #132740;
-  --color-duct-light: #1E3A5F;
-  --color-seam-line: rgba(185, 197, 204, 0.3);
+  --color-galv-silver: var(--sure-galv-silver);
+  --color-blueprint-white: var(--sure-blueprint-white);
+  --color-duct-dark: var(--sure-duct-dark);
+  --color-duct-mid: var(--sure-duct-mid);
+  --color-duct-light: var(--sure-duct-light);
+  --color-seam-line: var(--sure-seam-line);
   --color-spark: #F59E0B;
   --color-brand-red: #E31937;
   --color-brand-red-bright: #FF2952;
@@ -318,7 +318,7 @@
 
 /* ===== RESPONSIVE TYPOGRAPHY ===== */
 .hero-headline {
-  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  font-size: clamp(2.5rem, 4vw, 4.75rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
   font-weight: 700;
@@ -488,18 +488,64 @@
   color: rgba(91, 234, 243, 0.9) !important;
 }
 
-/* ===== HORIZONTAL TIMELINE ===== */
-.timeline-node {
-  transition: all 0.5s ease;
+/* SURE 2026 CLIENT THEMES — a deliberately light default, with classic dark mode. */
+:root, html[data-theme="light"] {
+  color-scheme: light;
+  --sure-mech-navy: #F4F8FA;
+  --sure-steel-blue: #FFFFFF;
+  --sure-cool-teal: #087C8F;
+  --sure-bright-cyan: #087C8F;
+  --sure-galv-silver: #425B69;
+  --sure-blueprint-white: #132A39;
+  --sure-duct-dark: #EAF1F5;
+  --sure-duct-mid: #DBE9EF;
+  --sure-duct-light: #BFD2DB;
+  --sure-seam-line: rgba(19, 42, 57, 0.19);
+  --background: #F4F8FA;
+  --foreground: #132A39;
+  --card: #FFFFFF;
+  --card-foreground: #132A39;
+  --border: rgba(19, 42, 57, 0.19);
 }
-.timeline-node.passed {
-  color: #5BEAF3;
-  text-shadow: 0 0 12px rgba(91, 234, 243, 0.5);
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --sure-mech-navy: #020B13;
+  --sure-steel-blue: #061A2B;
+  --sure-cool-teal: #11C5D6;
+  --sure-bright-cyan: #5BEAF3;
+  --sure-galv-silver: #B9C5CC;
+  --sure-blueprint-white: #F4F8FA;
+  --sure-duct-dark: #0A1628;
+  --sure-duct-mid: #132740;
+  --sure-duct-light: #1E3A5F;
+  --sure-seam-line: rgba(185, 197, 204, 0.3);
+  --background: #020B13;
+  --foreground: #F4F8FA;
+  --card: #061A2B;
+  --card-foreground: #F4F8FA;
+  --border: rgba(185, 197, 204, 0.15);
 }
-.timeline-node.passed .timeline-dot {
-  background: #11C5D6;
-  box-shadow: 0 0 8px rgba(17, 197, 214, 0.6);
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* Keep technical diagrams intentionally dark for legible fixed-color overlays in light mode. */
+
+/* SURE 2026 CLIENT THEMES */
+
+/* Fixed-color logo art sits on an opaque navy plate; decoration never dims it. */
+.brand-plate { background: #061A2B; }
+.skip-link { position: fixed; top: -5rem; left: 1rem; z-index: 100; padding: .75rem 1rem; background: var(--sure-steel-blue); color: var(--sure-blueprint-white); }
+.skip-link:focus { top: 1rem; }
+html:not([data-theme="dark"]) [class*="text-galv-silver/"] { color: #425B69; }
+html:not([data-theme="dark"]) .tech-label { background: #E7F2F4; color: #086778; border-color: #9CBEC5; }
+html:not([data-theme="dark"]) .tech-label-warm { background: #FFF4E5; color: #804400; border-color: #B58A52; }
+html:not([data-theme="dark"]) .holo-label:hover { color: #086778 !important; }
+html:not([data-theme="dark"]) ::-webkit-scrollbar-track { background: #EAF1F5; }
+@media (prefers-reduced-motion: reduce) {
+  [class*="opacity-0"] { opacity: 1 !important; transform: none !important; }
+  svg animate, svg animateMotion { display: none; }
+  canvas { display: none; }
 }
-.timeline-node.passed .timeline-connector {
-  background: linear-gradient(to right, #11C5D6, rgba(17, 197, 214, 0.3));
-}
+
+html:not([data-theme="dark"]) .hero-air-panel svg rect,
+html:not([data-theme="dark"]) .hero-air-panel svg line { stroke: #6B8E9F; }
+html:not([data-theme="dark"]) .hero-air-panel svg text { fill: #087C8F; }

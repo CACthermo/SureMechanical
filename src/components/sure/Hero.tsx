@@ -36,14 +36,14 @@ export default function Hero() {
   // Canvas particles with cursor vortex
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 767px)').matches) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+      canvas.width = canvas.offsetWidth * Math.min(window.devicePixelRatio, 2);
+      canvas.height = canvas.offsetHeight * Math.min(window.devicePixelRatio, 2);
+      ctx.setTransform(Math.min(window.devicePixelRatio, 2), 0, 0, Math.min(window.devicePixelRatio, 2), 0, 0);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -143,6 +143,10 @@ export default function Hero() {
   }, []);
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set('.hero-content, .hero-duct-form, .hero-image-card, .hero-cred-item', { opacity: 1 });
+      return;
+    }
     const tl = gsap.timeline();
     tl.fromTo('.hero-blueprint-line',
       { scaleX: 0, transformOrigin: 'left center' },
@@ -196,7 +200,7 @@ export default function Hero() {
       <div className="hero-blueprint-line absolute top-1/2 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cool-teal/20 to-transparent" style={{ zIndex: 1 }} />
 
       {/* Main content */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-16 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-16 lg:pt-28 lg:pb-12">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center min-h-[80vh]">
           {/* Left — Text content */}
           <div className="hero-content flex flex-col gap-5 lg:gap-7 opacity-0">
@@ -225,35 +229,29 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3 mt-1">
-              <button
-                onClick={() => document.querySelector('#engineering')?.scrollIntoView({ behavior: 'smooth' })}
+              <a href="#engineering"
                 className="shine-sweep px-7 py-3.5 bg-cool-teal text-mech-navy font-semibold text-sm tracking-wide uppercase hover:bg-bright-cyan transition-colors duration-300 rounded-sm cursor-pointer"
               >
                 Explore Our Capabilities
-              </button>
-              <button
-                onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })}
+              </a>
+              <a href="#projects"
                 className="shine-sweep px-7 py-3.5 border border-galv-silver/20 text-blueprint-white text-sm tracking-wide uppercase hover:border-cool-teal/40 hover:text-bright-cyan transition-all duration-300 rounded-sm cursor-pointer"
               >
                 View Featured Projects
-              </button>
+              </a>
             </div>
           </div>
 
           {/* Right — Image composition with Design*Build*Service card + Duct visualizer */}
-          <div className="hero-duct-form opacity-0 relative hidden lg:block">
+          <div className="hero-duct-form opacity-0 relative block mt-5 lg:mt-0">
             <div className="relative w-full max-w-[560px] ml-auto">
               {/* Main project image with dark border (matching reference) */}
               <div className="hero-image-card opacity-0 relative rounded-sm border-2 border-galv-silver/15 overflow-hidden">
-                {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-                <img
-                  src={assetPath('/projects/photos/Rooftop_Work_1.png')}
-                  alt="SURE Mechanical field team on a commercial rooftop installation"
-                  className="w-full aspect-[4/3] object-cover"
-                  loading="eager"
-                />
+                <div className="w-full aspect-[4/3] relative brand-plate flex items-center justify-center">
+                  <Image src={assetPath('/brand/SURE_MECHANICAL_alpha.png')} alt="SURE Mechanical" width={420} height={210} className="relative w-3/5 max-h-40 object-contain" />
+                </div>
                 {/* Dark gradient overlay for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-mech-navy/70 via-transparent to-mech-navy/20" />
+
 
                 {/* Design * Build * Service card — overlaid top-left */}
                 <div className="absolute top-4 left-4">
@@ -269,15 +267,15 @@ export default function Hero() {
                   <div className="flex gap-3 items-start">
                     <div className="w-0.5 h-10 bg-cool-teal/60 rounded-full flex-shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-xs font-mono tracking-[0.08em] uppercase text-galv-silver/50 mb-0.5">Commercial Mechanical Systems</div>
-                      <div className="text-sm text-blueprint-white/90">Engineered, Fabricated &amp; Installed</div>
+                      <div className="text-xs font-mono tracking-[0.08em] uppercase text-[#B9C5CC] mb-0.5">Commercial Mechanical Systems</div>
+                      <div className="text-sm text-[#F4F8FA]">Engineered, Coordinated &amp; Installed</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Duct Supply Visualizer — positioned below/overlapping the image card */}
-              <div className="relative -mt-16 ml-8 z-10">
+              <div className="hero-air-panel relative -mt-8 sm:-mt-16 ml-4 sm:ml-8 z-10">
                 <div className="relative bg-mech-navy/90 backdrop-blur-sm border border-seam-line rounded-sm p-4" style={{ maxWidth: '320px' }}>
                   <div className="text-[9px] font-mono tracking-[0.12em] uppercase text-galv-silver/30 mb-3">SUPPLY AIR VISUALIZER</div>
                   <svg
@@ -319,7 +317,7 @@ export default function Hero() {
                     </circle>
                     {/* Label */}
                     <text x="150" y="64" textAnchor="middle" fill="rgba(91,234,243,0.35)" fontSize="7" fontFamily="monospace">SUPPLY AIR</text>
-                    <text x="150" y="80" textAnchor="middle" fill="rgba(91,234,243,0.2)" fontSize="6" fontFamily="monospace">24,000 CFM</text>
+                    <text x="150" y="80" textAnchor="middle" fill="rgba(91,234,243,0.2)" fontSize="6" fontFamily="monospace">SCHEMATIC AIRFLOW</text>
 
                     <defs>
                       <linearGradient id="heroDuctGrad" x1="0" y1="0" x2="0" y2="1">

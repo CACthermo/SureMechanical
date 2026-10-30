@@ -93,7 +93,7 @@ export default function HeatingCooling() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="hc-title opacity-0 mb-4">
-          <span className="tech-label">03 — ENERGY EXCHANGE</span>
+          <span className="tech-label">ENERGY EXCHANGE</span>
         </div>
 
         <h2 className="hc-title opacity-0 section-title text-blueprint-white max-w-3xl mb-6">

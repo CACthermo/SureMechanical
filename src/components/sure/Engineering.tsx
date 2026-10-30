@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { assetPath } from '@/lib/asset-path';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,7 +71,7 @@ export default function Engineering() {
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section label */}
         <div className="eng-title opacity-0 mb-4">
-          <span className="tech-label">01 — ENGINEERING</span>
+          <span className="tech-label">ENGINEERING</span>
         </div>
 
         {/* Title */}
@@ -84,7 +83,7 @@ export default function Engineering() {
         </h2>
 
         <p className="eng-title opacity-0 section-subtitle text-galv-silver/60 max-w-2xl mb-16">
-          Before any duct is formed or pipe is welded, SURE Mechanical&apos;s engineering team builds the complete virtual system — coordinating every component, clearance and connection before materials arrive on site.
+          SURE Mechanical&apos;s engineering team coordinates the complete virtual system — its components, clearances and connections — before work begins on site.
         </p>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -107,13 +106,7 @@ export default function Engineering() {
           {/* BIM/Blueprint Visual */}
           <div className="eng-visual relative">
             <div className="relative aspect-[4/3] rounded-sm border border-seam-line overflow-hidden bg-duct-dark/50">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/RTU_pic1.png')}
-                alt="Mechanical engineering BIM coordination model"
-                className="absolute inset-0 w-full h-full object-cover opacity-30"
-                loading="lazy"
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-duct-mid via-steel-blue to-mech-navy blueprint-grid" aria-hidden="true" />
 
               {/* Blueprint overlay lines */}
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

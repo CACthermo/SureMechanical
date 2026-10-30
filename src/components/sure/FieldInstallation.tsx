@@ -4,13 +4,11 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { assetPath } from '@/lib/asset-path';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PROCESS_STEPS = [
   { label: 'ENGINEERING', detail: 'Virtual coordination' },
-  { label: 'FABRICATION', detail: 'Precision-formed components' },
   { label: 'DELIVERY', detail: 'Just-in-time logistics' },
   { label: 'INSTALLATION', detail: 'Coordinated field execution' },
   { label: 'STARTUP', detail: 'Commissioning & verification' },
@@ -40,13 +38,6 @@ export default function FieldInstallation() {
         scrollTrigger: { trigger: '.fi-image-area', start: 'top 70%', toggleActions: 'play none none reverse' }
       }
     );
-    // Field image reveal
-    gsap.fromTo('.fi-image',
-      { clipPath: 'inset(100% 0 0 0)' },
-      { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power3.inOut',
-        scrollTrigger: { trigger: '.fi-image-area', start: 'top 65%', toggleActions: 'play none none reverse' }
-      }
-    );
   }, { scope: sectionRef });
 
   return (
@@ -61,7 +52,7 @@ export default function FieldInstallation() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="fi-title opacity-0 mb-4">
-          <span className="tech-label">04 — FIELD EXECUTION</span>
+          <span className="tech-label">FIELD EXECUTION</span>
         </div>
 
         <h2 className="fi-title opacity-0 section-title text-blueprint-white max-w-3xl mb-6">
@@ -93,21 +84,15 @@ export default function FieldInstallation() {
           {/* Field image with BIM overlay */}
           <div className="fi-image-area lg:col-span-3 relative">
             <div className="relative aspect-[16/10] rounded-sm overflow-hidden border border-seam-line">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/Rooftop_Work_1.png')}
-                alt="Field installation — rooftop mechanical equipment"
-                className="fi-image absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-duct-mid via-steel-blue to-mech-navy blueprint-grid" aria-hidden="true" />
               {/* BIM overlay lines */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 500" aria-hidden="true">
-                <rect x="100" y="80" width="300" height="200" rx="2" className="fi-bim-line" stroke="rgba(91,234,243,0.4)" strokeWidth="1" fill="none" strokeDasharray="600" />
+                <rect x="100" y="80" width="300" height="200" rx="2" className="fi-bim-line" stroke="var(--sure-cool-teal)" strokeWidth="1" fill="none" strokeDasharray="600" />
                 <line x1="100" y1="180" x2="400" y2="180" className="fi-bim-line" stroke="rgba(91,234,243,0.25)" strokeWidth="0.5" strokeDasharray="600" />
-                <rect x="500" y="200" width="200" height="150" rx="2" className="fi-bim-line" stroke="rgba(91,234,243,0.3)" strokeWidth="1" fill="none" strokeDasharray="600" />
+                <rect x="500" y="200" width="200" height="150" rx="2" className="fi-bim-line" stroke="var(--sure-cool-teal)" strokeWidth="1" fill="none" strokeDasharray="600" />
                 {/* Dimension callout */}
                 <line x1="100" y1="60" x2="400" y2="60" className="fi-bim-line" stroke="rgba(245,158,11,0.25)" strokeWidth="0.5" strokeDasharray="600" />
-                <text x="250" y="55" textAnchor="middle" fill="rgba(245,158,11,0.4)" fontSize="9" fontFamily="monospace">AHU-1 — 30,000 CFM</text>
+                <text x="250" y="55" textAnchor="middle" fill="var(--sure-galv-silver)" fontSize="9" fontFamily="monospace">COORDINATED MECHANICAL SYSTEM</text>
                 {/* Installation path */}
                 <path d="M 400 180 L 500 250" className="fi-bim-line" stroke="rgba(91,234,243,0.2)" strokeWidth="0.5" strokeDasharray="4 4" />
               </svg>
@@ -121,15 +106,13 @@ export default function FieldInstallation() {
 
           {/* Worker image */}
           <div className="lg:col-span-2 relative">
-            <div className="relative aspect-[3/4] rounded-sm overflow-hidden border border-seam-line">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/Worker_pic1.png')}
-                alt="Skilled tradesperson performing field installation"
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-mech-navy/80 via-transparent to-transparent" />
+            <div className="relative aspect-[4/3] lg:aspect-[3/4] rounded-sm overflow-hidden border border-seam-line">
+              <div className="absolute inset-0 bg-gradient-to-br from-duct-mid via-steel-blue to-mech-navy blueprint-grid" aria-hidden="true" />
+              <div className="absolute inset-0 flex flex-col justify-center p-8 gap-6">
+                <p className="text-cool-teal font-mono text-xs uppercase tracking-widest">From model to site</p>
+                <p className="text-3xl font-semibold text-blueprint-white">Plan.<br />Coordinate.<br />Install.</p>
+                <p className="text-galv-silver text-sm leading-relaxed">Engineering and field teams working together through startup and commissioning.</p>
+              </div>
             </div>
           </div>
         </div>

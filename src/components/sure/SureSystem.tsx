@@ -78,6 +78,13 @@ export default function SureSystem() {
     const centerLines = centerLineRefs.current.filter(Boolean) as SVGPathElement[];
     const centerTrunk = centerLineTrunkRef.current;
 
+    const staticView = window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches;
+    if (staticView) {
+      gsap.set('.ss-title, .ss-white-card, .sub-logo-reveal, .sub-name-reveal, .duct-dim, .conn-dot, .splitter-node', { opacity: 1 });
+      gsap.set(sureGroupRef.current, { opacity: 1 });
+      return;
+    }
+
     /* Calculate path lengths & set initial dash state */
     const allDuctPaths = [trunk, ...branches].filter(Boolean) as SVGPathElement[];
     allDuctPaths.forEach((p) => {
@@ -109,7 +116,7 @@ export default function SureSystem() {
         start: 'top 55%',
         end: '+=90%',
         scrub: 0.5,
-        pin: true,
+        pin: window.innerWidth >= 768,
         pinSpacing: true,
       },
     });
@@ -174,7 +181,7 @@ export default function SureSystem() {
 
         <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="ss-title opacity-0 mb-2">
-            <span className="tech-label">06 — THE SURE SYSTEM</span>
+            <span className="tech-label">THE SURE SYSTEM</span>
           </div>
           <h2 className="ss-title opacity-0 section-title text-blueprint-white max-w-3xl mb-2">
             <span className="hover-red">SPECIALIZED COMPANIES.</span>
@@ -383,11 +390,9 @@ export default function SureSystem() {
               )}
               {/* CAC — naturally smaller SVG, scale way up */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
-                <img
-                  src={co.logo}
-                  alt={co.name}
-                  className="h-20 sm:h-28 lg:h-36 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
-                />
+                <div className="rounded-md bg-white p-2 sm:p-3 shadow-sm">
+                  <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-32 w-auto object-contain" />
+                </div>
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
               {co.name === 'Thermolinear' && (
@@ -431,7 +436,7 @@ export default function SureSystem() {
             {SUB_COMPANIES.map((co) => (
               <div
                 key={co.name}
-                className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-mech-navy/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
+                className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-[#020B13]/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
               >
                 <div className="mb-4">
                   {co.logo.endsWith('.svg') ? (
@@ -440,10 +445,10 @@ export default function SureSystem() {
                     <Image src={co.logo} alt={co.name} width={160} height={40} className="h-10 lg:h-12 w-auto object-contain" />
                   )}
                 </div>
-                <h3 className="font-bold text-mech-navy text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
-                <div className="font-mono tracking-[0.08em] uppercase text-[8px] lg:text-[9px] text-mech-navy/35 mb-4">{co.role}</div>
-                <div className="w-8 h-px bg-mech-navy/10 mb-4" />
-                <p className="text-mech-navy/45 text-xs lg:text-sm leading-relaxed max-w-xs">{co.description}</p>
+                <h3 className="font-bold text-[#020B13] text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
+                <div className="font-mono tracking-[0.08em] uppercase text-[8px] lg:text-[9px] text-[#425B69] mb-4">{co.role}</div>
+                <div className="w-8 h-px bg-[#020B13]/10 mb-4" />
+                <p className="text-[#425B69] text-xs lg:text-sm leading-relaxed max-w-xs">{co.description}</p>
               </div>
             ))}
           </div>

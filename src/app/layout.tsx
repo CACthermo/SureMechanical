@@ -45,6 +45,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-mech-navy text-blueprint-white`}
       >
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{document.documentElement.dataset.theme=localStorage.getItem('sure-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})();` }} />
+        <a href="#main-content" className="skip-link">Skip to content</a>
         {children}
       </body>
     </html>
