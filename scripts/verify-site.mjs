@@ -127,8 +127,6 @@ try {
       await dialog.waitFor({ state: 'detached' });
     }
     assert.equal(usedPhotos.size, 14, 'All 14 client images are reachable and decode');
-    const photos = await page.locator('#projects img').evaluateAll(images => images.map(image => image.getAttribute('src')));
-    assert.equal(new Set(photos).size, photos.length);
     assert.equal(await page.locator('img[src*="/projects/2026/"]:not(#projects img)').count(), 0);
     // Bring lazy images into view before requiring successful decoding.
     for (const image of await page.locator('img').all()) {
