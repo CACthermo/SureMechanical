@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import { assetPath } from '@/lib/asset-path';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -38,9 +36,6 @@ export default function Engineering() {
         scrollTrigger: { trigger: '.eng-cap-grid', start: 'top 85%', toggleActions: 'play none none reverse' }
       }
     );
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.fromTo('.eng-unit', { y: 35, rotate: -2, opacity: 0 }, { y: 0, rotate: 0, opacity: 1, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: '.eng-visual', start: 'top 80%' } });
-    }
   }, { scope: sectionRef });
 
   return (
@@ -71,7 +66,7 @@ export default function Engineering() {
           SURE Mechanical&apos;s engineering team coordinates the complete virtual system — its components, clearances and connections — before work begins on site.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="max-w-3xl">
           {/* Capabilities list */}
           <div className="eng-cap-grid space-y-0">
             {CAPABILITIES.map((cap) => (
@@ -88,16 +83,6 @@ export default function Engineering() {
             ))}
           </div>
 
-          <div className="eng-visual relative min-h-[540px] sm:min-h-[650px] overflow-hidden rounded-sm border border-cool-teal/20 bg-steel-blue">
-            <div className="absolute inset-0 blueprint-grid" aria-hidden="true" />
-            <div className="absolute top-12 right-8 w-64 h-64 rounded-full bg-cool-teal/10 blur-3xl" aria-hidden="true" />
-            <div className="eng-unit absolute inset-x-0 top-0 h-[440px] sm:h-[530px]" style={{filter:'drop-shadow(0 20px 20px rgba(0,30,45,.18))'}}>
-              <Image src={assetPath('/company/duct-unit.webp')} alt="Ductwork and air handling equipment" width={850} height={1135} className="h-full w-auto max-w-full mx-auto object-contain object-top" style={{clipPath:'polygon(0 0,100% 0,100% 43%,64% 76%,35% 75%,0 44%)'}} />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 p-7 sm:p-9 border-t border-cool-teal/20 bg-mech-navy/95">
-              <p className="eyebrow mb-3">Design &amp; coordination</p><h3 className="text-3xl font-bold text-blueprint-white">Every connection matters.</h3><p className="mt-4 text-sm leading-relaxed text-galv-silver">Ductwork, piping and equipment planned together before installation.</p>
-            </div>
-          </div>
         </div>
       </div>
 
