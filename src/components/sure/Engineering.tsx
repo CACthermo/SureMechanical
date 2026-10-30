@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { assetPath } from '@/lib/asset-path';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,12 +17,6 @@ const CAPABILITIES = [
   { label: 'Prefabrication Planning', value: 'DFT APPROACH' },
 ];
 
-const TECH_LABELS = [
-  { label: 'SUPPLY AIR', value: '24,000 CFM', x: '15%', y: '25%' },
-  { label: 'CHILLED WATER', value: '42°F SUPPLY', x: '70%', y: '20%' },
-  { label: 'DUCT STATIC PRESSURE', value: '2.5 IN. W.G.', x: '20%', y: '70%' },
-  { label: 'RETURN AIR', value: '72°F', x: '75%', y: '65%' },
-];
 
 export default function Engineering() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -43,20 +36,6 @@ export default function Engineering() {
         scrollTrigger: { trigger: '.eng-cap-grid', start: 'top 85%', toggleActions: 'play none none reverse' }
       }
     );
-    // Blueprint lines draw
-    gsap.fromTo('.eng-blueprint-line',
-      { strokeDashoffset: 800 },
-      { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut',
-        scrollTrigger: { trigger: '.eng-visual', start: 'top 80%', toggleActions: 'play none none reverse' }
-      }
-    );
-    // Tech labels fade in
-    gsap.fromTo('.eng-tech-label',
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 0.4, stagger: 0.15, ease: 'back.out(1.4)',
-        scrollTrigger: { trigger: '.eng-visual', start: 'top 60%', toggleActions: 'play none none reverse' }
-      }
-    );
   }, { scope: sectionRef });
 
   return (
@@ -72,7 +51,7 @@ export default function Engineering() {
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section label */}
         <div className="eng-title opacity-0 mb-4">
-          <span className="tech-label">01 — ENGINEERING</span>
+          <span className="tech-label">ENGINEERING</span>
         </div>
 
         {/* Title */}
@@ -84,10 +63,10 @@ export default function Engineering() {
         </h2>
 
         <p className="eng-title opacity-0 section-subtitle text-galv-silver/60 max-w-2xl mb-16">
-          Before any duct is formed or pipe is welded, SURE Mechanical&apos;s engineering team builds the complete virtual system — coordinating every component, clearance and connection before materials arrive on site.
+          SURE Mechanical&apos;s engineering team coordinates the complete virtual system — its components, clearances and connections — before work begins on site.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="max-w-3xl">
           {/* Capabilities list */}
           <div className="eng-cap-grid space-y-0">
             {CAPABILITIES.map((cap) => (
@@ -104,58 +83,6 @@ export default function Engineering() {
             ))}
           </div>
 
-          {/* BIM/Blueprint Visual */}
-          <div className="eng-visual relative">
-            <div className="relative aspect-[4/3] rounded-sm border border-seam-line overflow-hidden bg-duct-dark/50">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/RTU_pic1.png')}
-                alt="Mechanical engineering BIM coordination model"
-                className="absolute inset-0 w-full h-full object-cover opacity-30"
-                loading="lazy"
-              />
-
-              {/* Blueprint overlay lines */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                {/* Grid lines */}
-                {[...Array(8)].map((_, i) => (
-                  <line key={`h${i}`} x1="0" y1={i * 80 + 40} x2="800" y2={i * 80 + 40} className="eng-blueprint-line" stroke="rgba(17,197,214,0.12)" strokeWidth="0.5" strokeDasharray="800" />
-                ))}
-                {[...Array(6)].map((_, i) => (
-                  <line key={`v${i}`} x1={i * 140 + 20} y1="0" x2={i * 140 + 20} y2="600" className="eng-blueprint-line" stroke="rgba(17,197,214,0.12)" strokeWidth="0.5" strokeDasharray="800" />
-                ))}
-                {/* Duct outline */}
-                <rect x="80" y="150" width="640" height="120" rx="3" className="eng-blueprint-line" stroke="rgba(91,234,243,0.35)" strokeWidth="1.5" strokeDasharray="800" />
-                <rect x="250" y="50" width="100" height="100" rx="2" className="eng-blueprint-line" stroke="rgba(91,234,243,0.25)" strokeWidth="1" strokeDasharray="800" />
-                <rect x="500" y="350" width="120" height="150" rx="2" className="eng-blueprint-line" stroke="rgba(91,234,243,0.25)" strokeWidth="1" strokeDasharray="800" />
-                {/* Dimension callouts */}
-                <line x1="80" y1="130" x2="720" y2="130" className="eng-blueprint-line" stroke="rgba(245,158,11,0.2)" strokeWidth="0.5" strokeDasharray="800" />
-                <text x="400" y="125" textAnchor="middle" fill="rgba(245,158,11,0.3)" fontSize="10" fontFamily="monospace">ELEV. 24&apos;-0&quot; AFF</text>
-                {/* Section marker */}
-                <circle cx="400" cy="210" r="12" className="eng-blueprint-line" stroke="rgba(91,234,243,0.3)" strokeWidth="0.5" fill="none" strokeDasharray="800" />
-                <text x="400" y="214" textAnchor="middle" fill="rgba(91,234,243,0.4)" fontSize="8" fontFamily="monospace">A/101</text>
-              </svg>
-
-              {/* Hover tech labels */}
-              {TECH_LABELS.map((tl) => (
-                <div
-                  key={tl.label}
-                  className="eng-tech-label opacity-0 absolute pointer-events-auto cursor-default"
-                  style={{ left: tl.x, top: tl.y }}
-                >
-                  <div className="tech-label holo-label">
-                    {tl.label}
-                    <br />
-                    <span className="text-bright-cyan/80">{tl.value}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Caption */}
-            <p className="text-[10px] font-mono tracking-[0.1em] uppercase text-galv-silver/30 mt-3 text-right">
-              Technical labels are visual storytelling devices only.
-            </p>
-          </div>
         </div>
       </div>
 

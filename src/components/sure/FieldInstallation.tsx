@@ -1,16 +1,16 @@
 'use client';
 
+import Image from 'next/image';
+import { assetPath } from '@/lib/asset-path';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { assetPath } from '@/lib/asset-path';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const PROCESS_STEPS = [
   { label: 'ENGINEERING', detail: 'Virtual coordination' },
-  { label: 'FABRICATION', detail: 'Precision-formed components' },
   { label: 'DELIVERY', detail: 'Just-in-time logistics' },
   { label: 'INSTALLATION', detail: 'Coordinated field execution' },
   { label: 'STARTUP', detail: 'Commissioning & verification' },
@@ -33,20 +33,6 @@ export default function FieldInstallation() {
         scrollTrigger: { trigger: '.fi-process', start: 'top 80%', toggleActions: 'play none none reverse' }
       }
     );
-    // BIM overlay lines
-    gsap.fromTo('.fi-bim-line',
-      { strokeDashoffset: 600 },
-      { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut',
-        scrollTrigger: { trigger: '.fi-image-area', start: 'top 70%', toggleActions: 'play none none reverse' }
-      }
-    );
-    // Field image reveal
-    gsap.fromTo('.fi-image',
-      { clipPath: 'inset(100% 0 0 0)' },
-      { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power3.inOut',
-        scrollTrigger: { trigger: '.fi-image-area', start: 'top 65%', toggleActions: 'play none none reverse' }
-      }
-    );
   }, { scope: sectionRef });
 
   return (
@@ -61,14 +47,14 @@ export default function FieldInstallation() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="fi-title opacity-0 mb-4">
-          <span className="tech-label">04 — FIELD EXECUTION</span>
+          <span className="tech-label">FIELD EXECUTION</span>
         </div>
 
         <h2 className="fi-title opacity-0 section-title text-blueprint-white max-w-3xl mb-6">
-          <span className="hover-red">COORDINATED IN THE MODEL.</span>
+          <span className="hover-red">FROM DESIGN</span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cool-teal to-bright-cyan">
-            BUILT IN THE REAL WORLD.
+            TO THE FIELD.
           </span>
         </h2>
 
@@ -89,48 +75,12 @@ export default function FieldInstallation() {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
-          {/* Field image with BIM overlay */}
-          <div className="fi-image-area lg:col-span-3 relative">
-            <div className="relative aspect-[16/10] rounded-sm overflow-hidden border border-seam-line">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/Rooftop_Work_1.png')}
-                alt="Field installation — rooftop mechanical equipment"
-                className="fi-image absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-              {/* BIM overlay lines */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 500" aria-hidden="true">
-                <rect x="100" y="80" width="300" height="200" rx="2" className="fi-bim-line" stroke="rgba(91,234,243,0.4)" strokeWidth="1" fill="none" strokeDasharray="600" />
-                <line x1="100" y1="180" x2="400" y2="180" className="fi-bim-line" stroke="rgba(91,234,243,0.25)" strokeWidth="0.5" strokeDasharray="600" />
-                <rect x="500" y="200" width="200" height="150" rx="2" className="fi-bim-line" stroke="rgba(91,234,243,0.3)" strokeWidth="1" fill="none" strokeDasharray="600" />
-                {/* Dimension callout */}
-                <line x1="100" y1="60" x2="400" y2="60" className="fi-bim-line" stroke="rgba(245,158,11,0.25)" strokeWidth="0.5" strokeDasharray="600" />
-                <text x="250" y="55" textAnchor="middle" fill="rgba(245,158,11,0.4)" fontSize="9" fontFamily="monospace">AHU-1 — 30,000 CFM</text>
-                {/* Installation path */}
-                <path d="M 400 180 L 500 250" className="fi-bim-line" stroke="rgba(91,234,243,0.2)" strokeWidth="0.5" strokeDasharray="4 4" />
-              </svg>
-              {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-mech-navy/60 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4">
-                <span className="tech-label">BIM COORDINATION → FIELD INSTALLATION</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Worker image */}
-          <div className="lg:col-span-2 relative">
-            <div className="relative aspect-[3/4] rounded-sm overflow-hidden border border-seam-line">
-              {/* TEMP: Uploaded project images are being used as temporary visual placeholders until final project-specific image matching is complete. */}
-              <img
-                src={assetPath('/projects/photos/Worker_pic1.png')}
-                alt="Skilled tradesperson performing field installation"
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-mech-navy/80 via-transparent to-transparent" />
-            </div>
+        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
+          <div className="lg:col-span-3 relative aspect-[4/3] overflow-hidden rounded-sm"><Image src={assetPath('/company/field-crew.webp')} alt="Rooftop installation crew, from the original SURE Mechanical website" fill sizes="(max-width:1023px) 100vw, 60vw" className="object-cover" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#020b13]/90 to-transparent p-6 pt-16"><p className="font-mono text-xs text-[#5beaf3] uppercase tracking-widest">Field installation</p><p className="mt-2 text-2xl font-semibold text-white">Built by our people.</p></div></div>
+          <div className="lg:col-span-2 relative overflow-hidden rounded-sm min-h-[450px]">
+            <Image src={assetPath('/company/Worker_pic1.png')} alt="SURE Mechanical field team, from the original website" fill sizes="(max-width:1023px) 100vw, 40vw" className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#020b13]/95 via-transparent to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-7 text-white"><p className="font-mono text-xs tracking-widest text-[#5beaf3] uppercase mb-3">From model to site</p><h3 className="text-3xl font-bold">Plan. Coordinate. Install.</h3><p className="mt-4 text-sm text-white/90">Engineering and field teams working together through startup and commissioning.</p></div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -18,10 +18,10 @@ const TRUNK_PATH = 'M600,0 V65';
 
 /* Three rectangular-duct branches — 90° elbows, no crossings, compact vertical spread */
 const BRANCH_PATHS = [
-  /* Branch A → SURE Mechanical (left) */
+  /* Branch A → CAC (left) */
   'M600,65 H360 V150 H260 V240 H200 V310',
-  /* Branch B → CAC (center, jogs right then returns) */
-  'M600,65 H740 V180 H660 V260 H600 V310',
+  /* Branch B → SURE Mechanical (center, jogs left then returns) */
+  'M600,65 V165 H530 V245 H600 V310',
   /* Branch C → Thermolinear (right) */
   'M600,65 H840 V150 H940 V240 H1000 V310',
 ];
@@ -31,25 +31,27 @@ const ELBOWS = [
   /* Branch A */
   { x: 600, y: 65 }, { x: 360, y: 65 }, { x: 360, y: 150 }, { x: 260, y: 150 }, { x: 260, y: 240 }, { x: 200, y: 240 },
   /* Branch B */
-  { x: 600, y: 65 }, { x: 740, y: 65 }, { x: 740, y: 180 }, { x: 660, y: 180 }, { x: 660, y: 260 }, { x: 600, y: 260 },
+  { x: 600, y: 165 }, { x: 530, y: 165 }, { x: 530, y: 245 }, { x: 600, y: 245 },
   /* Branch C */
   { x: 600, y: 65 }, { x: 840, y: 65 }, { x: 840, y: 150 }, { x: 940, y: 150 }, { x: 940, y: 240 }, { x: 1000, y: 240 },
 ];
 
 const SUB_COMPANIES = [
   {
-    name: 'Sure Mechanical',
-    role: 'PRIMARY SYSTEM CONTRACTOR',
-    description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
-    logo: assetPath('/brand/SURE_MECHACNIAL_Experienced-Innovative-Diverse.png'),
+    name: 'Cincinnati Air Conditioning Co.',
+    role: 'DESIGN-BUILD, SERVICE & CONTROLS',
+    description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
+    logo: assetPath('/brand/CAC_Logo_2026.png'),
+    website: 'https://cincinnatiair.com',
     svgX: 200, svgY: 310,
     pctLeft: 16.67, pctTop: 73.81,
   },
   {
-    name: 'Cincinnati Air Conditioning Co.',
-    role: 'DESIGN-BUILD, SERVICE & CONTROLS',
-    description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
-    logo: assetPath('/brand/CAC_Logo.svg'),
+    name: 'SURE Mechanical',
+    role: 'PRIMARY SYSTEM CONTRACTOR',
+    description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
+    logo: assetPath('/brand/SURE_Mechanical_trimmed.png'),
+    website: null,
     svgX: 600, svgY: 310,
     pctLeft: 50, pctTop: 73.81,
   },
@@ -58,10 +60,19 @@ const SUB_COMPANIES = [
     role: 'PRECISION ENVIRONMENTS',
     description: 'Specialized in the design and construction of environmental rooms, test chambers and precision-controlled spaces for research, manufacturing and critical storage applications.',
     logo: assetPath('/brand/Thermolinear_logo.svg'),
+    website: 'https://thermolinearusa.com',
     svgX: 1000, svgY: 310,
     pctLeft: 83.33, pctTop: 73.81,
   },
 ];
+
+function CompanyLogoLink({ href, name, children }: { href: string | null; name: string; children: ReactNode }) {
+  return href ? (
+    <a href={href} aria-label={`Visit ${name}`} className="inline-flex items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cool-teal hover:opacity-80 transition-opacity">
+      {children}
+    </a>
+  ) : <>{children}</>;
+}
 
 export default function SureSystem() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -77,6 +88,13 @@ export default function SureSystem() {
     const branches = branchRefs.current.filter(Boolean) as SVGPathElement[];
     const centerLines = centerLineRefs.current.filter(Boolean) as SVGPathElement[];
     const centerTrunk = centerLineTrunkRef.current;
+
+    const staticView = window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches;
+    if (staticView) {
+      gsap.set('.ss-title, .ss-white-card, .sub-logo-reveal, .sub-name-reveal, .duct-dim, .conn-dot, .splitter-node', { opacity: 1 });
+      gsap.set(sureGroupRef.current, { opacity: 1 });
+      return;
+    }
 
     /* Calculate path lengths & set initial dash state */
     const allDuctPaths = [trunk, ...branches].filter(Boolean) as SVGPathElement[];
@@ -109,7 +127,7 @@ export default function SureSystem() {
         start: 'top 55%',
         end: '+=90%',
         scrub: 0.5,
-        pin: true,
+        pin: window.innerWidth >= 768,
         pinSpacing: true,
       },
     });
@@ -174,7 +192,7 @@ export default function SureSystem() {
 
         <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="ss-title opacity-0 mb-2">
-            <span className="tech-label">06 — THE SURE SYSTEM</span>
+            <span className="tech-label">THE SURE SYSTEM</span>
           </div>
           <h2 className="ss-title opacity-0 section-title text-blueprint-white max-w-3xl mb-2">
             <span className="hover-red">SPECIALIZED COMPANIES.</span>
@@ -192,7 +210,7 @@ export default function SureSystem() {
       {/* ═══════ PINNED ANIMATION CONTAINER (SureGroup + ducts + logos — ALL fixed) ═══════ */}
       <div
         ref={animContainerRef}
-        className="relative bg-mech-navy w-full max-w-[1200px] mx-auto"
+        className="relative bg-mech-navy w-full max-w-[1200px] mx-auto pb-28 sm:pb-36 lg:pb-44"
       >
         {/* ── SureGroup Logo — stays pinned at the top ── */}
         <div
@@ -364,42 +382,42 @@ export default function SureSystem() {
           {SUB_COMPANIES.map((co) => (
             <div
               key={co.name}
-              className="sub-logo-reveal absolute opacity-0 flex flex-col items-center text-center pointer-events-none"
+              className="sub-logo-reveal absolute opacity-0 flex flex-col items-center text-center"
               style={{
                 left: `${co.pctLeft}%`,
                 top: `${co.pctTop + 4}%`,
-                transform: 'translate(-50%, 0)',
+                translate: '-50% 0',
               }}
             >
               {/* SURE Mechanical — naturally smaller PNG, scale way up */}
-              {co.name === 'Sure Mechanical' && (
+              {co.name === 'SURE Mechanical' && (
                 <Image
                   src={co.logo}
                   alt={co.name}
                   width={300}
                   height={80}
-                  className="h-20 sm:h-28 lg:h-36 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
+                  className="w-[90px] sm:w-[180px] lg:w-[230px] h-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
               )}
-              {/* CAC — naturally smaller SVG, scale way up */}
+              {/* CAC — circular mark balanced with the adjacent wordmarks */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
-                <img
-                  src={co.logo}
-                  alt={co.name}
-                  className="h-20 sm:h-28 lg:h-36 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
-                />
+                <CompanyLogoLink href={co.website} name={co.name}>
+                  <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-28 w-auto object-contain" />
+                </CompanyLogoLink>
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
               {co.name === 'Thermolinear' && (
+                <CompanyLogoLink href={co.website} name={co.name}>
                 <img
                   src={co.logo}
                   alt={co.name}
-                  className="h-14 sm:h-20 lg:h-26 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
+                  className="w-[90px] sm:w-[180px] lg:w-[230px] h-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
+                </CompanyLogoLink>
               )}
 
-              <div className="sub-name-reveal opacity-0 mt-2">
-                <div className="font-bold text-blueprint-white text-[11px] sm:text-xs lg:text-sm leading-tight whitespace-nowrap">{co.name}</div>
+              <div className="sub-name-reveal opacity-0 mt-2 w-[110px] sm:w-[230px] flex flex-col items-center text-center">
+                <div className="font-bold text-blueprint-white text-[9px] sm:text-xs lg:text-sm leading-tight max-w-[110px] sm:max-w-[230px]">{co.name}</div>
                 <div className="font-mono text-[6px] sm:text-[7px] lg:text-[8px] tracking-[0.1em] text-cool-teal/50 uppercase mt-0.5">{co.role}</div>
               </div>
             </div>
@@ -411,7 +429,7 @@ export default function SureSystem() {
       {/* ═══════ DIAGONAL ZIGZAG SEPARATOR ═══════ */}
       <div className="relative z-20 bg-mech-navy" aria-hidden="true">
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="block w-full h-[50px] lg:h-[70px]">
-          <path d="M0,0 L360,0 L480,120 L1440,120 L1440,0 L960,0 L840,120 L0,120 Z" fill="#020B13" />
+          <path d="M0,0 H360 L480,120 H0 Z M1440,0 H1080 L960,120 H1440 Z" fill="#020B13" />
         </svg>
       </div>
 
@@ -431,19 +449,23 @@ export default function SureSystem() {
             {SUB_COMPANIES.map((co) => (
               <div
                 key={co.name}
-                className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-mech-navy/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
+                className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-[#020B13]/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
               >
-                <div className="mb-4">
-                  {co.logo.endsWith('.svg') ? (
+                <div className="mb-4 h-20 lg:h-24 flex items-center justify-center">
+                  <CompanyLogoLink href={co.website} name={co.name}>
+                  {co.name === 'Cincinnati Air Conditioning Co.' ? (
+                    <Image src={co.logo} alt={co.name} width={96} height={96} className="h-20 lg:h-24 w-auto object-contain" />
+                  ) : co.logo.endsWith('.svg') ? (
                     <img src={co.logo} alt={co.name} className="h-10 lg:h-12 w-auto object-contain" />
                   ) : (
-                    <Image src={co.logo} alt={co.name} width={160} height={40} className="h-10 lg:h-12 w-auto object-contain" />
+                    <Image src={co.logo} alt={co.name} width={160} height={40} className="w-[180px] lg:w-[200px] max-w-full h-auto object-contain" />
                   )}
+                  </CompanyLogoLink>
                 </div>
-                <h3 className="font-bold text-mech-navy text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
-                <div className="font-mono tracking-[0.08em] uppercase text-[8px] lg:text-[9px] text-mech-navy/35 mb-4">{co.role}</div>
-                <div className="w-8 h-px bg-mech-navy/10 mb-4" />
-                <p className="text-mech-navy/45 text-xs lg:text-sm leading-relaxed max-w-xs">{co.description}</p>
+                <h3 className="font-bold text-[#020B13] text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
+                <div className="font-mono tracking-[0.08em] uppercase text-[8px] lg:text-[9px] text-[#425B69] mb-4">{co.role}</div>
+                <div className="w-8 h-px bg-[#020B13]/10 mb-4" />
+                <p className="text-[#425B69] text-xs lg:text-sm leading-relaxed max-w-xs">{co.description}</p>
               </div>
             ))}
           </div>

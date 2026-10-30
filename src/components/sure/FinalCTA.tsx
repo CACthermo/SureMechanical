@@ -1,160 +1,94 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
-import Image from 'next/image';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { assetPath } from '@/lib/asset-path';
+import { useState, type FormEvent } from 'react';
 
-gsap.registerPlugin(ScrollTrigger);
+type FormKind = 'general' | 'hr';
+const ENDPOINTS: Record<FormKind, string> = {
+  general: 'https://formspree.io/f/mkjjzrrw',
+  hr: 'https://formspree.io/f/mpppldpv',
+};
+
+function InquiryForm({ kind }: { kind: FormKind }) {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const isHR = kind === 'hr';
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (status === 'sending' || !form.reportValidity()) return;
+    for (const field of Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]'))) {
+      field.setCustomValidity(field.value.trim() ? '' : 'Please complete this field.');
+      if (!field.reportValidity()) return;
+    }
+    setStatus('sending');
+    try {
+      const response = await fetch(ENDPOINTS[kind], {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(20000),
+      });
+      if (!response.ok) throw new Error('Form submission was rejected');
+      form.reset();
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  const fieldStyle = 'w-full min-h-11 px-3 py-2.5 bg-mech-navy border border-seam-line rounded-sm text-blueprint-white placeholder:text-galv-silver/60 focus:outline-2 focus:outline-cool-teal';
+  const labelStyle = 'block text-xs uppercase tracking-[0.08em] text-galv-silver mb-1.5';
+  return (
+    <form onSubmit={handleSubmit} action={ENDPOINTS[kind]} method="POST" className="flex flex-col gap-4" aria-busy={status === 'sending'} onInput={(event) => {
+      const field = event.target;
+      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity('');
+      if (status !== 'sending') setStatus('idle');
+    }} aria-label={isHR ? 'Human resources inquiry' : 'Contact SURE Mechanical'}>
+      <input type="hidden" name="_subject" value={isHR ? 'SURE Mechanical HR Inquiry' : 'SURE Mechanical Website Inquiry'} />
+      <div className="absolute left-[-9999px]" aria-hidden="true"><label>Leave this field blank<input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" /></label></div>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div><label className={labelStyle} htmlFor={`${kind}-name`}>Name *</label><input className={fieldStyle} id={`${kind}-name`} name="name" autoComplete="name" required maxLength={120}/></div>
+        <div><label className={labelStyle} htmlFor={`${kind}-email`}>Email *</label><input className={fieldStyle} id={`${kind}-email`} name="email" type="email" autoComplete="email" required maxLength={254}/></div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-3">
+        <div><label className={labelStyle} htmlFor={`${kind}-company`}>{isHR ? 'Position / trade' : 'Company'}</label><input className={fieldStyle} id={`${kind}-company`} name={isHR ? 'position' : 'company'} maxLength={140}/></div>
+        <div><label className={labelStyle} htmlFor={`${kind}-phone`}>Phone</label><input className={fieldStyle} id={`${kind}-phone`} name="phone" type="tel" autoComplete="tel" maxLength={32}/></div>
+      </div>
+      {!isHR && <div><label className={labelStyle} htmlFor="general-type">Inquiry Type</label><select className={fieldStyle} name="inquiry_type" id="general-type"><option>General Inquiry</option><option>Request Service</option><option>Capabilities</option><option>Other</option></select></div>}
+      <div><label className={labelStyle} htmlFor={`${kind}-message`}>Message *</label><textarea className={`${fieldStyle} min-h-28 resize-y`} id={`${kind}-message`} name="message" required maxLength={5000} rows={4}/></div>
+      <button type="submit" disabled={status === 'sending'} className="min-h-12 px-6 py-3 rounded-sm bg-cool-teal text-mech-navy font-semibold text-sm uppercase tracking-wide hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed">
+        {status === 'sending' ? 'Sending…' : isHR ? 'Send HR Inquiry' : 'Send Message'}
+      </button>
+      {status === 'success' && <p role="status" className="text-sm text-cool-teal">Your message was submitted successfully.</p>}
+      {status === 'error' && <p role="alert" className="text-sm text-red-700 dark:text-red-400">The form could not send. Please try again in a moment.</p>}
+    </form>
+  );
+}
 
 export default function FinalCTA() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Return airflow particles completing the loop
-  useEffect(() => {
-    if (!isVisible || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    };
-    resize();
-
-    const particles = Array.from({ length: 25 }, () => ({
-      x: Math.random() * canvas.offsetWidth,
-      y: canvas.offsetHeight * 0.3 + Math.random() * canvas.offsetHeight * 0.4,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: -0.3 - Math.random() * 0.5,
-      size: 1 + Math.random() * 1.5,
-      alpha: 0.15 + Math.random() * 0.3,
-    }));
-
-    let animId: number;
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.y < -10) {
-          p.y = canvas.offsetHeight + 10;
-          p.x = Math.random() * canvas.offsetWidth;
-        }
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = '#11C5D6';
-        ctx.globalAlpha = p.alpha;
-        ctx.fill();
-      });
-      ctx.globalAlpha = 1;
-      animId = requestAnimationFrame(animate);
-    };
-    animate();
-    return () => cancelAnimationFrame(animId);
-  }, [isVisible]);
-
-  useGSAP(() => {
-    gsap.fromTo('.cta-title',
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-          onEnter: () => setIsVisible(true),
-        }
-      }
-    );
-    gsap.fromTo('.cta-panel',
-      { opacity: 0, y: 30, scale: 0.97 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'power3.out',
-        scrollTrigger: { trigger: '.cta-panel', start: 'top 85%', toggleActions: 'play none none reverse' }
-      }
-    );
-  }, { scope: sectionRef });
-
   return (
-    <section
-      id="cta"
-      ref={sectionRef}
-      className="relative py-24 lg:py-36 overflow-hidden"
-      aria-label="Start a project with SURE Mechanical"
-    >
-      <div className="absolute inset-0 blueprint-grid opacity-20" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cool-teal/20 to-transparent" />
-      {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cool-teal/5 rounded-full blur-[150px] pointer-events-none" />
-
-      {/* Airflow canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
-
-      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="cta-title opacity-0 text-center mb-16">
-          <div className="mb-4">
-            <Image
-              src={assetPath('/brand/SURE_symbol.png')}
-              alt="SURE Symbol"
-              width={40}
-              height={40}
-              className="mx-auto w-8 h-8 opacity-40"
-            />
-          </div>
-          <h2 className="section-title text-blueprint-white max-w-3xl mx-auto">
-            <span className="hover-red">LET&apos;S BUILD THE SYSTEM</span>
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cool-teal via-bright-cyan to-cool-teal">
-              BEHIND WHAT&apos;S NEXT.
-            </span>
-          </h2>
+    <section id="cta" aria-label="Contact SURE Mechanical" className="relative py-20 lg:py-28 bg-steel-blue/35 border-t border-seam-line">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-cool-teal mb-3">GET IN TOUCH</p>
+          <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical.</h2>
+          <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">Reach our team about mechanical services, upcoming projects, or career opportunities.</p>
         </div>
-
-        {/* Control Panel / Access Door */}
-        <div className="cta-panel opacity-0 max-w-2xl mx-auto">
-          <div className="relative rounded-sm border border-cool-teal/15 bg-steel-blue/40 backdrop-blur-sm overflow-hidden">
-            {/* Panel header bar */}
-            <div className="flex items-center gap-3 px-5 py-3 border-b border-seam-line bg-mech-navy/40">
-              <div className="flex gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-cool-teal/30" />
-                <div className="w-2 h-2 rounded-full bg-heat-amber/30" />
-                <div className="w-2 h-2 rounded-full bg-galv-silver/20" />
-              </div>
-              <span className="text-[9px] font-mono tracking-[0.15em] uppercase text-galv-silver/30">SYSTEM INTERFACE — PROJECT INITIATION</span>
-            </div>
-
-            <div className="p-8 lg:p-12 text-center">
-              <p className="text-galv-silver/60 text-sm leading-relaxed mb-8 max-w-lg mx-auto">
-                Bring SURE Mechanical into your project early and turn coordination, fabrication and installation into one connected process.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button className="shine-sweep w-full sm:w-auto px-8 py-3.5 bg-cool-teal text-mech-navy font-semibold text-sm tracking-wide uppercase hover:bg-bright-cyan transition-colors duration-300 rounded-sm cursor-pointer">
-                  Start a Project
-                </button>
-                <button className="shine-sweep w-full sm:w-auto px-8 py-3.5 border border-galv-silver/20 text-blueprint-white text-sm tracking-wide uppercase hover:border-cool-teal/30 hover:text-bright-cyan transition-all duration-300 rounded-sm cursor-pointer">
-                  Request Service
-                </button>
-              </div>
-
-              <div className="mt-6">
-                <button className="text-galv-silver/40 text-xs font-mono tracking-[0.08em] uppercase hover:text-bright-cyan/60 transition-colors duration-300 cursor-pointer">
-                  Contact SURE Mechanical →
-                </button>
-              </div>
-            </div>
-
-            {/* Panel screws / rivets */}
-            <div className="absolute top-2 left-2 rivet-dot" />
-            <div className="absolute top-2 right-2 rivet-dot" />
-            <div className="absolute bottom-2 left-2 rivet-dot" />
-            <div className="absolute bottom-2 right-2 rivet-dot" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+          <div id="contact-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
+            <h3 className="text-xl font-semibold text-blueprint-white mb-2">General Contact</h3>
+            <p className="text-sm text-galv-silver mb-6">Questions, service requests, and other inquiries.</p>
+            <InquiryForm kind="general" />
           </div>
+          <div id="hr-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
+            <h3 className="text-xl font-semibold text-blueprint-white mb-2">Careers &amp; HR</h3>
+            <p className="text-sm text-galv-silver mb-6">Use this form for employment and recruiting inquiries.</p>
+            <InquiryForm kind="hr" />
+          </div>
+        </div>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-4 text-sm text-galv-silver">
+          <span>Inviting SURE Mechanical to bid?</span>
+          <a href="mailto:bidinvites@suremechanical.com?subject=Project%20Bid%20Invitation" className="inline-flex min-h-11 items-center rounded-sm px-6 py-3 bg-cool-teal text-mech-navy font-semibold uppercase tracking-wide">Start a Project</a>
         </div>
       </div>
     </section>

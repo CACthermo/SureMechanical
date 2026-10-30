@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SURE Mechanical — Engineered to Move Air, Energy & Buildings",
+  title: "SURE Mechanical | Commercial HVAC in Cincinnati",
   description:
-    "From coordinated design and precision fabrication to installation, commissioning and long-term service, SURE Mechanical delivers complete commercial mechanical systems.",
+    "Commercial heating, cooling, mechanical design, ductwork and piping in Cincinnati, Southern Ohio and Northern Kentucky. Contact SURE Mechanical about your project.",
   keywords: [
     "SURE Mechanical",
     "HVAC",
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     "Tri-State",
   ],
   openGraph: {
-    title: "SURE Mechanical — The Living Mechanical System",
-    description: "Complete commercial mechanical systems from engineered concept to field execution.",
+    title: "SURE Mechanical | Commercial HVAC in Cincinnati",
+    description: "Commercial heating, cooling, mechanical design, ductwork and piping in Cincinnati and the surrounding region.",
     type: "website",
   },
 };
@@ -45,6 +45,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-mech-navy text-blueprint-white`}
       >
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{document.documentElement.dataset.theme=localStorage.getItem('sure-theme')==='dark'?'dark':'light'}catch(e){document.documentElement.dataset.theme='light'}})();` }} />
+        <a href="#main-content" className="skip-link">Skip to content</a>
         {children}
       </body>
     </html>
