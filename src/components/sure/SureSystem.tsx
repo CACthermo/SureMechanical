@@ -49,7 +49,7 @@ const SUB_COMPANIES = [
     name: 'Cincinnati Air Conditioning Co.',
     role: 'DESIGN-BUILD, SERVICE & CONTROLS',
     description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
-    logo: assetPath('/brand/CAC_Logo.svg'),
+    logo: assetPath('/brand/CAC_Logo_2026.png'),
     svgX: 600, svgY: 310,
     pctLeft: 50, pctTop: 73.81,
   },
@@ -388,10 +388,10 @@ export default function SureSystem() {
                   className="h-20 sm:h-28 lg:h-36 w-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
               )}
-              {/* CAC — naturally smaller SVG, scale way up */}
+              {/* CAC — circular mark balanced with the adjacent wordmarks */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
                 <div className="rounded-md bg-white p-2 sm:p-3 shadow-sm">
-                  <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-32 w-auto object-contain" />
+                  <img src={co.logo} alt={co.name} className="h-20 sm:h-28 lg:h-36 w-auto object-contain" />
                 </div>
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
@@ -438,8 +438,10 @@ export default function SureSystem() {
                 key={co.name}
                 className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-[#020B13]/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
               >
-                <div className="mb-4">
-                  {co.logo.endsWith('.svg') ? (
+                <div className="mb-4 h-20 lg:h-24 flex items-center justify-center">
+                  {co.name === 'Cincinnati Air Conditioning Co.' ? (
+                    <Image src={co.logo} alt={co.name} width={96} height={96} className="h-20 lg:h-24 w-auto object-contain" />
+                  ) : co.logo.endsWith('.svg') ? (
                     <img src={co.logo} alt={co.name} className="h-10 lg:h-12 w-auto object-contain" />
                   ) : (
                     <Image src={co.logo} alt={co.name} width={160} height={40} className="h-10 lg:h-12 w-auto object-contain" />
