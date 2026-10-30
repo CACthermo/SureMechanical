@@ -15,7 +15,7 @@ const LINKS = [
   { heading: 'Connect', links: [
     { label: 'Project Experience', href: '#projects' },
     { label: 'General Contact', href: '#contact-form' },
-    { label: 'Bid Invitations', href: 'mailto:bidinvites@suremechanical.com' },
+    { label: 'Bid Invitations', href: '#project-form' },
   ]},
 ];
 

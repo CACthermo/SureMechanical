@@ -81,7 +81,7 @@ export default function ProjectGallery({ project, onClose }: { project: Project;
       ) : <div className="px-5 py-12 sm:px-7"><p className="text-galv-silver">Project photos will be added when available.</p></div>}
       <div className="px-5 pb-6 pt-4 sm:px-7">
         {project.scope && <p className="text-galv-silver leading-relaxed mb-5">{project.scope}</p>}
-        <a href="mailto:bidinvites@suremechanical.com" className="inline-flex min-h-11 items-center font-medium text-cool-teal underline underline-offset-4">Discuss a project with our team</a>
+        <a href="#project-form" onClick={onClose} className="inline-flex min-h-11 items-center font-medium text-cool-teal underline underline-offset-4">Discuss a project with our team</a>
       </div>
     </dialog>
   );

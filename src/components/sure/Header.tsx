@@ -60,7 +60,7 @@ export default function Header() {
             <button type="button" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel} className="h-11 w-11 flex items-center justify-center border border-seam-line rounded-md text-blueprint-white hover:text-cool-teal focus-visible:outline-2">
               {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
             </button>
-            <a href="mailto:bidinvites@suremechanical.com?subject=Project%20Bid%20Invitation" className="hidden lg:inline-flex items-center justify-center rounded-sm bg-cool-teal px-4 py-2.5 font-semibold text-xs uppercase tracking-wide text-mech-navy hover:brightness-110">Start a Project</a>
+            <a href="#project-form" className="hidden lg:inline-flex items-center justify-center rounded-sm bg-cool-teal px-4 py-2.5 font-semibold text-xs uppercase tracking-wide text-mech-navy hover:brightness-110">Start a Project</a>
             <button id="menu-toggle" type="button" onClick={() => setMobileOpen(v => !v)} className="lg:hidden h-11 w-11 flex items-center justify-center text-blueprint-white border border-seam-line rounded-md" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen} aria-controls="sure-mobile-menu">
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -72,7 +72,7 @@ export default function Header() {
         <nav id="sure-mobile-menu" aria-label="Mobile navigation" className="lg:hidden absolute top-16 inset-x-0 bg-mech-navy border-b border-seam-line shadow-xl max-h-[calc(100dvh-4rem)] overflow-y-auto px-5 pt-5 pb-8">
           <div className="flex flex-col gap-1">
             {NAV_ITEMS.map(item => <a key={item.href} href={item.href} onClick={closeMenu} className="block min-h-12 px-3 py-3 text-base font-medium text-blueprint-white hover:text-cool-teal border-b border-seam-line/50">{item.label}</a>)}
-            <a href="mailto:bidinvites@suremechanical.com?subject=Project%20Bid%20Invitation" onClick={closeMenu} className="mt-5 min-h-12 flex items-center justify-center rounded-md bg-cool-teal px-4 py-3 text-mech-navy font-semibold uppercase text-sm">Start a Project</a>
+            <a href="#project-form" onClick={closeMenu} className="mt-5 min-h-12 flex items-center justify-center rounded-md bg-cool-teal px-4 py-3 text-mech-navy font-semibold uppercase text-sm">Start a Project</a>
           </div>
         </nav>
       )}
