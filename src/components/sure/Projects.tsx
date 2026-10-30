@@ -11,7 +11,7 @@ import { PHOTO_COLLECTIONS, PROJECTS, type Project } from '@/lib/projects';
 import ProjectGallery from './ProjectGallery';
 
 export default function Projects() {
-  const [view, setView] = useState<'photos' | 'list'>('photos');
+  const [view, setView] = useState<'grid' | 'photos' | 'list'>('grid');
   const [query, setQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const closeProject = useCallback(() => setSelectedProject(null), []);
@@ -24,6 +24,7 @@ export default function Projects() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     gsap.fromTo('.project-photo-card', { y: 32, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.07, duration: 0.65, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
   }, { scope: sectionRef, dependencies: [view, query], revertOnUpdate: true });
+  const gridProjects = [...jobs].sort((a, b) => Number(b.photos.length > 0) - Number(a.photos.length > 0));
   const resultCount = view === 'photos' ? photos.length : jobs.length;
 
   return (
@@ -34,6 +35,7 @@ export default function Projects() {
         <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Browse project photos or find a job by name or customer. Select a project to take a closer look.</p>
         <div className="mt-9 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div role="group" aria-label="Project view" className="flex w-fit max-w-full gap-1 rounded-lg border border-seam-line bg-mech-navy p-1">
+            <button type="button" aria-pressed={view === 'grid'} onClick={() => setView('grid')} className={`min-h-11 rounded-md px-3 text-sm font-medium ${view === 'grid' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>All projects</button>
             <button type="button" aria-pressed={view === 'photos'} onClick={() => setView('photos')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'photos' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Project photos <span className="ml-1 text-xs">{PHOTO_COLLECTIONS.length}</span></button>
             <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'list' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Project list <span className="ml-1 text-xs">{PROJECTS.length}</span></button>
           </div>
@@ -46,12 +48,12 @@ export default function Projects() {
         </div>
         <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {view === 'photos' ? resultCount === 1 ? 'photo collection' : 'photo collections' : resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
         {resultCount === 0 && <div className="rounded-lg border border-seam-line p-8 text-galv-silver">No matches. Try another project name or customer, or <button type="button" onClick={() => setQuery('')} className="text-cool-teal underline">clear your search</button>.</div>}
-        {view === 'photos' ? (
+        {view !== 'list' ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-label="Project photo collections">
-            {photos.map(project => <button key={project.id} type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View photos: ${project.title}`} className="project-photo-card group flex flex-col overflow-hidden rounded-xl border border-seam-line bg-steel-blue text-left transition-colors hover:border-cool-teal">
+            {(view === 'photos' ? photos : gridProjects).map(project => <button key={project.id} type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`${view === 'photos' ? 'View photos' : 'View project'}: ${project.title}`} className="project-photo-card group flex flex-col overflow-hidden rounded-xl border border-seam-line bg-steel-blue text-left transition-colors hover:border-cool-teal">
               <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-duct-mid">
-                <Image src={project.photos[0].src} alt={project.photos[0].alt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 400px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" />
-                <span className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full bg-[#071724]/90 px-3 py-1.5 text-xs text-white"><Images size={14} aria-hidden="true" />{project.photos.length} {project.photos.length === 1 ? 'photo' : 'photos'}</span>
+                {project.photos.length > 0 ? <Image src={project.photos[0].src} alt={project.photos[0].alt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 400px" className="object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none" /> : <div className="absolute inset-0 blueprint-grid flex items-center justify-center"><span className="text-cool-teal text-sm font-mono tracking-widest">SURE Mechanical</span></div>}
+                {project.photos.length > 0 && <span className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full bg-[#071724]/90 px-3 py-1.5 text-xs text-white"><Images size={14} aria-hidden="true" />{project.photos.length} {project.photos.length === 1 ? 'photo' : 'photos'}</span>}
               </div>
               <div className="flex w-full flex-1 items-start justify-between gap-4 p-5">
                 <div><h3 className="text-lg font-semibold leading-snug text-blueprint-white">{project.title}</h3>{project.customer && <p className="mt-2 text-sm text-galv-silver">{project.customer}</p>}</div>
@@ -69,10 +71,7 @@ export default function Projects() {
             </button></li>)}</ul>
           </div>
         )}
-        <details className="mt-7 max-w-2xl text-sm text-galv-silver">
-          <summary className="w-fit cursor-pointer py-2">A quick guide to the terms</summary>
-          <p className="mt-2 leading-relaxed">HVAC means heating, ventilation and air conditioning. An AHU is an air handling unit. An RTU is a rooftop unit.</p>
-        </details>
+
       </div>
       {selectedProject && <ProjectGallery key={selectedProject.id} project={selectedProject} onClose={closeProject} />}
     </section>

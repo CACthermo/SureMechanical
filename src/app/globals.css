@@ -557,3 +557,6 @@ html:not([data-theme="dark"]) .blueprint-grid { opacity: .65; }
 html:not([data-theme="dark"]) .tech-label { background: #edf7f8; color: #086778; border-color: #9cbec5; }
 .project-photo-card { box-shadow: 0 8px 30px rgba(10, 55, 70, .05); transition: border-color .3s, box-shadow .3s; }
 .project-photo-card:hover { box-shadow: 0 12px 35px rgba(8, 124, 143, .16); }
+
+/* Keep the page-wide thermal progress clear of the footer. */
+body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }

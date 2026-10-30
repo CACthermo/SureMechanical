@@ -60,7 +60,7 @@ function InquiryForm({ kind }: { kind: FormKind }) {
         {status === 'sending' ? 'Sending…' : isHR ? 'Send HR Inquiry' : 'Send Message'}
       </button>
       {status === 'success' && <p role="status" className="text-sm text-cool-teal">Your message was submitted successfully.</p>}
-      {status === 'error' && <p role="alert" className="text-sm text-red-700 dark:text-red-400">The form could not send. Please try again or email <a className="underline" href={`mailto:${isHR ? 'lhammer@suremechanical.com' : 'bidinvites@suremechanical.com'}`}>{isHR ? 'lhammer@suremechanical.com' : 'bidinvites@suremechanical.com'}</a>.</p>}
+      {status === 'error' && <p role="alert" className="text-sm text-red-700 dark:text-red-400">The form could not send. Please try again in a moment.</p>}
     </form>
   );
 }
@@ -82,7 +82,7 @@ export default function FinalCTA() {
           </div>
           <div id="hr-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
             <h3 className="text-xl font-semibold text-blueprint-white mb-2">Careers &amp; HR</h3>
-            <p className="text-sm text-galv-silver mb-6">Employment and recruiting inquiries can also go to <a className="text-cool-teal underline underline-offset-2" href="mailto:lhammer@suremechanical.com">lhammer@suremechanical.com</a>.</p>
+            <p className="text-sm text-galv-silver mb-6">Use this form for employment and recruiting inquiries.</p>
             <InquiryForm kind="hr" />
           </div>
         </div>

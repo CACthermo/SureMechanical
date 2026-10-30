@@ -1,3 +1,4 @@
+import ThermalProgress from '@/components/sure/ThermalProgress';
 import Header from '@/components/sure/Header';
 import Hero from '@/components/sure/Hero';
 import Engineering from '@/components/sure/Engineering';
@@ -24,6 +25,7 @@ export default function Home() {
         <FinalCTA />
       </main>
       <Footer />
+      <ThermalProgress />
     </>
   );
 }

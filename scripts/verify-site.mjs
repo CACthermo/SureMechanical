@@ -52,6 +52,10 @@ try {
       await page.keyboard.press('Escape');
       assert.equal(await page.getByRole('button', { name: 'Open menu' }).getAttribute('aria-expanded'), 'false');
     }
+    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 23);
+    assert.equal(await page.getByRole('link', {name: /Visit Cincinnati/}).count(), 2);
+    assert.equal(await page.locator('a[href*="lhammer"]').count(), 0);
+    await page.getByRole('button', {name: /^Project photos/}).click();
     const galleryButtons = () => page.getByRole('button', { name: /^View photos:/ });
     const directoryButtons = () => page.getByRole('button', { name: /^View project:/ });
     assert.equal(await galleryButtons().count(), 9);

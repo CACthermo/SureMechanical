@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -38,10 +38,11 @@ const ELBOWS = [
 
 const SUB_COMPANIES = [
   {
-    name: 'Sure Mechanical',
+    name: 'SURE Mechanical',
     role: 'PRIMARY SYSTEM CONTRACTOR',
     description: 'Complete commercial mechanical systems — from engineering and BIM coordination through fabrication, installation, commissioning and long-term service for the most demanding facilities.',
     logo: assetPath('/brand/SURE_Mechanical_trimmed.png'),
+    website: null,
     svgX: 200, svgY: 310,
     pctLeft: 16.67, pctTop: 73.81,
   },
@@ -50,6 +51,7 @@ const SUB_COMPANIES = [
     role: 'DESIGN-BUILD, SERVICE & CONTROLS',
     description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
     logo: assetPath('/brand/CAC_Logo_2026.png'),
+    website: 'https://cincinnatiair.com',
     svgX: 600, svgY: 310,
     pctLeft: 50, pctTop: 73.81,
   },
@@ -58,10 +60,19 @@ const SUB_COMPANIES = [
     role: 'PRECISION ENVIRONMENTS',
     description: 'Specialized in the design and construction of environmental rooms, test chambers and precision-controlled spaces for research, manufacturing and critical storage applications.',
     logo: assetPath('/brand/Thermolinear_logo.svg'),
+    website: 'https://thermolinearusa.com',
     svgX: 1000, svgY: 310,
     pctLeft: 83.33, pctTop: 73.81,
   },
 ];
+
+function CompanyLogoLink({ href, name, children }: { href: string | null; name: string; children: ReactNode }) {
+  return href ? (
+    <a href={href} aria-label={`Visit ${name}`} className="inline-flex items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cool-teal hover:opacity-80 transition-opacity">
+      {children}
+    </a>
+  ) : <>{children}</>;
+}
 
 export default function SureSystem() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -371,7 +382,7 @@ export default function SureSystem() {
           {SUB_COMPANIES.map((co) => (
             <div
               key={co.name}
-              className="sub-logo-reveal absolute opacity-0 flex flex-col items-center text-center pointer-events-none"
+              className="sub-logo-reveal absolute opacity-0 flex flex-col items-center text-center"
               style={{
                 left: `${co.pctLeft}%`,
                 top: `${co.pctTop + 4}%`,
@@ -379,7 +390,7 @@ export default function SureSystem() {
               }}
             >
               {/* SURE Mechanical — naturally smaller PNG, scale way up */}
-              {co.name === 'Sure Mechanical' && (
+              {co.name === 'SURE Mechanical' && (
                 <Image
                   src={co.logo}
                   alt={co.name}
@@ -390,18 +401,22 @@ export default function SureSystem() {
               )}
               {/* CAC — circular mark balanced with the adjacent wordmarks */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
-                <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-28 w-auto object-contain" />
+                <CompanyLogoLink href={co.website} name={co.name}>
+                  <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-28 w-auto object-contain" />
+                </CompanyLogoLink>
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
               {co.name === 'Thermolinear' && (
+                <CompanyLogoLink href={co.website} name={co.name}>
                 <img
                   src={co.logo}
                   alt={co.name}
                   className="w-[90px] sm:w-[180px] lg:w-[230px] h-auto object-contain drop-shadow-[0_0_20px_rgba(17,197,214,0.2)]"
                 />
+                </CompanyLogoLink>
               )}
 
-              <div className="sub-name-reveal opacity-0 mt-2">
+              <div className="sub-name-reveal opacity-0 mt-2 w-[110px] sm:w-[230px] flex flex-col items-center text-center">
                 <div className="font-bold text-blueprint-white text-[9px] sm:text-xs lg:text-sm leading-tight max-w-[110px] sm:max-w-[230px]">{co.name}</div>
                 <div className="font-mono text-[6px] sm:text-[7px] lg:text-[8px] tracking-[0.1em] text-cool-teal/50 uppercase mt-0.5">{co.role}</div>
               </div>
@@ -414,7 +429,7 @@ export default function SureSystem() {
       {/* ═══════ DIAGONAL ZIGZAG SEPARATOR ═══════ */}
       <div className="relative z-20 bg-mech-navy" aria-hidden="true">
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="block w-full h-[50px] lg:h-[70px]">
-          <path d="M0,0 L360,0 L480,120 L1440,120 L1440,0 L960,0 L840,120 L0,120 Z" fill="#020B13" />
+          <path d="M0,0 H360 L480,120 H0 Z M1440,0 H1080 L960,120 H1440 Z" fill="#020B13" />
         </svg>
       </div>
 
@@ -437,6 +452,7 @@ export default function SureSystem() {
                 className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-[#020B13]/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
               >
                 <div className="mb-4 h-20 lg:h-24 flex items-center justify-center">
+                  <CompanyLogoLink href={co.website} name={co.name}>
                   {co.name === 'Cincinnati Air Conditioning Co.' ? (
                     <Image src={co.logo} alt={co.name} width={96} height={96} className="h-20 lg:h-24 w-auto object-contain" />
                   ) : co.logo.endsWith('.svg') ? (
@@ -444,6 +460,7 @@ export default function SureSystem() {
                   ) : (
                     <Image src={co.logo} alt={co.name} width={160} height={40} className="w-[180px] lg:w-[200px] max-w-full h-auto object-contain" />
                   )}
+                  </CompanyLogoLink>
                 </div>
                 <h3 className="font-bold text-[#020B13] text-sm lg:text-base mb-1 leading-tight">{co.name}</h3>
                 <div className="font-mono tracking-[0.08em] uppercase text-[8px] lg:text-[9px] text-[#425B69] mb-4">{co.role}</div>

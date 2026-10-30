@@ -277,7 +277,7 @@ export default function Hero() {
               {/* Duct Supply Visualizer — positioned below/overlapping the image card */}
               <div className="hero-air-panel relative -mt-8 sm:-mt-16 ml-4 sm:ml-8 z-10">
                 <div className="relative bg-mech-navy/90 backdrop-blur-sm border border-seam-line rounded-sm p-4" style={{ maxWidth: '320px' }}>
-                  <div className="text-[9px] font-mono tracking-[0.12em] uppercase text-galv-silver/30 mb-3">SUPPLY AIR VISUALIZER</div>
+
                   <svg
                     viewBox="0 0 300 140"
                     className="w-full"
@@ -297,7 +297,7 @@ export default function Hero() {
                     <rect x="120" y="5" width="50" height="35" rx="1.5" fill="url(#heroDuctGrad)" stroke="rgba(185,197,204,0.2)" strokeWidth="0.8" />
                     {/* Access panel */}
                     <rect x="230" y="50" width="35" height="40" rx="1" fill="rgba(2,11,19,0.7)" stroke="rgba(91,234,243,0.12)" strokeWidth="0.4" strokeDasharray="2 2" />
-                    <text x="247" y="73" textAnchor="middle" fill="rgba(91,234,243,0.2)" fontSize="5" fontFamily="monospace">ACCESS</text>
+
                     {/* Rivets */}
                     {[[28,44],[28,96],[276,44],[276,96],[124,8],[166,8]].map(([cx,cy],i) => (
                       <circle key={i} cx={cx} cy={cy} r="1.5" fill="rgba(185,197,204,0.25)" />
@@ -316,8 +316,8 @@ export default function Hero() {
                       <animate attributeName="opacity" values="0;0.4;0.4;0" dur="2.8s" repeatCount="indefinite" begin="0.2s" />
                     </circle>
                     {/* Label */}
-                    <text x="150" y="64" textAnchor="middle" fill="rgba(91,234,243,0.35)" fontSize="7" fontFamily="monospace">SUPPLY AIR</text>
-                    <text x="150" y="80" textAnchor="middle" fill="rgba(91,234,243,0.2)" fontSize="6" fontFamily="monospace">SCHEMATIC AIRFLOW</text>
+
+
 
                     <defs>
                       <linearGradient id="heroDuctGrad" x1="0" y1="0" x2="0" y2="1">
