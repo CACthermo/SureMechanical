@@ -10,6 +10,7 @@ export type Project = {
   sourceJobNumber?: number;
   title: string;
   customer: string | null;
+  customers?: string[];
   photos: ProjectPhoto[];
   scope: string | null;
 };
@@ -92,14 +93,6 @@ export const PROJECTS: Project[] = [
     "scope": null
   },
   {
-    "id": "job-10",
-    "sourceJobNumber": 10,
-    "title": "Uptown Gateway - Digital Future",
-    "customer": "MESSER CONSTRUCTION COMPANY",
-    "photos": [],
-    "scope": null
-  },
-  {
     "id": "job-11",
     "sourceJobNumber": 11,
     "title": "Xavier Jesuit Academy",
@@ -142,16 +135,25 @@ export const PROJECTS: Project[] = [
   {
     "id": "job-16",
     "sourceJobNumber": 16,
-    "title": "FRB of Clyd - AHU Rebuild GMP",
+    "title": "Federal Reserve \u2014 Air Handling Unit Rebuild",
     "customer": "MEGEN CONSTRUCTION CO. INC",
-    "photos": [],
+    "photos": [
+      {
+        "src": "/projects/2026/federal-reserve-01.webp",
+        "alt": "Federal Reserve air handling equipment."
+      },
+      {
+        "src": "/projects/2026/federal-reserve-02.webp",
+        "alt": "A second view of Federal Reserve air handling equipment."
+      }
+    ],
     "scope": null
   },
   {
     "id": "job-17",
     "sourceJobNumber": 17,
     "title": "UC Digital Futures",
-    "customer": "HGC Construction",
+    "customer": "HGC Construction / MESSER CONSTRUCTION COMPANY",
     "photos": [
       {
         "src": "/projects/2026/digital-futures-01.webp",
@@ -166,7 +168,11 @@ export const PROJECTS: Project[] = [
         "alt": "View of UC Digital Futures buildings 1 and 2."
       }
     ],
-    "scope": null
+    "scope": null,
+    "customers": [
+      "HGC Construction",
+      "MESSER CONSTRUCTION COMPANY"
+    ]
   },
   {
     "id": "job-18",
@@ -214,30 +220,10 @@ export const PROJECTS: Project[] = [
       }
     ],
     "scope": null
-  }
-].map(withAssetPaths);
-
-// Federal Reserve photo labels are not yet confirmed as job 16.
-export const ADDITIONAL_PHOTO_COLLECTIONS: Project[] = [
-  {
-    "id": "photo-federal-reserve",
-    "title": "Federal Reserve — Air Handling Units",
-    "customer": null,
-    "photos": [
-      {
-        "src": "/projects/2026/federal-reserve-01.webp",
-        "alt": "Federal Reserve air handling equipment."
-      },
-      {
-        "src": "/projects/2026/federal-reserve-02.webp",
-        "alt": "A second view of Federal Reserve air handling equipment."
-      }
-    ],
-    "scope": null
   },
   {
     "id": "photo-uc-mab",
-    "title": "UC MAB — AHU Fan Motor",
+    "title": "UC MAB \u2014 AHU Fan Motor",
     "customer": null,
     "photos": [
       {
@@ -261,7 +247,7 @@ export const ADDITIONAL_PHOTO_COLLECTIONS: Project[] = [
   },
   {
     "id": "photo-duke-energy",
-    "title": "Duke Energy — Air Handling Unit Assembly",
+    "title": "Duke Energy \u2014 Air Handling Unit Assembly",
     "customer": null,
     "photos": [
       {
@@ -285,5 +271,4 @@ export const ADDITIONAL_PHOTO_COLLECTIONS: Project[] = [
   }
 ].map(withAssetPaths);
 
-const galleryOrder = ['job-19', 'job-17', 'job-18', 'job-20', 'photo-federal-reserve', 'photo-bethesda', 'photo-duke-energy', 'photo-uc-mab', 'photo-dayton-police'];
-export const PHOTO_COLLECTIONS = [...PROJECTS.filter(project => project.photos.length), ...ADDITIONAL_PHOTO_COLLECTIONS].sort((a, b) => galleryOrder.indexOf(a.id) - galleryOrder.indexOf(b.id));
+export const PHOTO_COLLECTIONS = PROJECTS.filter(project => project.photos.length);
