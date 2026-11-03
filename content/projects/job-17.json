@@ -1,26 +1,29 @@
 {
   "id": "job-17",
-  "sourceJobNumber": 17,
-  "title": "UC Digital Futures",
+  "title": "UC Digital Futures (QA review)",
   "customer": "HGC Construction / MESSER CONSTRUCTION COMPANY",
-  "photos": [
-    {
-      "src": "/projects/2026/digital-futures-01.webp",
-      "alt": "Exterior view of UC Digital Futures."
-    },
-    {
-      "src": "/projects/2026/digital-futures-02.webp",
-      "alt": "Interior ceiling and mechanical systems at UC Digital Futures."
-    },
-    {
-      "src": "/projects/2026/digital-futures-03.webp",
-      "alt": "View of UC Digital Futures buildings 1 and 2."
-    }
-  ],
-  "scope": null,
   "customers": [
     "HGC Construction",
     "MESSER CONSTRUCTION COMPANY"
+  ],
+  "sourceJobNumber": 17,
+  "scope": "",
+  "photos": [
+    {
+      "src": "/projects/uploads/mw0vzasc-iw4d27di.jpg",
+      "alt": "Exterior view of UC Digital Futures.",
+      "description": ""
+    },
+    {
+      "src": "/projects/2026/digital-futures-02.webp",
+      "alt": "Interior ceiling and mechanical systems at UC Digital Futures.",
+      "description": ""
+    },
+    {
+      "src": "/projects/2026/digital-futures-03.webp",
+      "alt": "View of UC Digital Futures buildings 1 and 2.",
+      "description": ""
+    }
   ],
   "displayOrder": 16,
   "featured": false,
