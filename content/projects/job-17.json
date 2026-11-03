@@ -1,0 +1,28 @@
+{
+  "id": "job-17",
+  "sourceJobNumber": 17,
+  "title": "UC Digital Futures",
+  "customer": "HGC Construction / MESSER CONSTRUCTION COMPANY",
+  "photos": [
+    {
+      "src": "/projects/2026/digital-futures-01.webp",
+      "alt": "Exterior view of UC Digital Futures."
+    },
+    {
+      "src": "/projects/2026/digital-futures-02.webp",
+      "alt": "Interior ceiling and mechanical systems at UC Digital Futures."
+    },
+    {
+      "src": "/projects/2026/digital-futures-03.webp",
+      "alt": "View of UC Digital Futures buildings 1 and 2."
+    }
+  ],
+  "scope": null,
+  "customers": [
+    "HGC Construction",
+    "MESSER CONSTRUCTION COMPANY"
+  ],
+  "displayOrder": 16,
+  "featured": false,
+  "published": true
+}

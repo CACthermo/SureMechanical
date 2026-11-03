@@ -74,6 +74,7 @@ export default function ProjectGallery({ project, onClose }: { project: Project;
             <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-galv-silver">Photo {photoIndex + 1} of {count}</p>
             {count > 1 ? <button type="button" onClick={() => movePhoto(1)} aria-label="Next photo" className="flex h-11 items-center gap-2 rounded-md border border-seam-line px-3 hover:border-cool-teal"><span className="hidden sm:inline text-sm">Next</span><ArrowRight size={18} aria-hidden="true" /></button> : <span />}
           </div>
+          {photo.description && <p className="px-5 py-3 text-sm text-galv-silver sm:px-7">{photo.description}</p>}
           {count > 1 && <div role="group" aria-label="Choose a project photo" className="flex gap-3 overflow-x-auto px-5 py-4 sm:px-7">
             {project.photos.map((item, index) => <button key={item.src} type="button" onClick={() => setPhotoIndex(index)} aria-label={`Show photo ${index + 1} of ${count}`} aria-pressed={photoIndex === index} className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-md border-2 ${photoIndex === index ? 'border-cool-teal' : 'border-transparent opacity-70 hover:opacity-100'}`}><Image src={item.src} alt="" fill sizes="96px" className="object-cover" /></button>)}
           </div>}

@@ -53,3 +53,7 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Rebuilt from validated CMS source on every dev/build invocation
+/src/lib/generated/
+/public/_cms/

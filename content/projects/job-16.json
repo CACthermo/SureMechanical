@@ -1,0 +1,20 @@
+{
+  "id": "job-16",
+  "sourceJobNumber": 16,
+  "title": "Federal Reserve — Air Handling Unit Rebuild",
+  "customer": "MEGEN CONSTRUCTION CO. INC",
+  "photos": [
+    {
+      "src": "/projects/2026/federal-reserve-01.webp",
+      "alt": "Federal Reserve air handling equipment."
+    },
+    {
+      "src": "/projects/2026/federal-reserve-02.webp",
+      "alt": "A second view of Federal Reserve air handling equipment."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 15,
+  "featured": false,
+  "published": true
+}

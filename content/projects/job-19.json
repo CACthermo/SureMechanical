@@ -1,0 +1,20 @@
+{
+  "id": "job-19",
+  "sourceJobNumber": 19,
+  "title": "CH Winslow Research Facility",
+  "customer": "MESSER CONSTRUCTION COMPANY",
+  "photos": [
+    {
+      "src": "/projects/2026/winslow-02.webp",
+      "alt": "Exterior of the Winslow Research Pavilion; the building sign confirms the Winslow spelling."
+    },
+    {
+      "src": "/projects/2026/winslow-01.webp",
+      "alt": "SURE Mechanical crew during an equipment lift at the Winslow project."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 18,
+  "featured": false,
+  "published": true
+}

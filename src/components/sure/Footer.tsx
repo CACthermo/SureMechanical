@@ -1,3 +1,4 @@
+import { COMPANY } from '@/lib/company';
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
 
@@ -26,7 +27,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-9">
           <div className="lg:col-span-2">
             <Image src={assetPath('/brand/SURE_MECHANICAL_alpha.png')} alt="SURE Mechanical" width={245} height={85} className="w-auto max-w-[240px] h-14 object-contain mb-4" />
-            <p className="max-w-sm text-sm text-galv-silver leading-relaxed">Commercial heating, cooling, ductwork and piping. Based in Cincinnati and serving Southern Ohio and Northern Kentucky.</p>
+            <p className="max-w-sm text-sm text-galv-silver leading-relaxed">{COMPANY.description}</p>
+            {COMPANY.publicPhone && <p className="mt-3 text-sm text-galv-silver"><a href={`tel:${COMPANY.publicPhone.replace(/[^+0-9]/g, '')}`}>{COMPANY.publicPhone}</a></p>}
+            {COMPANY.officeAddress && <p className="mt-3 text-sm text-galv-silver whitespace-pre-line">{COMPANY.officeAddress}</p>}
             <p className="text-xs text-galv-silver mt-3">Cincinnati, Ohio · Tri-State Region</p>
           </div>
           {LINKS.map(col => (

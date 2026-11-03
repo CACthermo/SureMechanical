@@ -1,5 +1,6 @@
 'use client';
 
+import { COMPANY } from '@/lib/company';
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
 import { useRef } from 'react';
@@ -80,7 +81,7 @@ export default function FieldInstallation() {
           <div className="lg:col-span-2 relative overflow-hidden rounded-sm min-h-[450px]">
             <Image src={assetPath('/company/Worker_pic1.png')} alt="SURE Mechanical field team, from the original website" fill sizes="(max-width:1023px) 100vw, 40vw" className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#020b13]/95 via-transparent to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-7 text-white"><p className="font-mono text-xs tracking-widest text-[#5beaf3] uppercase mb-3">From model to site</p><h3 className="text-3xl font-bold">Plan. Coordinate. Install.</h3><p className="mt-4 text-sm text-white/90">Engineering and field teams working together through startup and commissioning.</p></div>
+            <div className="absolute inset-x-0 bottom-0 p-7 text-white"><p className="font-mono text-xs tracking-widest text-[#5beaf3] uppercase mb-3">From model to site</p><h3 className="text-3xl font-bold">Plan. Coordinate. Install.</h3><p className="mt-4 text-sm text-white/90">{COMPANY.installationDescription}</p></div>
           </div>
         </div>
       </div>

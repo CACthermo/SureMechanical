@@ -1,0 +1,15 @@
+{
+  "id": "photo-bethesda",
+  "title": "Bethesda Arrow Springs MRI",
+  "customer": null,
+  "photos": [
+    {
+      "src": "/projects/2026/bethesda-01.webp",
+      "alt": "Mechanical equipment at Bethesda Arrow Springs MRI."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 21,
+  "featured": false,
+  "published": true
+}

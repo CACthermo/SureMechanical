@@ -1,0 +1,15 @@
+{
+  "id": "photo-uc-mab",
+  "title": "UC MAB — AHU Fan Motor",
+  "customer": null,
+  "photos": [
+    {
+      "src": "/projects/2026/uc-mab-01.webp",
+      "alt": "SURE Mechanical crew working at the UC MAB project."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 20,
+  "featured": false,
+  "published": true
+}

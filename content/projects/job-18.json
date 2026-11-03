@@ -1,0 +1,20 @@
+{
+  "id": "job-18",
+  "sourceJobNumber": 18,
+  "title": "Findlay Community Center",
+  "customer": "SKANSKA USA BUILDING INC.",
+  "photos": [
+    {
+      "src": "/projects/2026/findlay-01.webp",
+      "alt": "Rooftop equipment at Findlay Community Center."
+    },
+    {
+      "src": "/projects/2026/findlay-02.webp",
+      "alt": "Ductwork installation at Findlay Community Center."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 17,
+  "featured": false,
+  "published": true
+}

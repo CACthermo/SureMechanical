@@ -1,0 +1,15 @@
+{
+  "id": "photo-dayton-police",
+  "title": "Dayton Police Station",
+  "customer": null,
+  "photos": [
+    {
+      "src": "/projects/2026/dayton-police-01.webp",
+      "alt": "Ceiling-mounted mechanical equipment at Dayton Police Station."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 23,
+  "featured": false,
+  "published": true
+}

@@ -1,0 +1,204 @@
+# SURE Content Studio — StarrTree Site Manager, powered by Pages CMS.
+# Open feature/sure-content-studio-mvp for acceptance; use content-staging after rollout.
+# This is an editor schema, not a GitHub authorization/approval boundary.
+media:
+  - name: project-photos
+    label: Project Photos
+    input: public/projects
+    output: /projects
+    extensions: [jpg, jpeg, png, webp]
+    rename: random
+content:
+  - name: projects
+    label: Projects
+    type: collection
+    path: content/projects
+    format: json
+    subfolders: false
+    filename:
+      template: '{fields.id}.json'
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      primary: title
+      fields: [title, customer, published, displayOrder]
+      search: [title, customer, customers, sourceJobNumber, id]
+      sort: [displayOrder, title, published]
+      default:
+        sort: displayOrder
+        order: asc
+    fields:
+      - name: id
+        label: Stable project ID
+        type: string
+        required: true
+        description: 'New project: choose a unique ID such as office-renovation-2026. Never change an existing ID.'
+        pattern:
+          regex: '^[a-z0-9]+(-[a-z0-9]+)*$'
+          message: Use lowercase letters, numbers and single hyphens.
+        options:
+          maxlength: 80
+      - name: title
+        label: Project name
+        type: string
+        required: true
+        options:
+          maxlength: 180
+      - name: customer
+        label: Customer name
+        type: string
+        description: Leave blank if the customer has not been confirmed. Preserve the approved display name.
+        options:
+          maxlength: 240
+      - name: customers
+        label: Additional customer names
+        type: string
+        list: true
+        description: Optional searchable customer names. The Customer name field is displayed on the website.
+      - name: sourceJobNumber
+        label: Job number (source list)
+        type: number
+        description: Optional number from the supplied source list, not an inferred internal contract number. Do not fill the historical gap at 10 without approval.
+        options:
+          min: 1
+          max: 999999999
+      - name: scope
+        label: Description or scope
+        type: text
+        description: Approved facts only. Leave blank when unknown.
+        options:
+          maxlength: 4000
+      - name: photos
+        label: Project gallery photos
+        type: object
+        list:
+          collapsible:
+            collapsed: false
+            summary: '{alt}'
+        description: Add photos of this job only. Drag to reorder; the first photo is the card cover. Empty galleries show a helpful message.
+        fields:
+          - name: src
+            label: Select or upload a photo
+            type: image
+            required: true
+            description: 'New uploads: use uploads/. Existing photos: browse 2026/. JPG, PNG or WebP, at most 10 MB, 160–10,000 pixels per side. Save uploads before saving this project.'
+            options:
+              media: project-photos
+              path: public/projects/uploads
+              extensions: [jpg, jpeg, png, webp]
+              rename: random
+          - name: alt
+            label: What does this photo show? (accessibility text)
+            type: string
+            required: true
+            description: Describe the visible equipment or work and location. Do not use only a filename or “photo”.
+            pattern:
+              regex: '.*\S.*'
+              message: Describe the visible work in this photo.
+            options:
+              minlength: 8
+              maxlength: 300
+          - name: description
+            label: Photo caption (optional)
+            type: text
+            options:
+              maxlength: 1000
+      - name: displayOrder
+        label: Display order
+        type: number
+        required: true
+        default: 100
+        description: Lower numbers appear first; featured projects and projects with photos are prioritized in card views.
+        options:
+          min: 0
+          max: 100000
+      - name: featured
+        label: Feature this project in card views
+        type: boolean
+        default: false
+      - name: published
+        label: Include on the website after review
+        type: boolean
+        default: false
+        description: 'Off = draft, excluded from website builds. On = eligible to display after a maintainer reviews, merges and deploys. Save does not publish from content-staging. Drafts are not confidential: this repository and uploaded media are public.'
+  - name: company
+    label: Company Information
+    type: file
+    path: content/company.json
+    format: json
+    fields:
+      - name: description
+        label: Company description (footer)
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: publicPhone
+        label: Approved public phone number
+        type: string
+        description: Currently blank; add only a verified public company phone number.
+        options: {maxlength: 40}
+      - name: officeAddress
+        label: Approved office address
+        type: text
+        description: Currently blank; add only a verified public company address.
+        options: {maxlength: 300}
+      - name: engineeringDescription
+        label: Engineering capabilities description
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: heatingCoolingDescription
+        label: Heating and cooling description
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: installationDescription
+        label: Field installation description
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: projectsHeading
+        label: Projects heading
+        type: string
+        required: true
+        options: {maxlength: 120}
+      - name: projectsIntroduction
+        label: Projects introduction
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: contactHeading
+        label: Contact heading
+        type: string
+        required: true
+        options: {maxlength: 120}
+      - name: contactIntroduction
+        label: Contact introduction
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: projectContactText
+        label: Start a Project introduction
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: generalContactText
+        label: General Contact introduction
+        type: text
+        required: true
+        options: {maxlength: 1000}
+      - name: hrContactText
+        label: Careers and HR introduction
+        type: text
+        required: true
+        options: {maxlength: 1000}
+settings:
+  content:
+    merge: true
+  commit:
+    templates:
+      create: 'content: create {path} (SURE Content Studio)'
+      update: 'content: update {path} (SURE Content Studio)'

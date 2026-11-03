@@ -1,0 +1,16 @@
+{
+  "id": "job-20",
+  "sourceJobNumber": 20,
+  "title": "Renovation Kenton Elementary",
+  "customer": "Monarch Construction Co",
+  "photos": [
+    {
+      "src": "/projects/2026/kenton-01.webp",
+      "alt": "Ductwork at Kenton Elementary School."
+    }
+  ],
+  "scope": null,
+  "displayOrder": 19,
+  "featured": false,
+  "published": true
+}
