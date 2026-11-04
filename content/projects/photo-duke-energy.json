@@ -1,0 +1,15 @@
+{
+  "id": "photo-duke-energy",
+  "title": "Duke Energy — Air Handling Unit Assembly",
+  "customer": null,
+  "photos": [
+    {
+      "src": "/projects/2026/duke-energy-01.webp",
+      "alt": "Air handling unit assembly at Duke Energy."
+    }
+  ],
+  "scope": "Assembly of two air handling units, each with 8,000 rivets.",
+  "displayOrder": 22,
+  "featured": false,
+  "published": true
+}

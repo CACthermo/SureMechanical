@@ -1,5 +1,6 @@
 'use client';
 
+import { COMPANY } from '@/lib/company';
 import { useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
@@ -17,23 +18,22 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const closeProject = useCallback(() => setSelectedProject(null), []);
   const search = query.trim().toLocaleLowerCase();
-  const matches = (project: Project) => `${project.title} ${project.customer ?? ''}`.toLocaleLowerCase().includes(search);
-  const photos = PHOTO_COLLECTIONS.filter(matches);
+  const matches = (project: Project) => `${project.title} ${project.customer ?? ''} ${(project.customers ?? []).join(' ')} ${project.sourceJobNumber ?? ''}`.toLocaleLowerCase().includes(search);
   const jobs = PROJECTS.filter(matches);
   const sectionRef = useRef<HTMLElement>(null);
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     gsap.fromTo('.project-photo-card', { y: 32, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.07, duration: 0.65, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
   }, { scope: sectionRef, dependencies: [view, query, expanded], revertOnUpdate: true });
-  const gridProjects = [...jobs].sort((a, b) => Number(b.photos.length > 0) - Number(a.photos.length > 0));
-  const resultCount = view === 'photos' ? photos.length : jobs.length;
+  const gridProjects = [...jobs].sort((a, b) => Number(b.featured) - Number(a.featured) || Number(b.photos.length > 0) - Number(a.photos.length > 0));
+  const resultCount = jobs.length;
 
   return (
     <section ref={sectionRef} id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <p className="eyebrow">Our work</p>
-        <h2 id="projects-title" className="section-title mt-3 text-blueprint-white">See Our Work!</h2>
-        <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Browse project photos or find a job by name or customer. Select a project to take a closer look.</p>
+        <h2 id="projects-title" className="section-title mt-3 text-blueprint-white">{COMPANY.projectsHeading}</h2>
+        <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">{COMPANY.projectsIntroduction}</p>
         <div className="mt-9 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div role="group" aria-label="Project view" className="flex w-fit max-w-full gap-1 rounded-lg border border-seam-line bg-mech-navy p-1">
             <button type="button" aria-pressed={view === 'grid'} onClick={() => setView('grid')} className={`min-h-11 rounded-md px-3 text-sm font-medium ${view === 'grid' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Grid View</button>
@@ -47,7 +47,7 @@ export default function Projects() {
             {query && <button type="button" aria-label="Clear project search" onClick={() => setQuery('')} className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-galv-silver"><X size={17} /></button>}
           </div>
         </div>
-        <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {view === 'photos' ? resultCount === 1 ? 'photo collection' : 'photo collections' : resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
+        <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
         {resultCount === 0 && <div className="rounded-lg border border-seam-line p-8 text-galv-silver">No matches. Try another project name or customer, or <button type="button" onClick={() => setQuery('')} className="text-cool-teal underline">clear your search</button>.</div>}
         {view !== 'list' ? (
           <div className={view === 'grid' ? "project-matrix grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" : "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"} aria-label="Project photo collections" id="project-cards">
@@ -73,7 +73,7 @@ export default function Projects() {
           </div>
         )}
 
-        {view === 'photos' && !search && <button type="button" aria-expanded={expanded} aria-controls="project-cards" onClick={() => setExpanded(value => !value)} className="mx-auto mt-8 flex min-h-12 flex-col items-center gap-2 px-8 text-galv-silver hover:text-cool-teal"><span className="text-2xl opacity-40" aria-hidden="true">{expanded ? '−' : '＋'}</span><span className="text-sm">{expanded ? 'View Less' : 'View More'}</span></button>}
+        {view === 'photos' && !search && jobs.length > 6 && <button type="button" aria-expanded={expanded} aria-controls="project-cards" onClick={() => setExpanded(value => !value)} className="mx-auto mt-8 flex min-h-12 flex-col items-center gap-2 px-8 text-galv-silver hover:text-cool-teal"><span className="text-2xl opacity-40" aria-hidden="true">{expanded ? '−' : '＋'}</span><span className="text-sm">{expanded ? 'View Less' : 'View More'}</span></button>}
       </div>
       {selectedProject && <ProjectGallery key={selectedProject.id} project={selectedProject} onClose={closeProject} />}
     </section>

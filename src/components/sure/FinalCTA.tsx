@@ -1,5 +1,6 @@
 'use client';
 
+import { COMPANY } from '@/lib/company';
 import { useState, type FormEvent } from 'react';
 
 type FormKind = 'general' | 'hr' | 'project';
@@ -73,23 +74,23 @@ export default function FinalCTA() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-cool-teal mb-3">GET IN TOUCH</p>
-          <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical.</h2>
-          <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">Reach our team about mechanical services, upcoming projects, or career opportunities.</p>
+          <h2 className="section-title text-blueprint-white mb-4">{COMPANY.contactHeading}</h2>
+          <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">{COMPANY.contactIntroduction}</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
           <div id="project-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
             <h3 className="text-xl font-semibold text-blueprint-white mb-2">Start a Project</h3>
-            <p className="text-sm text-galv-silver mb-6">Tell us about your upcoming project or bid invitation.</p>
+            <p className="text-sm text-galv-silver mb-6">{COMPANY.projectContactText}</p>
             <InquiryForm kind="project" />
           </div>
           <div id="contact-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
             <h3 className="text-xl font-semibold text-blueprint-white mb-2">General Contact</h3>
-            <p className="text-sm text-galv-silver mb-6">Questions, service requests, and other inquiries.</p>
+            <p className="text-sm text-galv-silver mb-6">{COMPANY.generalContactText}</p>
             <InquiryForm kind="general" />
           </div>
           <div id="hr-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
             <h3 className="text-xl font-semibold text-blueprint-white mb-2">Careers &amp; HR</h3>
-            <p className="text-sm text-galv-silver mb-6">Use this form for employment and recruiting inquiries.</p>
+            <p className="text-sm text-galv-silver mb-6">{COMPANY.hrContactText}</p>
             <InquiryForm kind="hr" />
           </div>
         </div>

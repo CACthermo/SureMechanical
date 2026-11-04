@@ -1,4 +1,5 @@
 'use client';
+import { COMPANY } from '@/lib/company';
 import { useRef } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
@@ -19,7 +20,7 @@ export default function HeatingCooling() {
     <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[1440px] px-5 sm:px-8 pb-16 lg:pb-24 text-white">
       <p className="font-mono text-xs uppercase tracking-[0.2em] mb-6 text-[#5beaf3]">Heating &amp; cooling</p>
       <h2 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.95] tracking-tight overflow-hidden"><span className="thermal-word inline-block">SURE</span>{' '}<span className="thermal-word inline-block">Mechanical</span></h2>
-      <p className="mt-7 max-w-xl text-lg text-white/90">Commercial heating, cooling and ventilation. From design through installation.</p>
+      <p className="mt-7 max-w-xl text-lg text-white/90">{COMPANY.heatingCoolingDescription}</p>
     </div>
   </section>;
 }

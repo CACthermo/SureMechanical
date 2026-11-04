@@ -1,5 +1,6 @@
 'use client';
 
+import { COMPANY } from '@/lib/company';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -63,7 +64,7 @@ export default function Engineering() {
         </h2>
 
         <p className="eng-title opacity-0 section-subtitle text-galv-silver/60 max-w-2xl mb-16">
-          SURE Mechanical&apos;s engineering team coordinates the complete virtual system — its components, clearances and connections — before work begins on site.
+          {COMPANY.engineeringDescription}
         </p>
 
         <div className="max-w-3xl">

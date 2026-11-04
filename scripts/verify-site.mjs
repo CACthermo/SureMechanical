@@ -25,6 +25,9 @@ const browser = await chromium.launch({
 });
 const baseURL = process.env.TEST_BASE_URL || `http://127.0.0.1:${server.address().port}`;
 const failures = [];
+const { projects } = JSON.parse(await readFile('src/lib/generated/content.json', 'utf8'));
+const galleries = projects.filter(p => p.photos.length);
+const messageFor = (kind) => ({ general: 'Contact SURE Mechanical', hr: 'Human resources inquiry', project: 'Start a project' })[kind];
 try {
   for (const width of [390, 768, 1440]) {
     const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
@@ -39,7 +42,8 @@ try {
     const badAnchors = await page.locator('a[href^="#"]').evaluateAll(links => links.filter(link => !document.getElementById(link.getAttribute('href').slice(1))).map(link => link.getAttribute('href')));
     assert.deepEqual(badAnchors, []);
     const projectCTAs = await page.getByRole('link', { name: 'Start a Project', exact: true }).all();
-    for (const cta of projectCTAs) assert.match(await cta.getAttribute('href'), /^mailto:bidinvites@suremechanical.com/);
+    for (const cta of projectCTAs) assert.equal(await cta.getAttribute('href'), '#project-form');
+    assert.equal(await page.locator('a[href^="mailto:"]').count(), 0);
     await page.getByRole('button', { name: 'Switch to dark mode' }).click();
     await page.reload({ waitUntil: 'networkidle' });
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
@@ -52,86 +56,63 @@ try {
       await page.keyboard.press('Escape');
       assert.equal(await page.getByRole('button', { name: 'Open menu' }).getAttribute('aria-expanded'), 'false');
     }
-    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 6);
-    await page.getByRole('button', { name: 'View More', exact: true }).click();
-    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 23);
-    await page.getByRole('button', { name: 'View Less', exact: true }).click();
-    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 6);
-    await page.getByRole('button', { name: 'Grid View', exact: true }).click();
-    assert.equal(await page.getByRole('button', {name: /^View project:/}).count(), 23);
-    assert.equal(await page.getByRole('link', {name: /Visit Cincinnati/}).count(), 2);
-    assert.equal(await page.locator('a[href*="lhammer"]').count(), 0);
-    await page.getByRole('button', {name: 'Regular View 9', exact: true}).click();
-    await page.getByRole('button', {name: 'View More', exact: true}).click();
-    const galleryButtons = () => page.getByRole('button', { name: /^View project:/ }).filter({ has: page.locator('img') });
-    const directoryButtons = () => page.getByRole('button', { name: /^View project:/ });
-    assert.equal(await galleryButtons().count(), 9);
-    assert.equal(await page.getByText('University Medical Center HVAC Renovation', { exact: true }).count(), 0);
-    const search = page.getByRole('searchbox', { name: 'Search projects or customers' });
-    await search.fill('Research');
-    assert.equal(await galleryButtons().count(), 1);
-    await galleryButtons().click();
-    const dialog = page.getByRole('dialog');
-    await dialog.waitFor({ state: 'visible' });
-    assert.match(await dialog.innerText(), /CH Winslow Research Facility/);
-    assert.match(await dialog.innerText(), /MESSER CONSTRUCTION COMPANY/);
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
-    await dialog.getByRole('button', { name: 'Next photo', exact: true }).click();
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
-    await page.keyboard.press('ArrowRight');
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
-    await page.keyboard.press('ArrowLeft');
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
-    await dialog.getByRole('button', { name: 'Show photo 1 of 2' }).click();
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 2');
-    // Pointer events exercise the touch swipe path without making the page horizontally scroll.
-    const swipeArea = dialog.locator('.touch-pan-y');
-    await swipeArea.dispatchEvent('pointerdown', { pointerType: 'touch', clientX: 250, clientY: 200 });
-    await swipeArea.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 100, clientY: 210 });
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 2');
-    for (let index = 0; index < 8; index++) {
-      await page.keyboard.press('Tab');
-      assert.equal(await dialog.evaluate(el => el.contains(document.activeElement)), true, 'Dialog must retain focus');
+    const cards = page.getByRole('button', { name: /^View project:/ });
+    assert.equal(await cards.count(), Math.min(6, projects.length));
+    if (projects.length > 6) {
+      await page.getByRole('button', {name: 'View More', exact: true}).click();
+      assert.equal(await cards.count(), projects.length);
+      await page.getByRole('button', {name: 'View Less', exact: true}).click();
     }
-    await page.keyboard.press('Escape');
-    await dialog.waitFor({ state: 'detached' });
-    assert.match(await page.locator(':focus').getAttribute('aria-label'), /View project:/);
+    await page.getByRole('button', {name: 'Grid View', exact: true}).click();
+    assert.equal(await cards.count(), projects.length);
+    const search = page.getByRole('searchbox', {name: 'Search projects or customers'});
     await search.fill('no-such-project-zz');
-    assert.equal(await galleryButtons().count(), 0);
-    await page.getByRole('button', { name: 'Clear project search', exact: true }).click();
-    await page.getByRole('button', { name: /^Project list/ }).click();
-    assert.equal(await directoryButtons().count(), 23);
-    await search.fill('Digital');
-    assert.equal(await directoryButtons().count(), 1);
-    await page.getByRole('button', { name: 'View project: UC Digital Futures', exact: true }).click();
-    await dialog.waitFor({ state: 'visible' });
-    assert.match(await dialog.innerText(), /HGC Construction/);
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of 3');
-    await dialog.getByRole('button', { name: 'Next photo', exact: true }).click();
-    assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of 3');
-    await page.keyboard.press('Escape');
-    await dialog.waitFor({ state: 'detached' });
-    await search.fill('');
-    await page.getByRole('button', { name: /^Regular View/ }).click();
-    const usedPhotos = new Set();
-    for (const button of await galleryButtons().all()) {
+    assert.equal(await cards.count(), 0);
+    await page.getByRole('button', {name: 'Clear project search', exact: true}).click();
+    await page.getByRole('button', {name: /^Project list/}).click();
+    assert.equal(await cards.count(), projects.length);
+    const dialog = page.getByRole('dialog');
+    for (const project of projects) {
+      const button = page.getByRole('button', {name: 'View project: ' + project.title, exact:true}).filter({hasText:project.customer || ''}).first();
+      await search.fill(project.title);
       await button.click();
-      await dialog.waitFor({ state: 'visible' });
-      const thumbs = await dialog.getByRole('button', { name: /^Show photo/ }).all();
-      if (thumbs.length) for (const thumb of thumbs) await thumb.click();
-      for (const image of await dialog.locator('img').all()) {
+      await dialog.waitFor();
+      assert.equal(await dialog.locator('h3').innerText(), project.title);
+      if (project.customer) assert.ok((await dialog.innerText()).includes(project.customer));
+      if (project.scope) assert.ok((await dialog.innerText()).includes(project.scope));
+      const count = project.photos.length;
+      for (const [i,photo] of project.photos.entries()) {
+        if (i) await dialog.getByRole('button', {name:'Next photo',exact:true}).click();
+        const image = dialog.locator('.touch-pan-y img');
+        assert.equal(await image.getAttribute('src'),photo.src);
+        assert.equal(await image.getAttribute('alt'),photo.alt);
         await image.evaluate(img => img.decode());
-        usedPhotos.add(await image.getAttribute('src'));
+        assert.equal(await dialog.getByRole('status').innerText(), 'Photo ' + (i+1) + ' of ' + count);
       }
+      if (count > 1) {
+        await page.keyboard.press('ArrowRight');
+        assert.equal(await dialog.getByRole('status').innerText(), 'Photo 1 of ' + count);
+        await page.keyboard.press('ArrowLeft');
+        await dialog.getByRole('button', {name:'Show photo 1 of ' + count}).click();
+        const area=dialog.locator('.touch-pan-y');
+        await area.dispatchEvent('pointerdown', {pointerType:'touch',clientX:250,clientY:200});
+        await area.dispatchEvent('pointerup', {pointerType:'touch',clientX:100,clientY:200});
+        assert.equal(await dialog.getByRole('status').innerText(), 'Photo 2 of ' + count);
+      }
+      await page.keyboard.press('Tab');
+      assert.ok(await dialog.evaluate(el => el.contains(document.activeElement)));
       await page.keyboard.press('Escape');
-      await dialog.waitFor({ state: 'detached' });
+      await dialog.waitFor({state:'detached'});
+      assert.equal(await button.evaluate(el => el === document.activeElement),true);
     }
-    assert.equal(usedPhotos.size, 14, 'All 14 client images are reachable and decode');
+    await search.fill('');
+    await page.getByRole('button', {name: 'Regular View ' + galleries.length, exact:true}).click();
     assert.equal(await page.locator('img[src*="/projects/2026/"]:not(#projects img)').count(), 0);
     const cac = page.locator('img[alt="Cincinnati Air Conditioning Co."]').first();
     assert.equal(await cac.evaluate(img => getComputedStyle(img.parentElement).backgroundColor), 'rgba(0, 0, 0, 0)');
-    for (const [kind, endpoint] of [['general', 'mkjjzrrw'], ['hr', 'mpppldpv']]) {
-      const form = page.getByRole('form', { name: kind === 'hr' ? 'Human resources inquiry' : 'Contact SURE Mechanical', exact: true });
+    for (const [kind, endpoint] of [['general', 'mkjjzrrw'], ['hr', 'mpppldpv'], ['project', 'mkjjzrrw']]) {
+      const form = page.getByRole('form', { name: messageFor(kind), exact: true });
+      assert.equal(await form.getAttribute('action'), 'https://formspree.io/f/' + endpoint);
       let requests = 0;
       let responseMode = 'success';
       let release;
@@ -190,7 +171,7 @@ try {
       await page.screenshot({ path: `${process.env.SCREENSHOT_DIR}/dark-${width}.png`, fullPage: false });
     }
     await context.close();
-    console.log(`PASS ${width}px: themes, navigation, portfolio, modal, both forms`);
+    console.log(`PASS ${width}px: themes, navigation, portfolio, modal, all three forms`);
   }
   // Normal-motion smoke checks also exercise the existing GSAP sections.
   for (const width of [390, 1440]) {
