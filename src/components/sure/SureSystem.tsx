@@ -89,7 +89,7 @@ export default function SureSystem() {
     const centerLines = centerLineRefs.current.filter(Boolean) as SVGPathElement[];
     const centerTrunk = centerLineTrunkRef.current;
 
-    const staticView = window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches;
+    const staticView = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (staticView) {
       gsap.set('.ss-title, .ss-white-card, .sub-logo-reveal, .sub-name-reveal, .duct-dim, .conn-dot, .splitter-node', { opacity: 1 });
       gsap.set(sureGroupRef.current, { opacity: 1 });
@@ -125,9 +125,9 @@ export default function SureSystem() {
       scrollTrigger: {
         trigger: animContainerRef.current,
         start: 'top 55%',
-        end: '+=90%',
+        end: 'bottom 35%',
         scrub: 0.5,
-        pin: window.innerWidth >= 768,
+        pin: false,
         pinSpacing: true,
       },
     });
@@ -402,7 +402,7 @@ export default function SureSystem() {
               {/* CAC — circular mark balanced with the adjacent wordmarks */}
               {co.name === 'Cincinnati Air Conditioning Co.' && (
                 <CompanyLogoLink href={co.website} name={co.name}>
-                  <img src={co.logo} alt={co.name} className="h-16 sm:h-24 lg:h-28 w-auto object-contain" />
+                  <img src={co.logo} alt={co.name} className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
                 </CompanyLogoLink>
               )}
               {/* Thermolinear — naturally larger, moderate scale */}
@@ -446,7 +446,7 @@ export default function SureSystem() {
         <div className="ss-white-cards relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Company description cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {SUB_COMPANIES.map((co) => (
+            {[SUB_COMPANIES[1], SUB_COMPANIES[0], SUB_COMPANIES[2]].map((co) => (
               <div
                 key={co.name}
                 className="ss-white-card opacity-0 flex flex-col items-center text-center p-6 lg:p-8 border border-[#020B13]/[0.06] rounded-sm hover:border-cool-teal/20 transition-colors duration-500"
@@ -454,7 +454,7 @@ export default function SureSystem() {
                 <div className="mb-4 h-20 lg:h-24 flex items-center justify-center">
                   <CompanyLogoLink href={co.website} name={co.name}>
                   {co.name === 'Cincinnati Air Conditioning Co.' ? (
-                    <Image src={co.logo} alt={co.name} width={96} height={96} className="h-20 lg:h-24 w-auto object-contain" />
+                    <Image src={co.logo} alt={co.name} width={96} height={96} className="h-14 lg:h-16 w-auto object-contain" />
                   ) : co.logo.endsWith('.svg') ? (
                     <img src={co.logo} alt={co.name} className="h-10 lg:h-12 w-auto object-contain" />
                   ) : (

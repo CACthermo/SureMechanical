@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
-import { ArrowUpRight, Images, Search, X } from 'lucide-react';
+import { ArrowUpRight, Images, Search, X, Grid2X2, LayoutGrid, List } from 'lucide-react';
 import { PHOTO_COLLECTIONS, PROJECTS, type Project } from '@/lib/projects';
 import ProjectGallery from './ProjectGallery';
 
@@ -25,8 +25,9 @@ export default function Projects() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     gsap.fromTo('.project-photo-card', { y: 32, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.07, duration: 0.65, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' } });
   }, { scope: sectionRef, dependencies: [view, query, expanded], revertOnUpdate: true });
-  const gridProjects = [...jobs].sort((a, b) => Number(b.photos.length > 0) - Number(a.photos.length > 0));
-  const resultCount = view === 'photos' ? photos.length : jobs.length;
+  const gridProjects = jobs.filter(project => project.photos.length > 0);
+  const textProjects = jobs.filter(project => project.photos.length === 0);
+  const resultCount = photos.length;
 
   return (
     <section ref={sectionRef} id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
@@ -36,9 +37,9 @@ export default function Projects() {
         <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Browse project photos or find a job by name or customer. Select a project to take a closer look.</p>
         <div className="mt-9 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div role="group" aria-label="Project view" className="flex w-fit max-w-full gap-1 rounded-lg border border-seam-line bg-mech-navy p-1">
-            <button type="button" aria-pressed={view === 'grid'} onClick={() => setView('grid')} className={`min-h-11 rounded-md px-3 text-sm font-medium ${view === 'grid' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Grid View</button>
-            <button type="button" aria-pressed={view === 'photos'} onClick={() => setView('photos')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'photos' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Regular View <span className="ml-1 text-xs">{PHOTO_COLLECTIONS.length}</span></button>
-            <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'list' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`}>Project list <span className="ml-1 text-xs">{PROJECTS.length}</span></button>
+            <button type="button" aria-pressed={view === 'grid'} onClick={() => setView('grid')} className={`min-h-11 rounded-md px-3 text-sm font-medium ${view === 'grid' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`} aria-label="Grid view" title="Grid view"><Grid2X2 size={19} aria-hidden="true" /></button>
+            <button type="button" aria-pressed={view === 'photos'} onClick={() => setView('photos')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'photos' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`} aria-label="Regular view" title="Regular view"><LayoutGrid size={19} aria-hidden="true" /></button>
+            <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={`min-h-11 rounded-md px-4 text-sm font-medium ${view === 'list' ? 'bg-cool-teal text-mech-navy' : 'text-galv-silver'}`} aria-label="Project list" title="Project list"><List size={19} aria-hidden="true" /></button>
           </div>
           <div role="search" className="relative w-full md:max-w-sm">
             <label htmlFor="project-search" className="sr-only">Search projects or customers</label>
@@ -65,7 +66,7 @@ export default function Projects() {
         ) : (
           <div className="overflow-hidden rounded-xl border border-seam-line bg-steel-blue" aria-label="Project directory">
             <div className="hidden grid-cols-[1.2fr_1fr_44px] gap-5 border-b border-seam-line bg-mech-navy px-5 py-3 text-xs font-semibold uppercase tracking-wide text-galv-silver md:grid"><span>Project</span><span>Customer</span><span className="sr-only">View</span></div>
-            <ul className="divide-y divide-seam-line">{jobs.map(project => <li key={project.id}><button type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View project: ${project.title}`} className="grid w-full grid-cols-[1fr_32px] items-center gap-x-4 gap-y-2 px-5 py-5 text-left hover:bg-cool-teal/5 md:grid-cols-[1.2fr_1fr_44px]">
+            <ul className="divide-y divide-seam-line">{gridProjects.map(project => <li key={project.id}><button type="button" onClick={() => setSelectedProject(project)} aria-haspopup="dialog" aria-label={`View project: ${project.title}`} className="grid w-full grid-cols-[1fr_32px] items-center gap-x-4 gap-y-2 px-5 py-5 text-left hover:bg-cool-teal/5 md:grid-cols-[1.2fr_1fr_44px]">
               <span className="text-base font-semibold leading-snug text-blueprint-white">{project.title}</span>
               <span className="col-start-1 text-sm text-galv-silver md:col-auto">{project.customer}</span>
               <ArrowUpRight size={19} className="col-start-2 row-start-1 row-span-2 justify-self-end text-cool-teal md:col-start-3 md:row-span-1" aria-hidden="true" />
@@ -74,6 +75,10 @@ export default function Projects() {
         )}
 
         {view === 'photos' && !search && <button type="button" aria-expanded={expanded} aria-controls="project-cards" onClick={() => setExpanded(value => !value)} className="mx-auto mt-8 flex min-h-12 flex-col items-center gap-2 px-8 text-galv-silver hover:text-cool-teal"><span className="text-2xl opacity-40" aria-hidden="true">{expanded ? '−' : '＋'}</span><span className="text-sm">{expanded ? 'View Less' : 'View More'}</span></button>}
+        {textProjects.length > 0 && <details className="mt-8 rounded-lg border border-seam-line bg-steel-blue">
+          <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-blueprint-white">More projects <span className="ml-2 text-galv-silver">({textProjects.length})</span></summary>
+          <ul className="divide-y divide-seam-line">{textProjects.map(project => <li key={project.id} className="px-5 py-3 text-sm text-blueprint-white">{project.title}</li>)}</ul>
+        </details>}
       </div>
       {selectedProject && <ProjectGallery key={selectedProject.id} project={selectedProject} onClose={closeProject} />}
     </section>
