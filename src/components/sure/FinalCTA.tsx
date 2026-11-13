@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 
 type FormKind = 'general' | 'hr' | 'project';
 const ENDPOINTS: Record<FormKind, string> = {
@@ -68,6 +68,21 @@ function InquiryForm({ kind }: { kind: FormKind }) {
 }
 
 export default function FinalCTA() {
+  useEffect(() => {
+    const openTarget = () => {
+      const target = document.getElementById(window.location.hash.slice(1));
+      if (target instanceof HTMLDetailsElement) target.open = true;
+    };
+    openTarget();
+    window.addEventListener('hashchange', openTarget);
+    const onLink = (event: MouseEvent) => {
+      const link = (event.target as Element).closest('a[href^="#"]');
+      const target = link && document.getElementById(link.getAttribute('href')!.slice(1));
+      if (target instanceof HTMLDetailsElement) target.open = true;
+    };
+    document.addEventListener('click', onLink);
+    return () => { window.removeEventListener('hashchange', openTarget); document.removeEventListener('click', onLink); };
+  }, []);
   return (
     <section id="cta" aria-label="Contact SURE Mechanical" className="relative py-20 lg:py-28 bg-steel-blue/35 border-t border-seam-line">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,22 +91,20 @@ export default function FinalCTA() {
           <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical.</h2>
           <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">Reach our team about mechanical services, upcoming projects, or career opportunities.</p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
-          <div id="project-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-blueprint-white mb-2">Start a Project</h3>
-            <p className="text-sm text-galv-silver mb-6">Tell us about your upcoming project or bid invitation.</p>
-            <InquiryForm kind="project" />
-          </div>
-          <div id="contact-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-blueprint-white mb-2">General Contact</h3>
-            <p className="text-sm text-galv-silver mb-6">Questions, service requests, and other inquiries.</p>
-            <InquiryForm kind="general" />
-          </div>
-          <div id="hr-form" className="scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue p-5 sm:p-8 shadow-sm">
-            <h3 className="text-xl font-semibold text-blueprint-white mb-2">Careers &amp; HR</h3>
-            <p className="text-sm text-galv-silver mb-6">Use this form for employment and recruiting inquiries.</p>
-            <InquiryForm kind="hr" />
-          </div>
+        <div className="mx-auto max-w-3xl space-y-4">
+          {([
+            ['project', 'project-form', 'Start a Project', 'Tell us about your upcoming project or bid invitation.'],
+            ['general', 'contact-form', 'General Contact', 'Questions, service requests, and other inquiries.'],
+            ['hr', 'hr-form', 'Careers & HR', 'Employment and recruiting inquiries.'],
+          ] as const).map(([kind, id, title, description]) => (
+            <details key={kind} id={id} name="contact-options" className="group scroll-mt-28 rounded-lg border border-seam-line bg-steel-blue shadow-sm">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 p-5 sm:p-7 [&::-webkit-details-marker]:hidden">
+                <span><span className="block text-xl font-semibold text-blueprint-white">{title}</span><span className="mt-2 block text-sm text-galv-silver">{description}</span></span>
+                <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cool-teal/30 text-2xl text-cool-teal group-open:rotate-45 transition-transform">+</span>
+              </summary>
+              <div className="border-t border-seam-line p-5 sm:p-7"><InquiryForm kind={kind} /></div>
+            </details>
+          ))}
         </div>
       </div>
     </section>
