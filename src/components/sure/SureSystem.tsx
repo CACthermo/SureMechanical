@@ -194,13 +194,15 @@ export default function SureSystem() {
           <div className="ss-title opacity-0 mb-2">
             <span className="tech-label">THE SURE SYSTEM</span>
           </div>
-          <h2 className="ss-title opacity-0 section-title text-blueprint-white max-w-3xl mb-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+            <div className="ss-title shrink-0 w-[180px] sm:w-[220px] rounded-md bg-black p-4"><Image src={assetPath('/brand/SURE_Group_horizontal.webp')} alt="SURE Group" width={640} height={315} className="w-full h-auto" /></div>
+            <h2 className="ss-title opacity-0 section-title text-blueprint-white max-w-3xl mb-2">
             <span className="hover-red">SPECIALIZED COMPANIES.</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-bright-cyan via-cool-teal to-bright-cyan">
               ONE MECHANICAL STANDARD.
             </span>
-          </h2>
+          </h2></div>
           <p className="ss-title opacity-0 text-galv-silver/50 max-w-xl text-sm leading-relaxed">
             Three specialized companies operating under one unified mechanical standard, delivering coordinated expertise from concept through long-term service.
           </p>
