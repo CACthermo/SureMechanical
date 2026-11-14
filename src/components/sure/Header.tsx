@@ -7,7 +7,7 @@ import { assetPath } from '@/lib/asset-path';
 
 const NAV_ITEMS = [
   { label: 'Home', href: '#hero' },
-  { label: 'Services', href: '#engineering' },
+  { label: 'Services', href: '#service' },
   { label: 'Projects', href: '#projects' },
   { label: 'Companies', href: '#sure-system' },
   { label: 'Careers / HR', href: '#hr-form' },

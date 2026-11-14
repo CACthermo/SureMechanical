@@ -40,7 +40,7 @@ const SUB_COMPANIES = [
   {
     name: 'Cincinnati Air Conditioning Co.',
     role: 'DESIGN-BUILD, SERVICE & CONTROLS',
-    description: 'Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
+    description: 'Established in 1938. Legacy HVAC expertise with deep design-build capabilities, comprehensive service programs and advanced building controls integration across the Tri-State region.',
     logo: assetPath('/brand/CAC_Logo_2026.png'),
     website: 'https://cincinnatiair.com',
     svgX: 200, svgY: 310,

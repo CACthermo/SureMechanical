@@ -22,6 +22,7 @@ export default function Engineering() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { gsap.set('.eng-title, .eng-cap-item', { opacity: 1 }); return; }
     // Title reveal
     gsap.fromTo('.eng-title', 
       { opacity: 0, y: 40 },
