@@ -19,8 +19,8 @@ export default function Home() {
         <HeatingCooling />
         <FieldInstallation />
         <Engineering />
-        <ServiceDepartment />
         <CompanyStory />
+        <ServiceDepartment />
         <Projects />
         <SureSystem />
         <SafetyWorkforce />
