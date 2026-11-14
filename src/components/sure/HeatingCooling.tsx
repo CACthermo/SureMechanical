@@ -26,7 +26,7 @@ export default function HeatingCooling() {
       <p className="hero-support font-mono text-xs uppercase tracking-[0.2em] mb-6 text-[#5beaf3]">Heating &amp; cooling</p>
       <h1 className="hero-title text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.95] tracking-tight overflow-hidden"><span className="thermal-word inline-block">SURE</span>{' '}<span className="thermal-word inline-block">Mechanical</span></h1>
       <p className="hero-support mt-7 max-w-xl text-lg text-white/90">Commercial heating, cooling and ventilation. From design through installation.</p>
-      <p className="hero-support mt-4 max-w-xl text-base text-white/85">SURE Group delivers high-performance HVAC and mechanical solutions for the most demanding environments.</p>
+      <p className="hero-support mt-4 max-w-xl text-base text-white/85">SURE Mechanical delivers high-performance HVAC and mechanical solutions for the most demanding environments.</p>
       <div className="hero-support mt-7 flex flex-wrap gap-3"><a href="#project-form" className="rounded-sm bg-cool-teal px-5 py-3 font-semibold text-[#020b13]">Start a Project</a><a href="#installation" className="rounded-sm border border-white/50 px-5 py-3 font-semibold text-white">Explore our capabilities</a></div>
     </div>
     <noscript><style>{`.hero-intro .hero-title,.hero-intro .hero-support,.hero-intro .hero-photo{opacity:1!important;transform:none!important;mask-image:none!important;filter:none!important}`}</style></noscript>

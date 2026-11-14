@@ -8,7 +8,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sure-body);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -63,6 +63,10 @@
 }
 
 :root {
+  /* Type families identified in the client's print brochure. The full
+     proprietary families must be licensed/provided before web embedding. */
+  --font-sure-display: 'Eurostile Bold', 'EurostileBold', 'Eurostile', 'Arial Black', var(--font-geist-sans), sans-serif;
+  --font-sure-body: 'KabelITCbyBT-Book', 'Kabel', 'Trebuchet MS', var(--font-geist-sans), sans-serif;
   --radius: 0.625rem;
   --background: #020B13;
   --foreground: #F4F8FA;
@@ -97,13 +101,27 @@
   --sidebar-ring: #11C5D6;
 }
 
+/* The scroll-driven engineering drawing is intentionally a dark blueprint
+   chapter in either global theme; keep its labels readable on dark panels. */
+#sure-system {
+  --sure-mech-navy: #020B13;
+  --sure-steel-blue: #061A2B;
+  --sure-blueprint-white: #F4F8FA;
+  --sure-galv-silver: #B9C5CC;
+  --sure-seam-line: rgba(185, 197, 204, 0.16);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sure-body);
     overflow-x: hidden;
+  }
+  h1, h2, h3, h4, .section-title, .hero-headline, .hero-title {
+    font-family: var(--font-sure-display);
   }
   /* Remove default scrollbar for a cleaner industrial look */
   ::-webkit-scrollbar {
@@ -328,7 +346,7 @@
   font-size: clamp(1.75rem, 3.5vw, 3.25rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .section-subtitle {
@@ -589,3 +607,15 @@ body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
 @media (prefers-reduced-motion: reduce) {
   .hero-intro .hero-photo, .hero-intro .hero-title, .hero-intro .hero-support { opacity: 1 !important; animation: none !important; mask-image: none !important; filter: none !important; }
 }
+
+/* One motion owner. Short screens, touch layouts, no-JS and reduced-motion
+   get the complete linear narrative without hidden nodes or sticky dead space. */
+.story-track { display: none; }
+#sure-system[data-enhanced="true"] .story-track { display: block; }
+#sure-system[data-enhanced="true"] .story-linear { display: none; }
+@media (max-width: 1023px), (max-height: 759px), (prefers-reduced-motion: reduce) {
+  #sure-system .story-track { display: none !important; }
+  #sure-system .story-linear { display: block !important; }
+}
+
+.section-title, .hero-title { text-transform: uppercase; }

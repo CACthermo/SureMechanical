@@ -3,7 +3,7 @@ import { assetPath } from '@/lib/asset-path';
 
 const LINKS = [
   { heading: 'Company', links: [
-    { label: 'SURE Group Companies', href: '#sure-system' },
+    { label: 'SURE Mechanical Story', href: '#our-story' },
     { label: 'People & Safety', href: '#safety' },
     { label: 'Careers & HR', href: '#hr-form' },
   ]},
