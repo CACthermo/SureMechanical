@@ -7,7 +7,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 import { ArrowUpRight, Images, Search, X, Grid2X2, LayoutGrid, List } from 'lucide-react';
-import { PHOTO_COLLECTIONS, PROJECTS, type Project } from '@/lib/projects';
+import { PROJECTS, type Project } from '@/lib/projects';
 import ProjectGallery from './ProjectGallery';
 
 export default function Projects() {
@@ -18,7 +18,6 @@ export default function Projects() {
   const closeProject = useCallback(() => setSelectedProject(null), []);
   const search = query.trim().toLocaleLowerCase();
   const matches = (project: Project) => `${project.title} ${project.customer ?? ''}`.toLocaleLowerCase().includes(search);
-  const photos = PHOTO_COLLECTIONS.filter(matches);
   const jobs = PROJECTS.filter(matches);
   const sectionRef = useRef<HTMLElement>(null);
   useGSAP(() => {
@@ -27,7 +26,7 @@ export default function Projects() {
   }, { scope: sectionRef, dependencies: [view, query, expanded], revertOnUpdate: true });
   const gridProjects = jobs.filter(project => project.photos.length > 0);
   const textProjects = jobs.filter(project => project.photos.length === 0);
-  const resultCount = photos.length;
+  const resultCount = jobs.length;
 
   return (
     <section ref={sectionRef} id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
@@ -48,7 +47,7 @@ export default function Projects() {
             {query && <button type="button" aria-label="Clear project search" onClick={() => setQuery('')} className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center text-galv-silver"><X size={17} /></button>}
           </div>
         </div>
-        <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {view === 'photos' ? resultCount === 1 ? 'photo collection' : 'photo collections' : resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
+        <p role="status" className="mb-5 mt-5 text-sm text-galv-silver">{resultCount} {resultCount === 1 ? 'project' : 'projects'}{search ? ' found' : ''}</p>
         {resultCount === 0 && <div className="rounded-lg border border-seam-line p-8 text-galv-silver">No matches. Try another project name or customer, or <button type="button" onClick={() => setQuery('')} className="text-cool-teal underline">clear your search</button>.</div>}
         {view !== 'list' ? (
           <div className={view === 'grid' ? "project-matrix grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" : "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"} aria-label="Project photo collections" id="project-cards">

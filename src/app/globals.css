@@ -565,3 +565,7 @@ body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
 .project-matrix .project-photo-card p { font-size: .7rem; }
 .project-matrix .project-photo-card > div:last-child { padding: .8rem; gap: .5rem; }
 .project-matrix .project-photo-card .absolute.bottom-3 { font-size: .65rem; padding: .25rem .5rem; right: .5rem; bottom: .5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  #sure-system .flow-dot, #sure-system svg > circle { display: none; }
+}

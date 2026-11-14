@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 
 type FormKind = 'general' | 'hr' | 'project';
 const ENDPOINTS: Record<FormKind, string> = {
@@ -11,17 +11,21 @@ const ENDPOINTS: Record<FormKind, string> = {
 
 function InquiryForm({ kind }: { kind: FormKind }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const submitting = useRef(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const isHR = kind === 'hr';
   const isProject = kind === 'project';
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    if (status === 'sending' || !form.reportValidity()) return;
+    if (submitting.current || !form.reportValidity()) return;
     for (const field of Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]'))) {
       field.setCustomValidity(field.value.trim() ? '' : 'Please complete this field.');
       if (!field.reportValidity()) return;
     }
+    submitting.current = true;
+    setErrorMessage('');
     setStatus('sending');
     try {
       const response = await fetch(ENDPOINTS[kind], {
@@ -30,11 +34,17 @@ function InquiryForm({ kind }: { kind: FormKind }) {
         headers: { Accept: 'application/json' },
         signal: AbortSignal.timeout(20000),
       });
-      if (!response.ok) throw new Error('Form submission was rejected');
+      const result = await response.json().catch(() => null);
+      if (!response.ok || result?.ok !== true || result?.errors?.length) {
+        throw new Error(response.status === 429 ? 'Too many requests. Please wait before trying again. Your information is still here.' : 'The form was not accepted. Please try again. Your information is still here.');
+      }
       form.reset();
       setStatus('success');
-    } catch {
+    } catch (error) {
+      setErrorMessage(error instanceof Error && (error.message.startsWith('The form was not accepted') || error.message.startsWith('Too many requests')) ? error.message : 'We could not confirm your submission. Your information is still here. Please try again in a moment.');
       setStatus('error');
+    } finally {
+      submitting.current = false;
     }
   }
 
@@ -46,6 +56,7 @@ function InquiryForm({ kind }: { kind: FormKind }) {
       if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity('');
       if (status !== 'sending') setStatus('idle');
     }} aria-label={isHR ? 'Human resources inquiry' : isProject ? 'Start a project' : 'Contact SURE Mechanical'}>
+      <input type="hidden" name="contact_category" value={kind} />
       <input type="hidden" name="_subject" value={isHR ? 'SURE Mechanical HR Inquiry' : isProject ? 'SURE Mechanical Project Inquiry' : 'SURE Mechanical Website Inquiry'} />
       <div className="absolute left-[-9999px]" aria-hidden="true"><label>Leave this field blank<input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" /></label></div>
       <div className="grid sm:grid-cols-2 gap-3">
@@ -61,8 +72,8 @@ function InquiryForm({ kind }: { kind: FormKind }) {
       <button type="submit" disabled={status === 'sending'} className="min-h-12 px-6 py-3 rounded-sm bg-cool-teal text-mech-navy font-semibold text-sm uppercase tracking-wide hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed">
         {status === 'sending' ? 'Sending…' : isHR ? 'Send HR Inquiry' : isProject ? 'Send Project Inquiry' : 'Send Message'}
       </button>
-      {status === 'success' && <p role="status" className="text-sm text-cool-teal">Your message was submitted successfully.</p>}
-      {status === 'error' && <p role="alert" className="text-sm text-red-700 dark:text-red-400">The form could not send. Please try again in a moment.</p>}
+      {status === 'success' && <p role="status" className="text-sm text-cool-teal">Your message was accepted by our form service.</p>}
+      {status === 'error' && <p role="alert" className="text-sm text-red-700 dark:text-red-400">{errorMessage}</p>}
     </form>
   );
 }
@@ -88,7 +99,7 @@ export default function FinalCTA() {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-cool-teal mb-3">GET IN TOUCH</p>
-          <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical.</h2>
+          <h2 className="section-title text-blueprint-white mb-4">Contact SURE Mechanical</h2>
           <p className="text-galv-silver max-w-2xl mx-auto leading-relaxed">Reach our team about mechanical services, upcoming projects, or career opportunities.</p>
         </div>
         <div className="mx-auto max-w-3xl space-y-4">

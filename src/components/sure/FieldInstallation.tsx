@@ -20,6 +20,7 @@ export default function FieldInstallation() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { gsap.set('.fi-title, .fi-step', { opacity: 1 }); return; }
     gsap.fromTo('.fi-title',
       { opacity: 0, y: 40 },
       { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',

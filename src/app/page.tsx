@@ -1,6 +1,7 @@
 import ThermalProgress from '@/components/sure/ThermalProgress';
 import Header from '@/components/sure/Header';
-import Hero from '@/components/sure/Hero';
+import CompanyStory from '@/components/sure/CompanyStory';
+import ServiceDepartment from '@/components/sure/ServiceDepartment';
 import Engineering from '@/components/sure/Engineering';
 import HeatingCooling from '@/components/sure/HeatingCooling';
 import FieldInstallation from '@/components/sure/FieldInstallation';
@@ -15,10 +16,11 @@ export default function Home() {
     <>
       <Header />
       <main id="main-content" className="relative min-h-screen bg-mech-navy" role="main">
-        <Hero />
-        <Engineering />
         <HeatingCooling />
         <FieldInstallation />
+        <Engineering />
+        <ServiceDepartment />
+        <CompanyStory />
         <Projects />
         <SureSystem />
         <SafetyWorkforce />

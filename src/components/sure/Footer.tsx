@@ -9,7 +9,7 @@ const LINKS = [
   ]},
   { heading: 'Services', links: [
     { label: 'Engineering & Planning', href: '#engineering' },
-    { label: 'Heating & Cooling', href: '#heating-cooling' },
+    { label: 'Heating & Cooling', href: '#service' },
     { label: 'Field Installation', href: '#installation' },
   ]},
   { heading: 'Connect', links: [
