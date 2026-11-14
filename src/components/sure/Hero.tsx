@@ -206,7 +206,7 @@ export default function Hero() {
           <div className="hero-content flex flex-col gap-5 lg:gap-7 opacity-0">
             {/* Subtitle tag */}
             <div className="text-xs font-mono tracking-[0.15em] uppercase text-cool-teal/70">
-              — SURE GROUP &bull; COMMERCIAL MECHANICAL SYSTEMS
+              — SURE MECHANICAL &bull; COMMERCIAL MECHANICAL SYSTEMS
             </div>
 
             {/* Main headline — matching reference */}
@@ -224,7 +224,7 @@ export default function Hero() {
 
             {/* Supporting statement */}
             <p className="section-subtitle text-galv-silver/70 max-w-xl">
-              SURE Group delivers high-performance HVAC and mechanical solutions for the most demanding environments.
+              SURE Mechanical delivers high-performance HVAC and mechanical solutions for the most demanding environments.
             </p>
 
             {/* CTAs */}

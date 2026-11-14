@@ -6,7 +6,8 @@ import Engineering from '@/components/sure/Engineering';
 import HeatingCooling from '@/components/sure/HeatingCooling';
 import FieldInstallation from '@/components/sure/FieldInstallation';
 import Projects from '@/components/sure/Projects';
-import SureSystem from '@/components/sure/SureSystem';
+import SureFoundationTimeline from '@/components/sure/SureFoundationTimeline';
+import PartnerProof from '@/components/sure/PartnerProof';
 import SafetyWorkforce from '@/components/sure/SafetyWorkforce';
 import FinalCTA from '@/components/sure/FinalCTA';
 import Footer from '@/components/sure/Footer';
@@ -22,7 +23,8 @@ export default function Home() {
         <CompanyStory />
         <ServiceDepartment />
         <Projects />
-        <SureSystem />
+        <PartnerProof />
+        <SureFoundationTimeline />
         <SafetyWorkforce />
         <FinalCTA />
       </main>

@@ -33,6 +33,8 @@ jobs:
       - name: Build static site
         env:
           GITHUB_PAGES: "true"
+          # Set only after the dedicated Project form and recipient are verified.
+          NEXT_PUBLIC_FORMSPREE_PROJECT_ID: ${{ vars.FORMSPREE_PROJECT_ID }}
         run: bun run build:pages
 
       - name: Upload GitHub Pages artifact
