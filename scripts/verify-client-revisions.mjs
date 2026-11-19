@@ -31,7 +31,7 @@ for (const width of [390,768,1440]) {
  assert.equal(await page.locator('#cta details[open]').count(),0);
  assert.equal(await page.locator('a[href^="mailto:"]').count(),0);
  assert.deepEqual(await page.locator('a[href^="#"]').evaluateAll(es=>es.filter(e=>!document.getElementById(e.hash.slice(1))).map(e=>e.hash)),[]);
- await page.getByRole('button',{name:'Grid view',exact:true}).click();assert.equal(await page.locator('#project-cards button').count(),9);
+ assert.equal(await page.getByRole('button',{name:'Grid view',exact:true}).getAttribute('aria-pressed'),'true');assert.equal(await page.locator('#project-cards button').count(),9);
  await page.locator('#projects details summary').click();assert.equal(await page.locator('#projects details li').count(),14);
  await page.locator('#project-search').fill('Lane');assert.match(await page.locator('#projects [role=status]').innerText(),/1 project/);
  await page.locator('#project-search').fill('');
@@ -88,31 +88,52 @@ assert.equal(projectPosts,0);assert.equal(await pf.getByRole('status').count(),0
 assert.equal(await pf.locator('[name=message]').inputValue(),'No live submission');await pf.screenshot({path:'docs/qa/project-fallback.png'});await projectContext.close();
 console.log('PASS unconfigured project route: no misrouted POST, retained inputs, honest email fallback');
 
-// Full, visible linear story for mobile/reduced-motion/no-JS/short desktops.
-for(const opts of [
- {viewport:{width:390,height:900},reducedMotion:'no-preference'},
- {viewport:{width:1440,height:900},reducedMotion:'reduce'},
- {viewport:{width:1440,height:700},reducedMotion:'no-preference'},
- {viewport:{width:1440,height:900},javaScriptEnabled:false},
+// Read the same milestones with or without animation.
+for (const opts of [
+  { viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' },
+  { viewport: { width: 1440, height: 500 } },
+  { viewport: { width: 1440, height: 900 }, javaScriptEnabled: false },
 ]) {
- const c=await browser.newContext(opts);const p=await c.newPage();await p.goto(base,{waitUntil:'networkidle'});
- assert.equal(await p.locator('.story-track').isVisible(),false);assert.equal(await p.locator('.story-linear').isVisible(),true);
- assert.match(await p.locator('.story-linear').innerText(),/2010[\s\S]*2025[\s\S]*Together the two companies/);
- assert.equal(await p.locator('.story-linear a').count(),2);await c.close();
+  const context = await browser.newContext(opts);
+  const page = await context.newPage();
+  await page.goto(base, { waitUntil: 'networkidle' });
+  assert.equal(await page.locator('#sure-system').getAttribute('data-enhanced'), null);
+  assert.match(await page.locator('.foundation-stage').innerText(), /2010[\s\S]*2025[\s\S]*Together, these companies/);
+  await context.close();
 }
-const animated=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'no-preference'});
-const ap=await animated.newPage();const motionErrors=[];ap.on('pageerror',e=>motionErrors.push(e.message));await ap.goto(base,{waitUntil:'networkidle'});
-assert.equal(await ap.locator('#sure-system').getAttribute('data-enhanced'),'true');
-const bounds=await ap.locator('.story-track').evaluate(e=>({top:e.getBoundingClientRect().top+scrollY,height:e.clientHeight}));
-for(const [name,progress] of [['founder',0],['branches',.58],['rtu',.99]]) {
- await ap.evaluate(({top,height,progress})=>window.scrollTo(0,top+(height-innerHeight)*progress),{...bounds,progress});
- await ap.waitForTimeout(900);await ap.screenshot({path:`docs/qa/timeline-${name}.png`});
- if(name==='branches'){assert.equal(await ap.locator('[data-duct=foundation]').evaluate(e=>parseFloat(getComputedStyle(e).strokeDashoffset)),0);assert.equal(await ap.locator('.story-acquired').first().evaluate(e=>Number(getComputedStyle(e).opacity)>.95),true);}
- if(name==='rtu'){const box=await ap.locator('.story-conclusion').boundingBox();assert.ok(box.y+box.height<960);assert.equal(await ap.locator('.rtu-iso').evaluate(e=>Number(getComputedStyle(e).opacity)>.95),true);}
+for (const width of [390, 1440]) {
+  const context = await browser.newContext({ viewport: { width, height: 900 } });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto(base, { waitUntil: 'networkidle' });
+  await page.locator('#sure-system[data-enhanced="true"]').waitFor();
+  const bounds = await page.locator('.foundation-track').evaluate(e => ({
+    top: e.getBoundingClientRect().top + scrollY - 80,
+    range: e.clientHeight - innerHeight + 80,
+  }));
+  for (const [name, progress, selector] of [
+    ['founder', .105, '.foundation-founder .foundation-copy'],
+    ['group', .35, '.foundation-group .foundation-copy'],
+    ['branches', .435, '[data-route="cac"]'],
+    ['affiliates', .63, '.foundation-thermo .foundation-copy'],
+    ['rtu', .98, '.foundation-iso'],
+    ['founder-reverse', .105, '.foundation-founder .foundation-copy'],
+  ]) {
+    await page.evaluate(({ top, range, progress }) => scrollTo({ top: top + range * progress, behavior: 'instant' }), { ...bounds, progress });
+    await page.waitForTimeout(650);
+    assert.ok(await page.locator(selector).isVisible(), `${width}: ${name}`);
+    if (name === 'founder-reverse') assert.equal(await page.locator('.foundation-finale').isVisible(), false);
+    await page.screenshot({ path: `docs/qa/foundation-${width}-${name}.png` });
+  }
+  assert.deepEqual(errors, []);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => !document.querySelector('#sure-system').hasAttribute('data-enhanced'));
+  assert.equal(await page.locator('#sure-system').getAttribute('data-enhanced'), null);
+  assert.ok(await page.locator('.foundation-finale').isVisible());
+  await context.close();
 }
-assert.deepEqual(motionErrors,[]);
-await ap.emulateMedia({reducedMotion:'reduce'});await ap.waitForTimeout(200);assert.equal(await ap.locator('.story-linear').isVisible(),true);
-await ap.emulateMedia({reducedMotion:'no-preference'});await ap.setViewportSize({width:390,height:900});await ap.locator('#sure-system').scrollIntoViewIfNeeded();await ap.screenshot({path:'docs/qa/companies-390.png'});await animated.close();console.log('PASS timeline scroll beats, responsive/reduced-motion/no-JS states');
+console.log('PASS timeline on phone and desktop, reverse scroll and reduced-motion fallback');
 const introContext=await browser.newContext({viewport:{width:390,height:900},reducedMotion:'no-preference'});
  const intro=await introContext.newPage();await intro.route('**/hero-rooftop.webp',async route=>{await new Promise(resolve=>setTimeout(resolve,1200));await route.continue();});
  await intro.goto(base,{waitUntil:'domcontentloaded'});assert.equal(await intro.locator('#hero').getAttribute('data-ready'),'false');assert.equal(await intro.locator('.hero-title').evaluate(e=>getComputedStyle(e).opacity),'0');assert.match(await intro.locator('#hero').getAttribute('style'),/data:image/);
