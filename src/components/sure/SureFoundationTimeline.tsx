@@ -106,7 +106,11 @@ export default function SureFoundationTimeline() {
       reveal('.foundation-finale .foundation-copy', 8.75);
       tl.to('.foundation-finale strong', { color: '#75effa', duration: .55 }, 9.08)
         .to({}, { duration: .85 });
-      return () => { delete root.dataset.enhanced; };
+      return () => {
+        delete root.dataset.enhanced;
+        root.querySelectorAll('.foundation-panel, .foundation-mark, .foundation-copy, .foundation-affiliate, .foundation-unit img, .foundation-finale strong, .foundation-ducts g, .foundation-ducts path')
+          .forEach(element => element.removeAttribute('style'));
+      };
     }, section);
     return () => media.revert();
   }, { scope: section });
