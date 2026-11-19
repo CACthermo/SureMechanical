@@ -130,7 +130,8 @@ for (const width of [390, 1440]) {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.waitForFunction(() => !document.querySelector('#sure-system').hasAttribute('data-enhanced'));
   assert.equal(await page.locator('#sure-system').getAttribute('data-enhanced'), null);
-  assert.ok(await page.locator('.foundation-finale').isVisible());
+  await page.locator('.foundation-finale').scrollIntoViewIfNeeded();
+  await page.locator('.foundation-finale').waitFor({ state: 'visible' });
   await context.close();
 }
 console.log('PASS timeline on phone and desktop, reverse scroll and reduced-motion fallback');
