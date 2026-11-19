@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import SectionReveal from './SectionReveal';
 import { assetPath } from '@/lib/asset-path';
 import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
@@ -76,15 +77,17 @@ export default function FieldInstallation() {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
-          <div className="lg:col-span-3 relative aspect-[4/3] overflow-hidden rounded-sm"><Image src={assetPath('/company/field-crew.webp')} alt="Rooftop installation crew, from the original SURE Mechanical website" fill sizes="(max-width:1023px) 100vw, 60vw" className="object-cover" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#020b13]/90 to-transparent p-6 pt-16"><p className="font-mono text-xs text-[#5beaf3] uppercase tracking-widest">Field installation</p><p className="mt-2 text-2xl font-semibold text-white">Built by our people.</p></div></div>
-          <div className="lg:col-span-2 relative overflow-hidden rounded-sm min-h-[450px]">
-            <Image src={assetPath('/company/Worker_pic1.png')} alt="SURE Mechanical field team, from the original website" fill sizes="(max-width:1023px) 100vw, 40vw" className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#020b13]/95 via-transparent to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-7 text-white"><p className="font-mono text-xs tracking-widest text-[#5beaf3] uppercase mb-3">From model to site</p><h3 className="text-3xl font-bold">Plan. Coordinate. Install.</h3><p className="mt-4 text-sm text-white/90">Engineering and field teams working together through startup and commissioning.</p></div>
+      </div>
+      <SectionReveal>
+        <div data-scene className="photo-chapter field-chapter">
+          <Image src={assetPath('/company/field-crew.webp')} alt="SURE Mechanical crew installing rooftop equipment" fill sizes="100vw" className="photo-chapter-image" />
+          <div className="photo-chapter-copy" data-reveal>
+            <p className="photo-chapter-label">Field installation</p>
+            <h3 className="section-title mt-3">Built by our people.</h3>
+            <p data-scroll-copy className="mt-4 max-w-xl">Engineering and field teams work together through startup and commissioning.</p>
           </div>
         </div>
-      </div>
+      </SectionReveal>
     </section>
   );
 }

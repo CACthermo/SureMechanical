@@ -11,7 +11,7 @@ import { PROJECTS, type Project } from '@/lib/projects';
 import ProjectGallery from './ProjectGallery';
 
 export default function Projects() {
-  const [view, setView] = useState<'grid' | 'photos' | 'list'>('photos');
+  const [view, setView] = useState<'grid' | 'photos' | 'list'>('grid');
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
