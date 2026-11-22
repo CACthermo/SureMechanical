@@ -633,12 +633,12 @@ body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
 .foundation-finale strong { color: #75effa; }
 .foundation-ducts, .foundation-plan { display: none; }
 
-#sure-system[data-enhanced="true"] .foundation-track { height: 510svh; }
+#sure-system[data-enhanced="true"] .foundation-track { height: 720svh; }
 #sure-system[data-enhanced="true"] .foundation-stage {
-  position: sticky; top: 80px; height: calc(100svh - 128px); padding: 0; overflow: clip;
+  isolation: isolate; position: sticky; top: 80px; height: calc(100svh - 128px); padding: 0; overflow: clip;
 }
 #sure-system[data-enhanced="true"] .foundation-panel {
-  position: absolute; top: 55%; left: 0; right: 0; transform: translateY(-50%); margin: 0 auto;
+  position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); margin: 0 auto; z-index: 1;
 }
 #sure-system[data-enhanced="true"] .foundation-mark img { max-height: min(15svh, 6rem); }
 #sure-system[data-enhanced="true"] .foundation-founder, #sure-system[data-enhanced="true"] .foundation-group { width: min(85%, 34rem); }
@@ -722,5 +722,11 @@ body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
   .foundation-milestone {
     grid-template-columns: minmax(0, 1fr) minmax(100px, 31vw) minmax(0, 1fr);
   }
-  .foundation-milestone .foundation-copy { font-size: .75rem; line-height: 1.4; }
+  .foundation-milestone .foundation-copy { font-size: .8125rem; line-height: 1.4; }
+}
+
+@media (max-width: 640px) {
+  #sure-system:not([data-enhanced="true"]) .foundation-milestone .foundation-copy {
+    grid-column: 1 / -1; font-size: 1rem; text-align: center; max-width: 36rem; margin-top: .75rem;
+  }
 }
