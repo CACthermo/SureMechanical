@@ -1,3 +1,4 @@
+import TextReveal from './TextReveal';
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
 import SectionReveal from './SectionReveal';
@@ -17,15 +18,16 @@ export default function ServiceDepartment() {
           <Image src={assetPath('/company/service-truck.webp')} alt="Branded SURE Mechanical service truck" fill sizes="100vw" className="photo-chapter-image" />
           <div className="photo-chapter-copy" data-reveal>
             <p className="photo-chapter-label">Commercial Equipment Service Department</p>
-            <h2 id="service-title" className="section-title mt-3">Care for the systems you depend on.</h2>
+            <h2 id="service-title" className="section-title mt-3"><TextReveal>Care for the systems you depend on.</TextReveal></h2>
             <p data-scroll-copy className="mt-4 max-w-xl">Commercial HVAC equipment service, inspections and maintenance for your building.</p>
             <a href="#contact-form" className="photo-chapter-action">Request service</a>
           </div>
         </div>
         <div className="mx-auto max-w-[1200px] px-5 py-12 sm:px-8 lg:py-20">
           <div className="grid gap-x-8 md:grid-cols-3">
-            {services.map(([title, text]) => (
-              <article key={title} className="border-t border-seam-line py-5">
+            {services.map(([title, text], index) => (
+              <article key={title} className="service-feature border-t border-seam-line py-5">
+                <span aria-hidden="true" className="service-index">0{index + 1}</span>
                 <h3 data-reveal className="text-xl font-semibold text-blueprint-white">{title}</h3>
                 <p data-scroll-copy className="mt-2 text-galv-silver">{text}</p>
               </article>
@@ -33,7 +35,7 @@ export default function ServiceDepartment() {
           </div>
           <div className="mt-8 border-t border-seam-line pt-6" data-reveal>
             <h3 className="font-semibold text-blueprint-white">Equipment we service</h3>
-            <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-galv-silver">
+            <ul className="equipment-list mt-4 flex flex-wrap gap-x-6 gap-y-2 text-galv-silver">
               {equipment.map(item => <li key={item}>{item}</li>)}
             </ul>
           </div>

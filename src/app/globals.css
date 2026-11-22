@@ -9,7 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sure-body);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-sure-body);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -63,10 +63,10 @@
 }
 
 :root {
-  /* Type families identified in the client's print brochure. The full
-     proprietary families must be licensed/provided before web embedding. */
-  --font-sure-display: 'Eurostile Bold', 'EurostileBold', 'Eurostile', 'Arial Black', var(--font-geist-sans), sans-serif;
-  --font-sure-body: 'KabelITCbyBT-Book', 'Kabel', 'Trebuchet MS', var(--font-geist-sans), sans-serif;
+  /* Brochure: Eurostile Bold + Kabel Book. These loaded OFL counterparts
+     preserve the squared display / geometric body contrast on every device. */
+  --font-sure-display: var(--font-brand-display), 'Arial Black', sans-serif;
+  --font-sure-body: var(--font-brand-body), 'Trebuchet MS', sans-serif;
   --radius: 0.625rem;
   --background: #020B13;
   --foreground: #F4F8FA;
@@ -120,7 +120,7 @@
     font-family: var(--font-sure-body);
     overflow-x: hidden;
   }
-  h1, h2, h3, h4, .section-title, .hero-headline, .hero-title {
+  h1, h2, .section-title, .hero-headline, .hero-title {
     font-family: var(--font-sure-display);
   }
   /* Remove default scrollbar for a cleaner industrial look */
@@ -255,7 +255,7 @@
 
 /* ===== TECHNICAL LABEL STYLES ===== */
 .tech-label {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-sure-body), sans-serif;
   font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -267,7 +267,7 @@
 }
 
 .tech-label-warm {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-sure-body), sans-serif;
   font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -729,4 +729,102 @@ body { padding-bottom: calc(44px + env(safe-area-inset-bottom)); }
   #sure-system:not([data-enhanced="true"]) .foundation-milestone .foundation-copy {
     grid-column: 1 / -1; font-size: 1rem; text-align: center; max-width: 36rem; margin-top: .75rem;
   }
+}
+
+/* Brochure-led type: deliberate scale, short measures, and quiet moving detail. */
+body { font-weight: 400; line-height: 1.65; letter-spacing: .005em; }
+button, input, textarea, select { font-family: var(--font-sure-body); }
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }
+h3, h4 { font-family: var(--font-sure-body); line-height: 1.3; }
+.section-title {
+  font-size: clamp(1.65rem, 3.25vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -.035em;
+  max-width: 27ch;
+}
+.section-title::after {
+  content: ''; display: block; width: clamp(3rem, 7vw, 6.5rem); height: 2px;
+  margin-top: .55em;
+  background: linear-gradient(90deg, var(--sure-cool-teal), #6ce7ed88, transparent);
+}
+.eyebrow, .photo-chapter-label, .tech-label {
+  font-family: var(--font-sure-body); font-weight: 600; font-size: .73rem;
+  line-height: 1.5; letter-spacing: .17em;
+}
+.eyebrow, .photo-chapter-label { display: flex; align-items: center; gap: .85rem; }
+.eyebrow::before, .photo-chapter-label::before {
+  content: ''; width: 1.7rem; height: 1px; background: currentColor; flex-shrink: 0; opacity: .7;
+}
+.section-subtitle { font-weight: 400; line-height: 1.75; max-width: 58ch; }
+.hero-title {
+  font-size: clamp(1.85rem, 6.7vw, 6.8rem); line-height: 1.2; font-weight: 400;
+  letter-spacing: -.04em; overflow: visible; text-shadow: 0 3px 28px #0005;
+}
+.hero-title .thermal-word { display: block; width: fit-content; }
+.hero-title .thermal-word:last-child {
+  color: #8aedf2;
+  background: linear-gradient(115deg, #f2feff 4%, #8aedf2 54%, #31b6ca);
+  background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-intro .hero-support:not(.font-mono) { font-size: clamp(1rem, 1.35vw, 1.2rem); line-height: 1.65; }
+.hero-intro .hero-support a, .photo-chapter-action {
+  font-size: .85rem; letter-spacing: .04em; padding: .9rem 1.35rem;
+  transition: background-color .25s, box-shadow .25s, translate .25s;
+}
+.hero-intro .hero-support a:hover, .photo-chapter-action:hover { translate: 0 -2px; box-shadow: 0 5px 24px #11c5d61c; }
+.photo-chapter-copy { padding: 8rem 2rem 3rem; }
+.photo-chapter-copy .section-title { font-size: clamp(1.7rem, 3.9vw, 3.65rem); max-width: 20ch; }
+.photo-chapter-copy p[data-scroll-copy] {
+  padding-left: 1.15rem; border-left: 2px solid #70e4ee77;
+  max-width: 51ch; font-size: clamp(1rem, 1.3vw, 1.125rem); line-height: 1.75; color: #e0eaf0;
+}
+.type-reveal { display: inline; }
+.type-word-mask { display: inline-block; overflow: clip; vertical-align: bottom; padding-bottom: .1em; margin-bottom: -.1em; }
+.type-word { display: inline-block; transform-origin: left bottom; }
+.value-grid { border-bottom: 1px solid var(--sure-seam-line); }
+.value-item { position: relative; padding-block: 1.6rem 1.9rem; padding-right: 1.25rem; }
+.value-index, .service-index {
+  display: block; font-family: var(--font-sure-display); font-size: .65rem;
+  line-height: 1; letter-spacing: .06em; color: var(--sure-cool-teal); margin-bottom: 1.15rem;
+}
+.value-item h4 { font-size: 1.2rem; letter-spacing: -.025em; }
+.value-item p { max-width: 27ch; font-size: .95rem; line-height: 1.7; }
+.service-feature { padding-block: 1.75rem 2rem; }
+.service-feature h3 { font-size: clamp(1.25rem, 1.75vw, 1.65rem); font-weight: 550; letter-spacing: -.025em; }
+.service-feature p { max-width: 34ch; line-height: 1.75; }
+.equipment-list { gap: .65rem; }
+.equipment-list li { padding: .5rem .85rem; border: 1px solid var(--sure-seam-line); font-size: .9rem; }
+#project-cards h3 { font-size: clamp(1rem, 1.55vw, 1.22rem); font-weight: 550; letter-spacing: -.02em; }
+#project-cards p { font-size: .875rem; line-height: 1.5; }
+#cta summary h3 { font-size: clamp(1.25rem, 2.2vw, 1.65rem); letter-spacing: -.025em; }
+#cta label { font-size: .75rem; letter-spacing: .09em; }
+.foundation-year { font-family: var(--font-sure-display); font-size: clamp(1.2rem, 3.3vw, 3rem); font-weight: 400; }
+.foundation-finale > p { font-family: var(--font-sure-body); font-weight: 500; line-height: 1.4; letter-spacing: -.025em; }
+.foundation-finale strong { font-weight: 650; text-decoration: underline; text-decoration-color: #75effa55; text-underline-offset: .18em; }
+@media (max-width: 640px) {
+  .photo-chapter-copy { padding-inline: 1.25rem; padding-bottom: 2.25rem; }
+  .hero-title { font-size: clamp(1.7rem, 7.1vw, 2.8rem); letter-spacing: -.05em; }
+  .hero-intro .hero-support { margin-top: 1rem; }
+  .hero-intro .hero-support:first-child { margin-top: 0; margin-bottom: 1.1rem; }
+  .service-feature { padding-block: 1.5rem; }
+  .foundation-milestone .foundation-copy { font-size: .8125rem; line-height: 1.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-word { transform: none !important; opacity: 1 !important; filter: none !important; }
+  .hero-intro .hero-support a:hover, .photo-chapter-action:hover { translate: none; }
+}
+
+.eng-cap-item { padding-block: 1.15rem; }
+.eng-cap-item .text-sm { font-size: 1.05rem; line-height: 1.45; }
+.eng-cap-item .font-mono, .fi-step .font-mono { font-size: .7rem; line-height: 1.5; }
+.fi-process { gap: .75rem; }
+@media (min-width: 641px) {
+  .about-chapter::after, .truck-chapter::after {
+    background:
+      linear-gradient(90deg, #030d17eb 0%, #030d17d4 38%, #030d1788 72%, #030d1710 100%),
+      linear-gradient(0deg, #030d17 0%, #030d1760 55%, transparent 100%);
+  }
+  .about-chapter .section-title, .truck-chapter .section-title { max-width: 18ch; }
 }
