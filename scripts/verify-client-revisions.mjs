@@ -25,7 +25,7 @@ for (const width of [390,768,1440]) {
  await context.route('https://formspree.io/**', route=>route.abort());
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base,{waitUntil:'networkidle'});
- assert.equal((await page.locator('h1').innerText()).toUpperCase(),'SURE MECHANICAL');
+ assert.equal((await page.locator('h1').innerText()).replace(/\s+/g, ' ').toUpperCase(),'SURE MECHANICAL');
  assert.deepEqual(await page.locator('main > section').evaluateAll(es=>es.slice(0,2).map(e=>e.id)),['hero','installation']);
  assert.equal(await page.locator('#our-story h4').count(),7);
  assert.equal(await page.locator('#cta details[open]').count(),0);

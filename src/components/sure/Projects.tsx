@@ -1,5 +1,6 @@
 'use client';
 
+import TextReveal from './TextReveal';
 import { useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
@@ -32,7 +33,7 @@ export default function Projects() {
     <section ref={sectionRef} id="projects" className="relative border-y border-seam-line bg-steel-blue/40 py-20 lg:py-28" aria-labelledby="projects-title">
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
         <p className="eyebrow">Our work</p>
-        <h2 id="projects-title" className="section-title mt-3 text-blueprint-white">See Our Work!</h2>
+        <h2 id="projects-title" className="section-title mt-3 text-blueprint-white"><TextReveal>See Our Work!</TextReveal></h2>
         <p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Browse project photos or find a job by name or customer. Select a project to take a closer look.</p>
         <div className="mt-9 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div role="group" aria-label="Project view" className="flex w-fit max-w-full gap-1 rounded-lg border border-seam-line bg-mech-navy p-1">

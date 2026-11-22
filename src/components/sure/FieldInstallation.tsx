@@ -1,5 +1,6 @@
 'use client';
 
+import TextReveal from './TextReveal';
 import Image from 'next/image';
 import SectionReveal from './SectionReveal';
 import { assetPath } from '@/lib/asset-path';
@@ -83,7 +84,7 @@ export default function FieldInstallation() {
           <Image src={assetPath('/company/field-crew.webp')} alt="SURE Mechanical crew installing rooftop equipment" fill sizes="100vw" className="photo-chapter-image" />
           <div className="photo-chapter-copy" data-reveal>
             <p className="photo-chapter-label">Field installation</p>
-            <h3 className="section-title mt-3">Built by our people.</h3>
+            <h3 className="section-title mt-3"><TextReveal>Built by our people.</TextReveal></h3>
             <p data-scroll-copy className="mt-4 max-w-xl">Engineering and field teams work together through startup and commissioning.</p>
           </div>
         </div>
