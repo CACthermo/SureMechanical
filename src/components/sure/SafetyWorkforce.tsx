@@ -1,6 +1,21 @@
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
 import SectionReveal from './SectionReveal';
+
 export default function SafetyWorkforce() {
-  return <section id="safety" aria-labelledby="people-title" className="border-y border-seam-line py-16 lg:py-20"><div className="mx-auto max-w-[1200px] px-5 sm:px-8"><SectionReveal><p className="eyebrow">People &amp; Safety</p><div className="mt-5 grid gap-8 lg:grid-cols-2 items-center"><figure data-reveal className="overflow-hidden rounded-lg border border-seam-line"><Image src={assetPath('/company/people-safety-team.webp')} alt="SURE Mechanical team gathered together wearing hard hats and safety glasses" width={1200} height={1600} className="w-full h-auto" /></figure><div data-reveal><h2 id="people-title" className="section-title text-blueprint-white mb-6">Experience. Inclusion. Responsibility.</h2><div className="space-y-5 text-galv-silver leading-relaxed"><p>SURE Mechanical is committed to creating an experienced, inclusive, and diverse workforce.</p><p>Our installers, technicians and engineers bring their skills to commercial HVAC projects. A safe environment and personal responsibility guide the work.</p><a href="#hr-form" className="inline-flex min-h-11 items-center font-semibold text-cool-teal underline underline-offset-4">Explore careers with SURE Mechanical</a></div></div></div></SectionReveal></div></section>;
+  return (
+    <section id="safety" aria-labelledby="people-title">
+      <SectionReveal>
+        <div data-scene className="photo-chapter people-chapter">
+          <Image src={assetPath('/company/people-safety-team.webp')} alt="SURE Mechanical team wearing hard hats and safety glasses" fill sizes="100vw" className="photo-chapter-image" />
+          <div className="photo-chapter-copy" data-reveal>
+            <p className="photo-chapter-label">People &amp; Safety</p>
+            <h2 id="people-title" className="section-title mt-3">Experience. Inclusion. Responsibility.</h2>
+            <p data-scroll-copy className="mt-4 max-w-xl">Our installers, technicians and engineers bring their skills to commercial HVAC projects. A safe environment and personal responsibility guide the work.</p>
+            <a href="#hr-form" className="photo-chapter-action">Explore careers</a>
+          </div>
+        </div>
+      </SectionReveal>
+    </section>
+  );
 }

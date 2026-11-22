@@ -1,12 +1,44 @@
 import Image from 'next/image';
 import { assetPath } from '@/lib/asset-path';
 import SectionReveal from './SectionReveal';
-import { ClipboardCheck, Wrench, Gauge } from 'lucide-react';
-const SERVICES = [
-  { icon: ClipboardCheck, title: 'Preventive maintenance', text: 'Service and maintenance agreements tailored to your equipment and needs.' },
-  { icon: Wrench, title: 'Inspections & equipment audits', text: 'Mechanical system inspections with recommendations for improvements and maintenance.' },
-  { icon: Gauge, title: 'Energy audits', text: 'Energy audits of your current mechanical systems.' },
+
+const services = [
+  ['Preventive maintenance', 'Service and maintenance agreements tailored to your equipment and needs.'],
+  ['Inspections & equipment audits', 'Mechanical system inspections with recommendations for improvements and maintenance.'],
+  ['Energy audits', 'Energy audits of your current mechanical systems.'],
 ];
+const equipment = ['VRF systems', 'Rooftop units', 'Chillers', 'Air handling units', 'Cooling towers', 'Boilers'];
+
 export default function ServiceDepartment() {
-  return <section id="service" aria-labelledby="service-title" className="relative isolate overflow-hidden py-20 lg:py-28 bg-steel-blue/40"><Image src={assetPath('/company/service-background.webp')} alt="" fill sizes="100vw" className="absolute inset-0 -z-20 object-cover opacity-60" /><div className="absolute inset-0 -z-10 bg-gradient-to-b from-mech-navy/90 via-mech-navy/75 to-mech-navy/90" aria-hidden="true" /><div className="mx-auto max-w-[1200px] px-5 sm:px-8"><SectionReveal><p className="eyebrow">Commercial Equipment Service Department</p><div className="mt-4 flex flex-wrap items-end justify-between gap-6"><h2 id="service-title" className="section-title max-w-2xl text-blueprint-white">Care for the systems you depend on.</h2><a href="#contact-form" className="inline-flex min-h-12 items-center rounded-sm bg-cool-teal px-6 py-3 font-semibold text-mech-navy">Request service</a></div><p className="mt-5 max-w-2xl text-galv-silver leading-relaxed">Commercial HVAC equipment service, inspections and maintenance for your building.</p><div className="mt-10 grid gap-6 lg:grid-cols-[1.4fr_1fr] items-center"><figure data-reveal className="overflow-hidden rounded-lg border border-seam-line"><Image src={assetPath('/company/brochure/service-technician.webp')} alt="Technician working beside commercial mechanical equipment, from the SURE Mechanical brochure" width={880} height={585} className="w-full aspect-[3/2] object-cover" /></figure><div data-reveal className="rounded-lg border border-seam-line bg-mech-navy p-6 sm:p-8"><p className="eyebrow">Service with a purpose</p><h3 className="mt-4 text-2xl font-semibold text-blueprint-white">Your equipment. Your needs.</h3><p className="mt-4 text-galv-silver leading-relaxed">Providing great customer service is our main focus in all that we do, along with comprehensive products and services for your company.</p><Image src={assetPath('/company/brochure/mechanical-room.webp')} alt="Commercial mechanical room shown in the SURE Mechanical brochure" width={461} height={260} className="mt-6 w-full aspect-[16/7] rounded-sm object-cover" /></div></div><div className="mt-10 grid gap-5 md:grid-cols-3">{SERVICES.map(({icon: Icon, title, text}) => <article data-reveal key={title} className="rounded-lg border border-seam-line bg-mech-navy p-6"><Icon className="text-cool-teal" size={28} aria-hidden="true" /><h3 className="mt-5 text-xl font-semibold text-blueprint-white">{title}</h3><p className="mt-3 text-sm leading-relaxed text-galv-silver">{text}</p></article>)}</div><div className="mt-9 border-t border-seam-line pt-7"><h3 className="text-sm font-semibold text-blueprint-white">Equipment we service</h3><ul className="mt-4 flex flex-wrap gap-3">{['VRF systems', 'Rooftop units', 'Chillers', 'Air handling units', 'Cooling towers', 'Boilers'].map(item => <li key={item} className="rounded-full border border-cool-teal/25 px-4 py-2 text-sm text-galv-silver">{item}</li>)}</ul></div></SectionReveal></div></section>;
+  return (
+    <section id="service" aria-labelledby="service-title">
+      <SectionReveal>
+        <div data-scene className="photo-chapter truck-chapter">
+          <Image src={assetPath('/company/service-truck.webp')} alt="Branded SURE Mechanical service truck" fill sizes="100vw" className="photo-chapter-image" />
+          <div className="photo-chapter-copy" data-reveal>
+            <p className="photo-chapter-label">Commercial Equipment Service Department</p>
+            <h2 id="service-title" className="section-title mt-3">Care for the systems you depend on.</h2>
+            <p data-scroll-copy className="mt-4 max-w-xl">Commercial HVAC equipment service, inspections and maintenance for your building.</p>
+            <a href="#contact-form" className="photo-chapter-action">Request service</a>
+          </div>
+        </div>
+        <div className="mx-auto max-w-[1200px] px-5 py-12 sm:px-8 lg:py-20">
+          <div className="grid gap-x-8 md:grid-cols-3">
+            {services.map(([title, text]) => (
+              <article key={title} className="border-t border-seam-line py-5">
+                <h3 data-reveal className="text-xl font-semibold text-blueprint-white">{title}</h3>
+                <p data-scroll-copy className="mt-2 text-galv-silver">{text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 border-t border-seam-line pt-6" data-reveal>
+            <h3 className="font-semibold text-blueprint-white">Equipment we service</h3>
+            <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-galv-silver">
+              {equipment.map(item => <li key={item}>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </SectionReveal>
+    </section>
+  );
 }

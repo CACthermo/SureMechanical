@@ -7,7 +7,6 @@ import gsap from 'gsap';
 import { assetPath } from '@/lib/asset-path';
 
 const CREDIBILITY = [
-  { value: '2010', label: 'SURE Founded' },
   { value: '1938', label: 'CAC Established' },
   { value: 'Certified', label: 'Minority-Owned' },
   { value: 'Tri-State', label: 'Mechanical Expertise' },
