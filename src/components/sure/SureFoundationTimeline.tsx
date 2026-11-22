@@ -60,7 +60,7 @@ export default function SureFoundationTimeline() {
       });
       const wipe = { clipPath: 'inset(0 100% 0 0)', autoAlpha: 0, y: 8 };
       gsap.set('.foundation-panel:not(.foundation-founder), .foundation-affiliate, .foundation-iso', { autoAlpha: 0 });
-      gsap.set('.foundation-copy', wipe);
+      gsap.set('.foundation-copy, .foundation-year', wipe);
       gsap.set('.foundation-ducts g', { autoAlpha: 0 });
       gsap.set('.foundation-ducts g path:not(.duct-flow)', { strokeDasharray: '1 1', strokeDashoffset: 1 });
       const reveal = (selector: string, at: number) => {
@@ -76,15 +76,16 @@ export default function SureFoundationTimeline() {
         }
       };
       const moveUp = (panel: string, at: number) => {
-        tl.to(`${panel} .foundation-copy`, { ...wipe, duration: .25 }, at)
-          .to(panel, { top: '24%', scale: .73, duration: .5, ease: 'power2.inOut' }, at);
+        tl.to(panel, { top: '24%', scale: .73, duration: .5, ease: 'power2.inOut' }, at);
       };
       tl.from('.foundation-founder .foundation-mark', { autoAlpha: .35, scale: .89, duration: .35 }, 0);
-      reveal('.foundation-founder .foundation-copy', .35);
+      reveal('.foundation-founder .foundation-year', .12);
+      reveal('.foundation-founder .foundation-copy', .48);
       moveUp('.foundation-founder', 1.35);
       draw(['founder'], 1.78);
       tl.fromTo('.foundation-group', { scale: .87 }, { scale: 1, autoAlpha: 1, duration: .35 }, 2.27);
-      reveal('.foundation-group .foundation-copy', 2.58);
+      reveal('.foundation-group .foundation-year', 2.48);
+      reveal('.foundation-group .foundation-copy', 2.82);
       tl.to('.foundation-founder, [data-route="founder"]', { autoAlpha: 0, duration: .35 }, 2.72);
       moveUp('.foundation-group', 3.7);
       draw(['cac', 'thermolinear'], 4.12);
@@ -108,7 +109,7 @@ export default function SureFoundationTimeline() {
         .to({}, { duration: .85 });
       return () => {
         delete root.dataset.enhanced;
-        root.querySelectorAll('.foundation-panel, .foundation-mark, .foundation-copy, .foundation-affiliate, .foundation-unit img, .foundation-finale strong, .foundation-ducts g, .foundation-ducts path')
+        root.querySelectorAll('.foundation-panel, .foundation-mark, .foundation-year, .foundation-copy, .foundation-affiliate, .foundation-unit img, .foundation-finale strong, .foundation-ducts g, .foundation-ducts path')
           .forEach(element => element.removeAttribute('style'));
       };
     }, section);
@@ -120,13 +121,15 @@ export default function SureFoundationTimeline() {
       <div className="foundation-track">
         <div className="foundation-stage">
           <Ducts />
-          <article className="foundation-panel foundation-founder">
+          <article className="foundation-panel foundation-founder foundation-milestone">
+            <h2 className="foundation-year">2010</h2>
             <div className="foundation-mark"><Mark src="/brand/SURE_Mechanical_trimmed.png" alt="SURE Mechanical" width={300} /></div>
-            <div className="foundation-copy"><h2>2010</h2><p>SURE Mechanical was founded to serve Greater Cincinnati’s commercial mechanical needs.</p></div>
+            <p className="foundation-copy">SURE Mechanical was founded to serve Greater Cincinnati’s commercial mechanical needs.</p>
           </article>
-          <article className="foundation-panel foundation-group">
+          <article className="foundation-panel foundation-group foundation-milestone">
+            <h3 className="foundation-year">2025</h3>
             <div className="foundation-mark"><Mark src="/brand/SURE_Group_horizontal.webp" alt="SURE Group" width={325} /></div>
-            <div className="foundation-copy"><h3>2025</h3><p>SURE Group developed after SURE Mechanical acquired Cincinnati Air Conditioning Co., bringing complementary mechanical capabilities together.</p></div>
+            <p className="foundation-copy">SURE Group developed after SURE Mechanical acquired Cincinnati Air Conditioning Co., bringing complementary mechanical capabilities together.</p>
           </article>
           <div className="foundation-panel foundation-pair">
             <article className="foundation-affiliate foundation-cac">
